@@ -1,0 +1,111 @@
+/* ============================================================
+   Work section — shared chrome
+   Nav + footer used by every page under /work/. Page-specific
+   layout (card grid, article typography) lives in that page's
+   own stylesheet, loaded after this one.
+
+   Tokens are inlined below (mirrors ../../design-system/tokens.css)
+   rather than linked, because Chrome blocks a file:// page from
+   reading a stylesheet outside the directory tree of the file you
+   opened — design-system/ is a sibling of nothingdesign/, not a
+   descendant, so that link 404s silently for anyone opening this
+   page straight from disk instead of through a server. Keep this
+   block in sync with the design-system copy by hand.
+   ============================================================ */
+
+:root{
+  color-scheme: light;
+
+  --ground:#e7e7e7;
+  --paper:#ffffff;
+  --ink:#141414;
+  --stone-0:#f2f0ed;
+  --stone-1:#d7d3cd;
+  --stone-2:#a9a49c;
+  --stone-3:#6b6762;
+  --stone-4:#2c2b2a;
+  --hair:rgba(20,20,20,.14);
+
+  --font-display:"Archivo","Arial Black",Arial,sans-serif;
+  --font-sans:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --font-mono:"DM Mono",ui-monospace,monospace;
+
+  --ease:cubic-bezier(.22,.61,.24,1);
+  --pad:clamp(18px, 2.8vw, 40px);
+
+  --radius-pill:999px;
+}
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-sans);
+  -webkit-font-smoothing:antialiased;
+}
+
+a{color:inherit}
+
+.site-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:var(--pad);
+  border-bottom:1px solid var(--hair);
+}
+
+.brand{
+  display:inline-flex;
+  align-items:baseline;
+  gap:.18em;
+  font-family:var(--font-display);
+  font-weight:900;
+  font-size:15px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--ink);
+  text-decoration:none;
+}
+.brand .dot{
+  width:5px;height:5px;
+  background:var(--ink);
+  border-radius:1px;
+  display:inline-block;
+  transform:translateY(-1px);
+}
+
+.site-nav{
+  display:flex;
+  align-items:center;
+  gap:24px;
+  font-family:var(--font-mono);
+  font-size:12px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.site-nav a{
+  text-decoration:none;
+  color:var(--stone-3);
+  padding-bottom:2px;
+  border-bottom:1px solid transparent;
+  transition:color .3s var(--ease), border-color .3s var(--ease);
+}
+.site-nav a:hover,
+.site-nav a[aria-current]{color:var(--ink)}
+.site-nav a[aria-current]{border-color:var(--ink)}
+
+.site-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:var(--pad);
+  border-top:1px solid var(--hair);
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:.04em;
+  color:var(--stone-3);
+}
+.site-footer a{text-decoration:none;color:var(--stone-3)}
+.site-footer a:hover{color:var(--ink)}

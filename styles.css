@@ -9,6 +9,7 @@
   color-scheme: light;
 
   --ground:#e7e7e7;
+  --paper:#ffffff;
   --ink:#141414;
   --stone-0:#f2f0ed;
   --stone-1:#d7d3cd;
@@ -38,6 +39,7 @@
 }
 
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
 img{max-width:100%;display:block}
 [hidden]{display:none !important}
 
@@ -94,21 +96,24 @@ body{
   transform:translateY(-1px);
 }
 
-.menu-btn{
-  width:44px;height:44px;
-  display:grid;
-  grid-template-columns:17px 17px;
-  grid-template-rows:17px 17px;
-  gap:2px;
-  place-content:center;
-  padding:0;border:0;background:none;cursor:pointer;
+.site-nav{
+  display:flex;
+  align-items:center;
+  gap:24px;
+  font-family:"DM Mono",ui-monospace,monospace;
+  font-size:12px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
 }
-.menu-btn i{display:block;background:var(--ink);transition:transform .38s var(--ease)}
-.menu-btn:hover i:nth-child(1){transform:translate(-2px,-2px)}
-.menu-btn:hover i:nth-child(2){transform:translate( 2px,-2px)}
-.menu-btn:hover i:nth-child(3){transform:translate(-2px, 2px)}
-.menu-btn:hover i:nth-child(4){transform:translate( 2px, 2px)}
-.menu-btn:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.site-nav a{
+  color:var(--ink);
+  text-decoration:none;
+  padding-bottom:2px;
+  border-bottom:1px solid transparent;
+  transition:border-color .3s var(--ease);
+}
+.site-nav a:hover{border-color:var(--ink)}
+.site-nav a:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 
 /* ---------------- the ring ----------------
    Three nested transforms, one job each. Keep them separate - collapsing any
@@ -354,3 +359,107 @@ button.chip{padding:0;cursor:pointer;font-size:14px;line-height:1}
   .anim .wordmark span{transform:none}
   .anim.play .wordmark span{animation:none}
 }
+
+/* ---------------- work section ----------------
+   Sits below the hero in normal document flow. On paper (not ground) so it
+   reads as a distinct section once you scroll past the animated stage. */
+
+.work-section{
+  scroll-margin-top:24px;
+  background:var(--paper);
+  border-top:1px solid var(--hair);
+}
+
+.work-intro{
+  max-width:640px;
+  padding:calc(var(--pad) * 1.6) var(--pad) var(--pad);
+}
+.work-intro h2{
+  margin:0 0 .4em;
+  font-family:"Archivo","Arial Black",Arial,sans-serif;
+  font-weight:900;
+  text-transform:uppercase;
+  font-size:clamp(28px, 4vw, 40px);
+  letter-spacing:.01em;
+}
+.work-intro p{
+  margin:0;
+  color:var(--stone-3);
+  font-size:15px;
+  line-height:1.6;
+}
+
+.work-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+  gap:1px;
+  background:var(--hair);
+  border-top:1px solid var(--hair);
+  border-bottom:1px solid var(--hair);
+}
+
+.work-card{
+  background:var(--paper);
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  min-height:220px;
+  text-decoration:none;
+  color:inherit;
+}
+a.work-card{transition:background-color .3s var(--ease)}
+a.work-card:hover{background:var(--stone-0)}
+.work-card.is-disabled{color:var(--stone-3)}
+
+.work-card__meta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  font-family:"DM Mono",ui-monospace,monospace;
+  font-size:11px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--stone-3);
+}
+
+.work-card__status{
+  padding:3px 9px;
+  border:1px solid var(--hair);
+  border-radius:999px;
+}
+.work-card__status[data-status="featured"]{border-color:var(--ink);color:var(--ink)}
+
+.work-card__title{
+  margin:0;
+  font-family:"Archivo","Arial Black",Arial,sans-serif;
+  font-weight:900;
+  text-transform:uppercase;
+  font-size:20px;
+  letter-spacing:.01em;
+}
+
+.work-card__role{
+  margin:-8px 0 0;
+  font-size:13px;
+  color:var(--stone-3);
+}
+
+.work-card__summary{
+  margin:0;
+  font-size:14px;
+  line-height:1.55;
+  flex:1;
+}
+
+.work-card__cta{
+  margin-top:auto;
+  font-family:"DM Mono",ui-monospace,monospace;
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+a .work-card__cta{color:var(--ink)}
+.work-card.is-disabled .work-card__cta{color:var(--stone-2)}
+a.work-card:hover .work-card__cta{text-decoration:underline}
