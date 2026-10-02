@@ -102,28 +102,6 @@
     border-bottom:1px solid var(--ink);
   }
 
-  /* visually-hidden but focusable parallel link list — canvas is aria-hidden */
-  .sr-only{
-    position:absolute;
-    width:1px;height:1px;
-    padding:0;margin:-1px;
-    overflow:hidden;
-    clip:rect(0,0,0,0);
-    white-space:nowrap;
-    border:0;
-  }
-  .sr-only a:focus{
-    position:fixed;
-    width:auto;height:auto;
-    top:12px;left:12px;
-    margin:0;
-    padding:8px 12px;
-    clip:auto;
-    background:var(--ink);
-    color:var(--paper);
-    z-index:10;
-  }
-
   @media (prefers-reduced-motion: reduce){
     #sphere-canvas{cursor:default}
   }
@@ -139,13 +117,8 @@
 
     <canvas id="sphere-canvas" aria-hidden="true"></canvas>
 
-    <!-- parallel accessible list — the canvas is decorative/aria-hidden -->
-    <nav class="sr-only" aria-label="Work">
-      <ul id="sr-list"></ul>
-    </nav>
-
     <div class="caption">
-      <strong>24 project cards orbiting one fixed centerpiece &middot; drag, or wait for idle drift</strong>
+      <strong>My process, stage by stage &middot; drag, or wait for idle drift</strong>
       <a href="../index.html">&larr; back to the real homepage</a>
     </div>
   </div>
@@ -156,21 +129,132 @@
 <script type="module">
 import * as THREE from "three";
 
-/* ---------------- placeholder "photography" ----------------
-   No real portrait photography exists yet, so each orbiting card is a
-   canvas-drawn near-monochrome portrait card labeled with the work item it
-   stands in for. Swap makeCardTexture() for real <img> textures later —
-   geometry, billboarding, and fade all stay exactly the same. */
+/* ---------------- the process: 6 stages, 15 cards ----------------
+   Each card is a process stage (drawn as a hand-rolled geometric icon —
+   no icon font, keeping this file dependency-free) with an optional tool
+   mark in the bottom-right corner. Three cards (test/interviews,
+   fix/synthesis, ship) are methods or stages with no single tool, so they
+   render icon-only — the corner badge simply doesn't exist for them. Tool
+   marks are typographic, not reproductions of each company's actual
+   trademarked logo. */
 
-const WORKS = [
-  { title: "Estbuild",     meta: "Aithraa · Case study", href: "../work/estbuild/index.html" },
-  { title: "Pinnacle AI",  meta: "Active",               href: "../index.html#work" },
-  { title: "PacAR",        meta: "HCI research",         href: "../index.html#work" },
-  { title: "Perplexity AI",meta: "Fellowship",           href: "../index.html#work" },
-  { title: "Codexive",     meta: "Design engineer",      href: "../index.html#work" },
-];
+function roundRect(ctx, x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
 
-function makeCardTexture(work, tone){
+const STAGE_ICONS = {
+  problem(ctx, s){ // magnifying glass
+    ctx.beginPath();
+    ctx.arc(-s * 0.12, -s * 0.12, s * 0.42, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(s * 0.22, s * 0.22);
+    ctx.lineTo(s * 0.56, s * 0.56);
+    ctx.stroke();
+  },
+  flow(ctx, s){ // a bending path through three points
+    const pts = [[-s * 0.45, -s * 0.5], [s * 0.1, -s * 0.05], [-s * 0.1, s * 0.4], [s * 0.45, s * 0.5]];
+    ctx.beginPath();
+    pts.forEach(([x, y], i) => (i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)));
+    ctx.stroke();
+    pts.forEach(([x, y]) => {
+      ctx.beginPath();
+      ctx.arc(x, y, s * 0.075, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  },
+  prototype(ctx, s){ // two layered screens
+    roundRect(ctx, -s * 0.55, -s * 0.45, s * 0.75, s * 0.95, s * 0.08);
+    ctx.fillStyle = "#fafafa";
+    ctx.fill();
+    ctx.stroke();
+    roundRect(ctx, -s * 0.2, -s * 0.1, s * 0.75, s * 0.95, s * 0.08);
+    ctx.fillStyle = "#fafafa";
+    ctx.fill();
+    ctx.stroke();
+  },
+  test(ctx, s){ // checkmark in a circle
+    ctx.beginPath();
+    ctx.arc(0, 0, s * 0.55, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(-s * 0.24, s * 0.02);
+    ctx.lineTo(-s * 0.05, s * 0.24);
+    ctx.lineTo(s * 0.3, -s * 0.22);
+    ctx.stroke();
+  },
+  fix(ctx, s){ // simplified wrench
+    ctx.beginPath();
+    ctx.moveTo(-s * 0.4, s * 0.4);
+    ctx.lineTo(s * 0.18, -s * 0.18);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(s * 0.38, -s * 0.38, s * 0.22, Math.PI * 0.15, Math.PI * 1.65);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(-s * 0.45, s * 0.45, s * 0.13, 0, Math.PI * 2);
+    ctx.fill();
+  },
+  ship(ctx, s){ // upward arrow
+    ctx.beginPath();
+    ctx.moveTo(0, -s * 0.58);
+    ctx.lineTo(s * 0.4, s * 0.1);
+    ctx.lineTo(s * 0.14, s * 0.1);
+    ctx.lineTo(s * 0.14, s * 0.55);
+    ctx.lineTo(-s * 0.14, s * 0.55);
+    ctx.lineTo(-s * 0.14, s * 0.1);
+    ctx.lineTo(-s * 0.4, s * 0.1);
+    ctx.closePath();
+    ctx.stroke();
+  },
+};
+
+const STAGE_LABELS = {
+  problem: "Problem",
+  flow: "Flow",
+  prototype: "Prototype",
+  test: "Test",
+  fix: "Fix",
+  ship: "Ship",
+};
+
+const STAGE_ORDER = ["problem", "flow", "prototype", "test", "fix", "ship"];
+
+/* Each stage's tools/methods, in the order they fill ring 1, then ring 2,
+   then ring 3. A stage with fewer than 3 entries just cycles — Fix only
+   has two, so its third ring repeats Claude rather than inventing a third
+   tool that isn't real. Ship never had a tool, so every ring's Ship card
+   is identical. */
+const STAGE_TOOLS = {
+  problem:   [{ tool: "Claude" }, { tool: "ChatGPT" }, { tool: "Exa" }],
+  flow:      [{ tool: "Figma" }, { tool: "Notion" }, { tool: "llm-wiki" }],
+  prototype: [{ tool: "Figma" }, { tool: "Magic Patterns" }, { tool: "Lovable" }],
+  test:      [{ tool: "Maze" }, { tool: "Hotjar" }, { method: "User interviews" }],
+  fix:       [{ tool: "Claude" }, { method: "Iterative synthesis" }],
+  ship:      [{}],
+};
+
+/* ---- three cycles: one full Problem->Ship loop per ring, top/middle/bottom ---- */
+const RING_COUNT = 3;
+const CARDS = [];
+for (let ring = 0; ring < RING_COUNT; ring++) {
+  STAGE_ORDER.forEach((stage) => {
+    const variants = STAGE_TOOLS[stage];
+    const variant = variants[ring % variants.length];
+    CARDS.push({ stage, tool: variant.tool || null, method: variant.method });
+  });
+}
+
+/* ---------------- card: original gradient layout, process icon in place of
+   the plain circle, tool name in place of the company name ---------------- */
+
+function makeCardTexture(card, tone){
   const w = 340, h = 453; // 3:4 portrait
   const c = document.createElement("canvas");
   c.width = w; c.height = h;
@@ -187,13 +271,36 @@ function makeCardTexture(work, tone){
   ctx.ellipse(w * 0.5, h * 0.38, w * 0.22, h * 0.16, 0, 0, Math.PI * 2);
   ctx.fill();
 
+  ctx.save();
+  ctx.translate(w * 0.5, h * 0.38);
+  ctx.strokeStyle = "#141414";
+  ctx.fillStyle = "#141414";
+  ctx.lineWidth = 5;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  STAGE_ICONS[card.stage](ctx, w * 0.16);
+  ctx.restore();
+
+  const title = card.tool || card.method || STAGE_LABELS[card.stage];
+  const meta = card.tool || card.method ? STAGE_LABELS[card.stage] : "";
+
   ctx.fillStyle = tone.text;
   ctx.textAlign = "left";
-  ctx.font = "700 20px Arial";
-  ctx.fillText(work.title, 18, h - 56);
-  ctx.font = "500 13px Arial";
-  ctx.globalAlpha = .75;
-  ctx.fillText(work.meta.toUpperCase(), 18, h - 32);
+  // Bigger than before (was 20px) — shrink-to-fit guards the longest name
+  // ("Magic Patterns") from clipping past the card's right edge.
+  let titleSize = 30;
+  const maxTitleWidth = w - 18 * 2;
+  ctx.font = `700 ${titleSize}px Arial`;
+  while (ctx.measureText(title).width > maxTitleWidth && titleSize > 20) {
+    titleSize -= 1;
+    ctx.font = `700 ${titleSize}px Arial`;
+  }
+  ctx.fillText(title, 18, h - 56);
+  if (meta) {
+    ctx.font = "500 13px Arial";
+    ctx.globalAlpha = .75;
+    ctx.fillText(meta.toUpperCase(), 18, h - 32);
+  }
 
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
@@ -208,19 +315,7 @@ const TONES = [
   { a: "#6b6762", b: "#2c2b2a", text: "#fff" },
 ];
 
-const cardTextures = WORKS.map((w, i) => makeCardTexture(w, TONES[i % TONES.length]));
-
-/* ---------------- accessible parallel list ---------------- */
-const srList = document.getElementById("sr-list");
-WORKS.forEach((w) => {
-  const li = document.createElement("li");
-  const a = document.createElement("a");
-  a.href = w.href;
-  a.textContent = `${w.title} — ${w.meta}`;
-  a.addEventListener("focus", () => { dragging = false; velocity.x = velocity.y = 0; });
-  li.appendChild(a);
-  srList.appendChild(li);
-});
+const cardTextures = CARDS.map((card, i) => makeCardTexture(card, TONES[i % TONES.length]));
 
 /* ---------------- centerpiece: cut the white ground out of the source PNG ----------------
    human-particle.png (or whatever image is passed in) is an opaque RGB
@@ -275,29 +370,51 @@ function makeCutoutMaterial(texture) {
       void main() {
         vec4 texel = texture2D(map, vUv);
         float luma = (texel.r + texel.g + texel.b) / 3.0;
-        // 0.92..1.0 luma ramps to alpha 1..0 — mirrors the old 235..255/255 cutoff
-        float alpha = 1.0 - smoothstep(0.92, 1.0, luma);
-        gl_FragColor = vec4(texel.rgb, alpha);
+        float alpha = clamp((1.0 - luma) * 3.0, 0.0, 1.0);
+
+        // The source is a sparse field of dark dots on white — mostly
+        // negative space. At the size this plane actually renders at, the
+        // torso's dot density is high enough that minification blends it
+        // into a near-solid dark mass regardless of the alpha curve above;
+        // no per-pixel threshold can recover spacing that's already been
+        // averaged away by the time the shader sees it. So compensate
+        // directly: never let it hit full opacity (some page always shows
+        // through, keeping the silhouette from reading as solid black) and
+        // lift the dot color itself toward the source's actual mid-gray
+        // rather than near-black.
+        alpha *= 0.8;
+        vec3 color = mix(texel.rgb, vec3(0.6), 0.4);
+        gl_FragColor = vec4(color, alpha);
       }
     `,
   });
 }
 
-/* ---------------- geometry: Fibonacci sphere ---------------- */
-const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
+/* ---------------- geometry: three rings, one cycle per ring ----------------
+   Each ring sits at its own latitude (top / equator / bottom) and holds the
+   six stages evenly spaced around it in process order — so unlike a
+   scattered Fibonacci sphere, consecutive stages are already next to each
+   other in space. Connecting them in order traces a clean loop around the
+   ring instead of a line cutting through the sphere's middle. Points are
+   generated ring-major, stage-minor, matching the order CARDS was built in
+   above (ring 0's six stages, then ring 1's, then ring 2's). */
+const RING_LATITUDES = [0.72, 0, -0.72]; // top, equator, bottom — as a fraction of R; spread wider than before to cut cross-ring overlap
 
-function fibonacciSphere(count, radius = 1) {
+function ringPoints(radius) {
   const pts = [];
-  for (let i = 0; i < count; i++) {
-    const y = 1 - (i / (count - 1)) * 2;
-    const r = Math.sqrt(1 - y * y);
-    const theta = GOLDEN_ANGLE * i;
-    pts.push(new THREE.Vector3(Math.cos(theta) * r * radius, y * radius, Math.sin(theta) * r * radius));
-  }
+  const angleStep = (Math.PI * 2) / STAGE_ORDER.length;
+  RING_LATITUDES.forEach((yFrac) => {
+    const y = yFrac * radius;
+    const ringRadius = Math.sqrt(Math.max(radius * radius - y * y, 0));
+    for (let i = 0; i < STAGE_ORDER.length; i++) {
+      const theta = i * angleStep;
+      pts.push(new THREE.Vector3(Math.cos(theta) * ringRadius, y, Math.sin(theta) * ringRadius));
+    }
+  });
   return pts;
 }
 
-const R = 1, COUNT = 24, CARD_W = 0.105 * 3.2, CARD_H = 0.14 * 3.2; // scaled up for visibility at this R
+const R = 1, COUNT = CARDS.length, CARD_W = 0.105 * 3.4, CARD_H = 0.14 * 3.4; // bigger than the original 3.2, but 4.3 was too big — overlap read as clutter
 
 const canvas = document.getElementById("sphere-canvas");
 const stage = document.querySelector(".stage");
@@ -311,8 +428,8 @@ const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true 
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(stage.clientWidth, stage.clientHeight);
 
-/* ---- the 24 orbiting project cards ---- */
-const points = fibonacciSphere(COUNT, R);
+/* ---- the orbiting process cards ---- */
+const points = ringPoints(R);
 const cards = points.map((p, i) => {
   const geo = new THREE.PlaneGeometry(CARD_W, CARD_H);
   const mat = new THREE.MeshBasicMaterial({
@@ -328,6 +445,57 @@ const cards = points.map((p, i) => {
   return mesh;
 });
 
+/* ---- the thread — each ring traces its own Problem->Ship cycle ----
+   Three rings, each already laid out with its six stages in sequential
+   order around the circle (see ringPoints above) — so connecting a ring's
+   points in order traces a loop around that ring, never a line cutting
+   through the sphere's middle the way a scattered layout would.
+
+   Each forward segment (Problem->Flow->...->Fix->Ship) gets progressively
+   more opaque, reading as building momentum toward Ship. The segment that
+   closes the loop (Ship back to Problem) is dashed and faint instead —
+   visually a reset, not more forward progress.
+
+   Segments are drawn as an arc along the sphere's surface (spherical
+   interpolation between the two endpoints, sampled into a short polyline)
+   rather than a straight chord — a straight line between two points on a
+   sphere cuts through the interior, which both looks rigid and can slice
+   straight through the centerpiece figure. Hugging the surface instead
+   reads as a thread laid over a globe. */
+function slerpArc(a, b, radius, segments) {
+  const angle = a.angleTo(b);
+  const pts = [];
+  for (let i = 0; i <= segments; i++) {
+    const t = i / segments;
+    if (angle < 1e-6) { pts.push(a.clone()); continue; }
+    const w1 = Math.sin((1 - t) * angle) / Math.sin(angle);
+    const w2 = Math.sin(t * angle) / Math.sin(angle);
+    pts.push(
+      new THREE.Vector3().addScaledVector(a, w1).addScaledVector(b, w2).normalize().multiplyScalar(radius)
+    );
+  }
+  return pts;
+}
+
+const ARC_SEGMENTS = 20;
+const STEPS = STAGE_ORDER.length;
+const threadSegments = [];
+for (let ring = 0; ring < RING_COUNT; ring++) {
+  for (let i = 0; i < STEPS; i++) {
+    const fromIdx = ring * STEPS + i;
+    const toIdx = ring * STEPS + ((i + 1) % STEPS);
+    const isClosing = i === STEPS - 1;
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(new Float32Array((ARC_SEGMENTS + 1) * 3), 3));
+    const mat = isClosing
+      ? new THREE.LineDashedMaterial({ color: 0x141414, transparent: true, opacity: 0.18, depthWrite: false, dashSize: 0.04, gapSize: 0.03 })
+      : new THREE.LineBasicMaterial({ color: 0x141414, transparent: true, opacity: THREE.MathUtils.lerp(0.15, 0.65, i / (STEPS - 2)), depthWrite: false });
+    const line = new THREE.Line(geo, mat);
+    scene.add(line);
+    threadSegments.push({ line, fromIdx, toIdx, isClosing });
+  }
+}
+
 /* ---- the fixed centerpiece — sits at the sphere's core, does not orbit ----
    Loaded asynchronously and added to the scene whenever it's ready, rather
    than awaited before the render loop starts below: the 24 orbiting cards
@@ -335,12 +503,6 @@ const cards = points.map((p, i) => {
    never be able to blank the entire sphere. */
 let centerFigure = null;
 const CENTER_H = R * 1.1;
-// Embedded as a data URI rather than loaded from assets/human-particle.png:
-// Safari treats a same-directory file:// image as cross-origin for WebGL
-// texture purposes specifically (not for a plain <img>), which can silently
-// block the texture from rendering with no console error at all. A data URI
-// is inline in the document itself — there's no separate resource load for
-// any browser to flag as cross-origin.
 loadCutoutTexture("../assets/human-particle.png")
   .then(({ texture, aspect }) => {
     centerFigure = new THREE.Mesh(
@@ -453,6 +615,15 @@ function tick() {
   });
 
   if (centerFigure) centerFigure.quaternion.copy(camera.quaternion); // billboard only — position never changes
+
+  threadSegments.forEach(({ line, fromIdx, toIdx, isClosing }) => {
+    const arc = slerpArc(cards[fromIdx].position, cards[toIdx].position, R, ARC_SEGMENTS);
+    const pos = line.geometry.attributes.position.array;
+    arc.forEach((v, i) => { pos[i * 3] = v.x; pos[i * 3 + 1] = v.y; pos[i * 3 + 2] = v.z; });
+    line.geometry.attributes.position.needsUpdate = true;
+    line.geometry.computeBoundingSphere();
+    if (isClosing) line.computeLineDistances(); // required for dashed segments, every update
+  });
 
   renderer.render(scene, camera);
 }
