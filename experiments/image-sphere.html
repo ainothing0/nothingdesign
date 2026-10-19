@@ -111,7 +111,7 @@
 
   <div class="stage">
     <header class="topbar">
-      <a class="brand" href="../index.html">Monolith</a>
+      <a class="brand" href="../index.html">abcd</a>
       <span class="tag">Experiment — drag to orbit</span>
     </header>
 
@@ -241,7 +241,7 @@ const STAGE_TOOLS = {
 };
 
 /* ---- three cycles: one full Problem->Ship loop per ring, top/middle/bottom ---- */
-const RING_COUNT = 3;
+const RING_COUNT = 4;
 const CARDS = [];
 for (let ring = 0; ring < RING_COUNT; ring++) {
   STAGE_ORDER.forEach((stage) => {
@@ -398,7 +398,7 @@ function makeCutoutMaterial(texture) {
    ring instead of a line cutting through the sphere's middle. Points are
    generated ring-major, stage-minor, matching the order CARDS was built in
    above (ring 0's six stages, then ring 1's, then ring 2's). */
-const RING_LATITUDES = [0.72, 0, -0.72]; // top, equator, bottom — as a fraction of R; spread wider than before to cut cross-ring overlap
+const RING_LATITUDES = [0.78, 0.26, -0.26, -0.78]; // 4 rings, evenly spaced, as a fraction of R
 
 function ringPoints(radius) {
   const pts = [];

@@ -1,5 +1,5 @@
 /* ============================================================
-   Monolith — hero lattice
+   abcd — hero lattice
    A 4x4 ring of tiles (inner 2x2 empty) rotating 90deg clockwise
    per loop, behind a difference-blended wordmark.
    See README.md for the mechanic, the measured geometry and the timeline.
@@ -18,24 +18,8 @@
   --stone-4:#2c2b2a;
   --hair:rgba(20,20,20,.14);
 
-  /* Ring geometry: height-driven square, 4x4 cells. Cell pitch never changes -
-     only the plate scales, so the gutters that open mid-spin are the tile
-     shrinking inside a fixed cell, not the grid spreading. */
-  --ring: min(90.5vh, 760px);
-  --tile-small: .752;                          /* 25% of cell becomes gutter */
-
-  /* Timeline. One loop is 4s. The rotation track runs FOUR loops
-     (4 x 90deg = 360deg) so it can restart on an identical state - see README. */
-  --loop: 4000ms;
-  --turn-cycle: 16000ms;
-  --spin-ease: cubic-bezier(.85, 0, .15, 1);   /* ~easeInOutExpo */
-  --down-ease: cubic-bezier(.65, 0, .35, 1);   /* easeInOutCubic */
-  --up-ease:   cubic-bezier(.33, 1, .68, 1);   /* easeOutCubic   */
-
   --ease:cubic-bezier(.22,.61,.24,1);          /* UI micro-interactions */
   --pad:clamp(18px, 2.8vw, 40px);
-
-  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
 }
 
 *{box-sizing:border-box}
@@ -56,13 +40,22 @@ body{
 .stage{
   position:relative;
   isolation:isolate;
-  background:var(--ground);
+  background:var(--paper);
   height:min(100svh, 1000px);
   min-height:640px;
-  overflow:hidden;            /* the ring is ~1018px across its diagonal at 45deg */
+  overflow:hidden;
   display:grid;
   place-items:center;
 }
+
+#sphere-canvas{
+  display:block;
+  width:100%;
+  height:100%;
+  touch-action:none;
+  cursor:grab;
+}
+#sphere-canvas.dragging{cursor:grabbing}
 
 /* ---------------- top bar ---------------- */
 
@@ -115,162 +108,6 @@ body{
 .site-nav a:hover{border-color:var(--ink)}
 .site-nav a:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 
-/* ---------------- the ring ----------------
-   Three nested transforms, one job each. Keep them separate - collapsing any
-   two onto the same element breaks the mechanic.
-
-     .ring   rotates the whole square clockwise about the grid centre
-     .tile   counter-rotates so every plate stays upright and axis-aligned
-     .plate  scales inside its fixed cell, which is what opens the gutters
-   ------------------------------------------ */
-
-.ring{
-  position:relative;
-  z-index:2;
-  width:var(--ring);
-  aspect-ratio:1;
-  display:grid;
-  grid-template:repeat(4, 1fr) / repeat(4, 1fr);
-  transform-origin:50% 50%;
-  animation:ring-turn var(--turn-cycle) infinite;
-  will-change:transform;
-}
-
-.cell{position:relative}
-
-.tile{
-  position:relative;
-  width:100%;height:100%;
-  transform-origin:50% 50%;
-  animation:tile-counter var(--turn-cycle) infinite;
-  will-change:transform;
-}
-
-.plate{
-  position:absolute;
-  inset:0;
-  overflow:hidden;
-  background:var(--stone-1);
-  transform-origin:50% 50%;
-  animation:plate-pitch var(--loop) infinite;
-  will-change:transform;
-}
-.plate::after{
-  content:"";
-  position:absolute;inset:0;
-  background-image:var(--grain);
-  mix-blend-mode:multiply;
-  opacity:.5;
-  pointer-events:none;
-}
-
-/* 1650ms spin, then a hold, four times over 16s. Per-segment easing lives on
-   the keyframes: S-curve through each quarter turn, linear across each hold. */
-@keyframes ring-turn{
-  0%       {transform:rotate(0deg);   animation-timing-function:var(--spin-ease)}
-  10.3125% {transform:rotate(90deg);  animation-timing-function:linear}
-  25%      {transform:rotate(90deg);  animation-timing-function:var(--spin-ease)}
-  35.3125% {transform:rotate(180deg); animation-timing-function:linear}
-  50%      {transform:rotate(180deg); animation-timing-function:var(--spin-ease)}
-  60.3125% {transform:rotate(270deg); animation-timing-function:linear}
-  75%      {transform:rotate(270deg); animation-timing-function:var(--spin-ease)}
-  85.3125% {transform:rotate(360deg); animation-timing-function:linear}
-  100%     {transform:rotate(360deg)}
-}
-
-@keyframes tile-counter{
-  0%       {transform:rotate(0deg);    animation-timing-function:var(--spin-ease)}
-  10.3125% {transform:rotate(-90deg);  animation-timing-function:linear}
-  25%      {transform:rotate(-90deg);  animation-timing-function:var(--spin-ease)}
-  35.3125% {transform:rotate(-180deg); animation-timing-function:linear}
-  50%      {transform:rotate(-180deg); animation-timing-function:var(--spin-ease)}
-  60.3125% {transform:rotate(-270deg); animation-timing-function:linear}
-  75%      {transform:rotate(-270deg); animation-timing-function:var(--spin-ease)}
-  85.3125% {transform:rotate(-360deg); animation-timing-function:linear}
-  100%     {transform:rotate(-360deg)}
-}
-
-/* 850ms shrink (with the spin), 670ms hold, 400ms snap flush, 1280ms hold.
-   The asymmetry is the rhythm - do not collapse it into one symmetric ease. */
-@keyframes plate-pitch{
-  0%     {transform:scale(1);                 animation-timing-function:var(--down-ease)}
-  21.25% {transform:scale(var(--tile-small)); animation-timing-function:linear}
-  58%    {transform:scale(var(--tile-small)); animation-timing-function:var(--up-ease)}
-  68%    {transform:scale(1);                 animation-timing-function:linear}
-  100%   {transform:scale(1)}
-}
-
-/* ---------------- plates ----------------
-   Sixteen CSS-drawn grayscale compositions; twelve are on the ring at a time.
-   Swap these for <img> tags if you have real photography - see README. */
-
-.p1  {background:radial-gradient(80% 65% at 30% 22%, var(--stone-0) 0%, transparent 60%), linear-gradient(160deg, var(--stone-2), var(--stone-4))}
-.p2  {background:radial-gradient(50% 50% at 62% 38%, rgba(255,255,255,.85) 0%, transparent 62%), linear-gradient(20deg, var(--stone-3), var(--stone-1))}
-.p3  {background:linear-gradient(180deg, rgba(255,255,255,.55) 0%, transparent 34%), radial-gradient(44% 60% at 52% 74%, var(--stone-4) 0%, transparent 62%), linear-gradient(75deg, var(--stone-1), var(--stone-2))}
-.p4  {background:radial-gradient(38% 38% at 50% 44%, var(--stone-0) 0%, var(--stone-2) 58%, transparent 60%), linear-gradient(200deg, var(--stone-4), #0e0e0e)}
-.p5  {background:repeating-linear-gradient(115deg, rgba(255,255,255,.16) 0 3px, transparent 3px 9px), linear-gradient(140deg, var(--stone-1), var(--stone-3))}
-.p6  {background:radial-gradient(70% 90% at 78% 8%, var(--stone-0), transparent 58%), linear-gradient(0deg, var(--stone-4), var(--stone-2))}
-.p7  {background:radial-gradient(46% 32% at 50% 68%, var(--stone-0) 0%, var(--stone-1) 44%, transparent 46%), radial-gradient(30% 22% at 34% 40%, var(--stone-0) 0%, var(--stone-1) 50%, transparent 52%), linear-gradient(180deg, var(--stone-2), var(--stone-3))}
-.p8  {background:radial-gradient(34% 46% at 50% 52%, #101010 0%, #2f2f2f 60%, transparent 62%), linear-gradient(180deg, var(--stone-1), var(--stone-2))}
-.p9  {background:radial-gradient(58% 42% at 50% 26%, var(--stone-1) 0%, transparent 58%), linear-gradient(210deg, var(--stone-4), #1a1a1a)}
-.p10 {background:linear-gradient(90deg, transparent 44%, rgba(255,255,255,.5) 50%, transparent 56%), linear-gradient(155deg, var(--stone-3), var(--stone-4))}
-.p11 {background:radial-gradient(26% 40% at 46% 58%, #0d0d0d 0%, #333 62%, transparent 64%), linear-gradient(340deg, var(--stone-2), var(--stone-4))}
-.p12 {background:radial-gradient(52% 52% at 62% 30%, rgba(255,255,255,.75), transparent 58%), repeating-linear-gradient(0deg, rgba(0,0,0,.10) 0 1px, transparent 1px 7px), linear-gradient(125deg, var(--stone-2), var(--stone-4))}
-.p13 {background:radial-gradient(40% 55% at 30% 70%, var(--stone-0) 0%, transparent 55%), linear-gradient(255deg, var(--stone-3), var(--stone-1))}
-.p14 {background:conic-gradient(from 140deg at 44% 50%, var(--stone-4) 0deg, var(--stone-2) 120deg, var(--stone-0) 200deg, var(--stone-3) 320deg, var(--stone-4) 360deg)}
-.p15 {background:radial-gradient(30% 30% at 70% 66%, var(--stone-0), transparent 60%), repeating-linear-gradient(65deg, rgba(0,0,0,.14) 0 2px, transparent 2px 12px), linear-gradient(10deg, var(--stone-2), var(--stone-3))}
-.p16 {background:radial-gradient(70% 45% at 50% 100%, var(--stone-0) 0%, transparent 62%), linear-gradient(190deg, #101010, var(--stone-3))}
-
-/* ---------------- wordmark ----------------
-   White type on a difference-blend layer above the ring: reads near-black on
-   the ground, inverts wherever it crosses a plate. That inversion is why the
-   letters look woven through the grid rather than pasted on top. */
-
-.wordmark-layer{
-  position:absolute;
-  z-index:3;                      /* always above the ring */
-  left:calc(var(--pad) - 6px);
-  right:calc(var(--pad) - 6px);
-  top:50%;
-  transform:translateY(-50%);
-  mix-blend-mode:difference;
-  pointer-events:none;
-}
-
-.wordmark{
-  margin:0;
-  font-family:"Archivo","Arial Black",Arial,sans-serif;
-  font-variation-settings:"wdth" 112,"wght" 900;
-  font-weight:900;
-  text-transform:uppercase;
-  color:#fff;
-  font-size:min(15.6vw, 244px);
-  line-height:.9;
-  letter-spacing:0;
-  white-space:nowrap;
-  display:flex;
-  justify-content:space-between;  /* letters spread edge to edge */
-}
-.wordmark span{display:inline-block}
-.wordmark-clip{overflow:hidden;display:block;padding-block:.06em}
-
-.anim .wordmark span{transform:translateY(112%)}
-.anim.play .wordmark span{
-  animation:letter-up .9s var(--ease) both;
-  animation-delay:var(--d,0s);
-}
-@keyframes letter-up{to{transform:translateY(0)}}
-
-.copyright{
-  position:absolute;
-  right:0;
-  bottom:calc(100% + .1em);
-  font-family:"DM Mono",ui-monospace,monospace;
-  font-size:13px;
-  color:#fff;
-  letter-spacing:.04em;
-}
-
 /* ---------------- bottom bar ---------------- */
 
 .bottombar{
@@ -296,10 +133,8 @@ body{
   background:transparent;
   transition:background-color .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease);
 }
-button.chip{padding:0;cursor:pointer;font-size:14px;line-height:1}
 .chip:hover{background:var(--ink);color:var(--ground);border-color:var(--ink)}
 .chip:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-.chip.pause[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
 
 .cta{
   position:relative;
@@ -336,28 +171,17 @@ button.chip{padding:0;cursor:pointer;font-size:14px;line-height:1}
 .cta .roll span{display:block;transition:transform .5s var(--ease)}
 .cta:hover .roll span{transform:translateY(-100%)}
 
-/* ---------------- state ---------------- */
-
-.paused .ring,
-.paused .tile,
-.paused .plate{animation-play-state:paused}
-
 @media (max-width:900px){
-  :root{--ring:min(85vw, 90.5vh)}
-  .wordmark{font-size:min(21vw, 200px)}
   .bottombar{grid-template-columns:1fr auto;row-gap:14px}
   .corner.right{grid-column:2}
   .cta{grid-column:1 / -1;justify-self:center}
 }
 
-/* A 90deg turn of a full-field element is exactly the motion that triggers
-   vestibular trouble, so this is a full stop, not a slowdown: the mosaic holds
-   flush and the plates cross-fade in place instead. */
+/* The sphere's own idle drift and drag inertia already check this in JS
+   (see index.html) — this just keeps the cursor from suggesting a drag
+   interaction that won't animate. */
 @media (prefers-reduced-motion:reduce){
-  .ring,.tile{animation:none;transform:none}
-  .plate{animation:none;transform:none;transition:opacity .6s linear}
-  .anim .wordmark span{transform:none}
-  .anim.play .wordmark span{animation:none}
+  #sphere-canvas{cursor:default}
 }
 
 /* ---------------- work section ----------------

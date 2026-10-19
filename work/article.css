@@ -1,6 +1,8 @@
 /* ============================================================
-   Estbuild case study — article layout
-   Loaded after ../../../design-system/tokens.css and ../shared.css.
+   Case study article layout — shared across every /work/<slug>/ page.
+   Loaded after ./shared.css (nav/footer chrome + inlined design tokens).
+   Nothing in this file is specific to any one case study; it's the
+   reusable hero/body/stat-grid/table language all case studies share.
    ============================================================ */
 
 .case-hero{
