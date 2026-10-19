@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Monolith — Hero Lattice</title>
-  <meta name="description" content="Hero section with a 4x4 ring of tiles rotating clockwise behind a blend-mode wordmark.">
+  <title>abcd</title>
+  <meta name="description" content="Product design portfolio — an interactive sphere tracing the design process, stage by stage.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,49 +16,19 @@
 
   <main class="stage">
     <header class="topbar">
-      <a class="brand" href="#" aria-label="Monolith, home">Monolith<span class="dot"></span></a>
+      <a class="brand" href="#" aria-label="abcd, home">abcd<span class="dot"></span></a>
       <button class="menu-btn" aria-label="Open menu"><i></i><i></i><i></i><i></i></button>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#work">Work</a>
+      </nav>
     </header>
 
-    <!--
-      Ring order is clockwise from top-left:
-      top row L->R, right column top->bottom, bottom row R->L, left column bottom->top.
-      The inner 2x2 stays empty - that hollow is what the wordmark reads through.
-
-        0   1   2   3
-        11  .   .   4
-        10  .   .   5
-        9   8   7   6
-    -->
-    <div class="ring" aria-hidden="true">
-      <div class="cell" style="grid-area:1/1"><div class="tile"><div class="plate p1"></div></div></div>
-      <div class="cell" style="grid-area:1/2"><div class="tile"><div class="plate p2"></div></div></div>
-      <div class="cell" style="grid-area:1/3"><div class="tile"><div class="plate p3"></div></div></div>
-      <div class="cell" style="grid-area:1/4"><div class="tile"><div class="plate p4"></div></div></div>
-      <div class="cell" style="grid-area:2/4"><div class="tile"><div class="plate p5"></div></div></div>
-      <div class="cell" style="grid-area:3/4"><div class="tile"><div class="plate p6"></div></div></div>
-      <div class="cell" style="grid-area:4/4"><div class="tile"><div class="plate p7"></div></div></div>
-      <div class="cell" style="grid-area:4/3"><div class="tile"><div class="plate p8"></div></div></div>
-      <div class="cell" style="grid-area:4/2"><div class="tile"><div class="plate p9"></div></div></div>
-      <div class="cell" style="grid-area:4/1"><div class="tile"><div class="plate p10"></div></div></div>
-      <div class="cell" style="grid-area:3/1"><div class="tile"><div class="plate p11"></div></div></div>
-      <div class="cell" style="grid-area:2/1"><div class="tile"><div class="plate p12"></div></div></div>
-    </div>
-
-    <div class="wordmark-layer">
-      <span class="copyright">&copy;</span>
-      <span class="wordmark-clip">
-        <h1 class="wordmark">
-          <span style="--d:.10s">M</span><span style="--d:.15s">O</span><span style="--d:.20s">N</span><span style="--d:.25s">O</span><span style="--d:.30s">L</span><span style="--d:.35s">I</span><span style="--d:.40s">T</span><span style="--d:.45s">H</span>
-        </h1>
-      </span>
-    </div>
+    <canvas id="sphere-canvas" aria-hidden="true"></canvas>
 
     <div class="bottombar">
       <nav class="corner left" aria-label="Social">
         <a class="chip" href="#" aria-label="Instagram">IG</a>
         <a class="chip" href="#" aria-label="X">X</a>
-        <button class="chip pause" type="button" aria-pressed="false" aria-label="Pause the ring">&#8214;</button>
       </nav>
 
       <a class="cta" href="#">
@@ -74,6 +44,560 @@
     </div>
   </main>
 
-  <script src="ring.js"></script>
+  <section class="work-section" id="work">
+    <div class="work-intro">
+      <h2>Work</h2>
+      <p>Product design across founding teams, research labs, and an AI fellowship — case studies below, deepest write-up first.</p>
+    </div>
+
+    <div class="work-grid">
+
+      <a class="work-card" href="work/aithraa/index.html">
+        <div class="work-card__meta">
+          <span>Aithraa · Phase 1 · 2025</span>
+          <span class="work-card__status" data-status="featured">Case study</span>
+        </div>
+        <h3 class="work-card__title">Aithraa</h3>
+        <p class="work-card__role">Product Designer &amp; Founder — 3-sided marketplace</p>
+        <p class="work-card__summary">Built a marketplace matching startups, students, and professors on fit instead of convenience — validated with 25+ interviews and 3 university partnerships, then shut down when a non-negotiable IP-rights conflict surfaced.</p>
+        <span class="work-card__cta">Read case study &rarr;</span>
+      </a>
+
+      <a class="work-card" href="work/estbuild/index.html">
+        <div class="work-card__meta">
+          <span>Aithraa · Phase 2 · 2025–2026</span>
+          <span class="work-card__status" data-status="featured">Case study</span>
+        </div>
+        <h3 class="work-card__title">Estbuild</h3>
+        <p class="work-card__role">Product Designer &amp; Co-founder — Aithraa, Phase 2</p>
+        <p class="work-card__summary">Designed an AI-assisted estimating workspace for demolition contractors, replacing four disconnected tools with one. Validated a 90% reduction in estimating time before pausing on a hard measurement-accuracy problem.</p>
+        <span class="work-card__cta">Read case study &rarr;</span>
+      </a>
+
+      <a class="work-card" href="work/pinnacle-ai/index.html">
+        <div class="work-card__meta">
+          <span>Pinnacle AI · 2026–present</span>
+          <span class="work-card__status" data-status="featured">Case study</span>
+        </div>
+        <h3 class="work-card__title">Pinnacle AI</h3>
+        <p class="work-card__role">Product Designer</p>
+        <p class="work-card__summary">Shadowed a coffee-shop manager's real workflow, then designed a conversational scheduling agent over iMessage — now trusted daily across all 10 stores, handling cross-store shift swaps.</p>
+        <span class="work-card__cta">Read case study &rarr;</span>
+      </a>
+
+      <div class="work-card is-disabled">
+        <div class="work-card__meta">
+          <span>IU Indianapolis · 2023–2024</span>
+          <span class="work-card__status">Archived</span>
+        </div>
+        <h3 class="work-card__title">PacAR</h3>
+        <p class="work-card__role">Product Designer, HCI Research</p>
+        <p class="work-card__summary">An AR concept trading text and video recipes for hands-free, step-by-step guidance — researched with 50+ participants and validated for reduced cognitive load mid-task.</p>
+        <span class="work-card__cta">Case study coming soon</span>
+      </div>
+
+    </div>
+  </section>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from "three";
+
+/* ---------------- the process: 6 stages, 4 cycles ----------------
+   Each card is a process stage (drawn as a hand-rolled geometric icon — no
+   icon font, keeping this file dependency-free) with an optional tool mark
+   in the bottom-right corner. A few cards (test/interviews, fix/synthesis,
+   ship) are methods or stages with no single tool, so they render icon-only
+   — the corner badge simply doesn't exist for them. Tool marks are
+   typographic, not reproductions of each company's actual trademarked logo. */
+
+function roundRect(ctx, x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+const STAGE_ICONS = {
+  problem(ctx, s){ // magnifying glass
+    ctx.beginPath();
+    ctx.arc(-s * 0.12, -s * 0.12, s * 0.42, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(s * 0.22, s * 0.22);
+    ctx.lineTo(s * 0.56, s * 0.56);
+    ctx.stroke();
+  },
+  flow(ctx, s){ // a bending path through three points
+    const pts = [[-s * 0.45, -s * 0.5], [s * 0.1, -s * 0.05], [-s * 0.1, s * 0.4], [s * 0.45, s * 0.5]];
+    ctx.beginPath();
+    pts.forEach(([x, y], i) => (i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)));
+    ctx.stroke();
+    pts.forEach(([x, y]) => {
+      ctx.beginPath();
+      ctx.arc(x, y, s * 0.075, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  },
+  prototype(ctx, s){ // two layered screens
+    roundRect(ctx, -s * 0.55, -s * 0.45, s * 0.75, s * 0.95, s * 0.08);
+    ctx.fillStyle = "#fafafa";
+    ctx.fill();
+    ctx.stroke();
+    roundRect(ctx, -s * 0.2, -s * 0.1, s * 0.75, s * 0.95, s * 0.08);
+    ctx.fillStyle = "#fafafa";
+    ctx.fill();
+    ctx.stroke();
+  },
+  test(ctx, s){ // checkmark in a circle
+    ctx.beginPath();
+    ctx.arc(0, 0, s * 0.55, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(-s * 0.24, s * 0.02);
+    ctx.lineTo(-s * 0.05, s * 0.24);
+    ctx.lineTo(s * 0.3, -s * 0.22);
+    ctx.stroke();
+  },
+  fix(ctx, s){ // simplified wrench
+    ctx.beginPath();
+    ctx.moveTo(-s * 0.4, s * 0.4);
+    ctx.lineTo(s * 0.18, -s * 0.18);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(s * 0.38, -s * 0.38, s * 0.22, Math.PI * 0.15, Math.PI * 1.65);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(-s * 0.45, s * 0.45, s * 0.13, 0, Math.PI * 2);
+    ctx.fill();
+  },
+  ship(ctx, s){ // upward arrow
+    ctx.beginPath();
+    ctx.moveTo(0, -s * 0.58);
+    ctx.lineTo(s * 0.4, s * 0.1);
+    ctx.lineTo(s * 0.14, s * 0.1);
+    ctx.lineTo(s * 0.14, s * 0.55);
+    ctx.lineTo(-s * 0.14, s * 0.55);
+    ctx.lineTo(-s * 0.14, s * 0.1);
+    ctx.lineTo(-s * 0.4, s * 0.1);
+    ctx.closePath();
+    ctx.stroke();
+  },
+};
+
+const STAGE_LABELS = {
+  problem: "Problem",
+  flow: "Flow",
+  prototype: "Prototype",
+  test: "Test",
+  fix: "Fix",
+  ship: "Ship",
+};
+
+const STAGE_ORDER = ["problem", "flow", "prototype", "test", "fix", "ship"];
+
+/* Each stage's tools/methods, in the order they fill ring 1, then ring 2,
+   and so on. A stage with fewer than 4 entries just cycles — Fix only has
+   two, so its later rings repeat Claude rather than inventing a tool that
+   isn't real. Ship never had a tool, so every ring's Ship card is identical. */
+const STAGE_TOOLS = {
+  problem:   [{ tool: "Claude" }, { tool: "ChatGPT" }, { tool: "Exa" }],
+  flow:      [{ tool: "Figma" }, { tool: "Notion" }, { tool: "llm-wiki" }],
+  prototype: [{ tool: "Figma" }, { tool: "Magic Patterns" }, { tool: "Lovable" }],
+  test:      [{ tool: "Maze" }, { tool: "Hotjar" }, { method: "User interviews" }],
+  fix:       [{ tool: "Claude" }, { method: "Iterative synthesis" }],
+  ship:      [{}],
+};
+
+/* ---- four cycles: one full Problem->Ship loop per ring ---- */
+const RING_COUNT = 4;
+const CARDS = [];
+for (let ring = 0; ring < RING_COUNT; ring++) {
+  STAGE_ORDER.forEach((stage) => {
+    const variants = STAGE_TOOLS[stage];
+    const variant = variants[ring % variants.length];
+    CARDS.push({ stage, tool: variant.tool || null, method: variant.method });
+  });
+}
+
+/* ---------------- card: gradient layout, process icon in place of a plain
+   circle, tool name in place of a company name ---------------- */
+
+function makeCardTexture(card, tone){
+  const w = 340, h = 453; // 3:4 portrait
+  const c = document.createElement("canvas");
+  c.width = w; c.height = h;
+  const ctx = c.getContext("2d");
+
+  const g = ctx.createLinearGradient(0, 0, w, h);
+  g.addColorStop(0, tone.a);
+  g.addColorStop(1, tone.b);
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, w, h);
+
+  ctx.fillStyle = "rgba(255,255,255,.9)";
+  ctx.beginPath();
+  ctx.ellipse(w * 0.5, h * 0.38, w * 0.22, h * 0.16, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.save();
+  ctx.translate(w * 0.5, h * 0.38);
+  ctx.strokeStyle = "#141414";
+  ctx.fillStyle = "#141414";
+  ctx.lineWidth = 5;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  STAGE_ICONS[card.stage](ctx, w * 0.16);
+  ctx.restore();
+
+  const title = card.tool || card.method || STAGE_LABELS[card.stage];
+  const meta = card.tool || card.method ? STAGE_LABELS[card.stage] : "";
+
+  ctx.fillStyle = tone.text;
+  ctx.textAlign = "left";
+  // Shrink-to-fit guards the longest name ("Magic Patterns") from clipping
+  // past the card's right edge.
+  let titleSize = 30;
+  const maxTitleWidth = w - 18 * 2;
+  ctx.font = `700 ${titleSize}px Arial`;
+  while (ctx.measureText(title).width > maxTitleWidth && titleSize > 20) {
+    titleSize -= 1;
+    ctx.font = `700 ${titleSize}px Arial`;
+  }
+  ctx.fillText(title, 18, h - 56);
+  if (meta) {
+    ctx.font = "500 13px Arial";
+    ctx.globalAlpha = .75;
+    ctx.fillText(meta.toUpperCase(), 18, h - 32);
+  }
+
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
+const TONES = [
+  { a: "#2c2b2a", b: "#6b6762", text: "#fff" },
+  { a: "#d7d3cd", b: "#a9a49c", text: "#141414" },
+  { a: "#141414", b: "#2c2b2a", text: "#fff" },
+  { a: "#f2f0ed", b: "#d7d3cd", text: "#141414" },
+  { a: "#6b6762", b: "#2c2b2a", text: "#fff" },
+];
+
+const cardTextures = CARDS.map((card, i) => makeCardTexture(card, TONES[i % TONES.length]));
+
+/* ---------------- centerpiece: cut the white ground out of the source PNG ----------------
+   human-particle.png is an opaque RGB image with a flat white background
+   and no alpha channel. Rendering it as-is would show a visible white
+   rectangle at the sphere's core, so the fragment shader below turns
+   near-white pixels transparent, keeping only the dark/gray marks — a
+   silhouette floating at the center.
+
+   Notes on how it's loaded, since both of these have bitten this file before:
+   - The cutout runs in the fragment shader, sampling the texture on the GPU,
+     rather than via a 2D canvas + getImageData() — that throws a
+     SecurityError ("tainted canvas") once the page is opened via file://
+     instead of http://.
+   - Loaded via a plain <img>, not THREE.TextureLoader: the loader sets
+     crossOrigin="anonymous" by default, which forces a CORS-mode fetch that
+     some browsers refuse for a local file:// image with no CORS handshake
+     to satisfy. A bare <img> has no such requirement.
+   - Mipmaps stay on (Three.js's default). This texture is a dense field of
+     tiny particle dots — disabling mipmaps makes bilinear-only minification
+     alias badly, statistically oversampling the dark dots vs. the white
+     gaps between them, and the figure reads far darker and noisier than the
+     source image. */
+function loadCutoutTexture(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const tex = new THREE.Texture(img);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.needsUpdate = true;
+      resolve({ texture: tex, aspect: img.naturalWidth / img.naturalHeight });
+    };
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+
+function makeCutoutMaterial(texture) {
+  return new THREE.ShaderMaterial({
+    uniforms: { map: { value: texture } },
+    transparent: true,
+    depthWrite: false,
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform sampler2D map;
+      varying vec2 vUv;
+      void main() {
+        vec4 texel = texture2D(map, vUv);
+        float luma = (texel.r + texel.g + texel.b) / 3.0;
+        float alpha = clamp((1.0 - luma) * 3.0, 0.0, 1.0);
+
+        // The source is a sparse field of dark dots on white — mostly
+        // negative space. At the size this plane actually renders at, the
+        // torso's dot density is high enough that minification blends it
+        // into a near-solid dark mass regardless of the alpha curve above;
+        // no per-pixel threshold can recover spacing that's already been
+        // averaged away by the time the shader sees it. So compensate
+        // directly: never let it hit full opacity (some page always shows
+        // through, keeping the silhouette from reading as solid black) and
+        // lift the dot color itself toward the source's actual mid-gray
+        // rather than near-black.
+        alpha *= 0.8;
+        vec3 color = mix(texel.rgb, vec3(0.6), 0.4);
+        gl_FragColor = vec4(color, alpha);
+      }
+    `,
+  });
+}
+
+/* ---------------- geometry: four rings, one cycle per ring ----------------
+   Each ring sits at its own latitude and holds the six stages evenly spaced
+   around it in process order — so unlike a scattered Fibonacci sphere,
+   consecutive stages are already next to each other in space. Connecting
+   them in order traces a clean loop around the ring instead of a line
+   cutting through the sphere's middle. Points are generated ring-major,
+   stage-minor, matching the order CARDS was built in above. */
+const RING_LATITUDES = [0.78, 0.26, -0.26, -0.78]; // 4 rings, evenly spaced, as a fraction of R
+
+function ringPoints(radius) {
+  const pts = [];
+  const angleStep = (Math.PI * 2) / STAGE_ORDER.length;
+  RING_LATITUDES.forEach((yFrac) => {
+    const y = yFrac * radius;
+    const ringRadius = Math.sqrt(Math.max(radius * radius - y * y, 0));
+    for (let i = 0; i < STAGE_ORDER.length; i++) {
+      const theta = i * angleStep;
+      pts.push(new THREE.Vector3(Math.cos(theta) * ringRadius, y, Math.sin(theta) * ringRadius));
+    }
+  });
+  return pts;
+}
+
+const R = 1, COUNT = CARDS.length, CARD_W = 0.105 * 3.4, CARD_H = 0.14 * 3.4;
+
+const canvas = document.getElementById("sphere-canvas");
+const stage = document.querySelector(".stage");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(50, stage.clientWidth / stage.clientHeight, 0.1, 100);
+camera.position.set(0, 0, 3.25 * R);
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(stage.clientWidth, stage.clientHeight);
+
+/* ---- the orbiting process cards ---- */
+const points = ringPoints(R);
+const cards = points.map((p, i) => {
+  const geo = new THREE.PlaneGeometry(CARD_W, CARD_H);
+  const mat = new THREE.MeshBasicMaterial({
+    map: cardTextures[i % cardTextures.length],
+    transparent: true,
+    depthWrite: false,
+    toneMapped: false,
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.copy(p);
+  mesh.userData.basePoint = p; // orbit is applied to this each frame, not to a parent transform
+  scene.add(mesh);
+  return mesh;
+});
+
+/* ---- the thread — each ring traces its own Problem->Ship cycle ----
+   Each forward segment (Problem->Flow->...->Fix->Ship) gets progressively
+   more opaque, reading as building momentum toward Ship. The segment that
+   closes the loop (Ship back to Problem) is dashed and faint instead —
+   visually a reset, not more forward progress.
+
+   Segments are drawn as an arc along the sphere's surface (spherical
+   interpolation between the two endpoints, sampled into a short polyline)
+   rather than a straight chord — a straight line between two points on a
+   sphere cuts through the interior, which both looks rigid and can slice
+   straight through the centerpiece figure. Hugging the surface instead
+   reads as a thread laid over a globe. */
+function slerpArc(a, b, radius, segments) {
+  const angle = a.angleTo(b);
+  const pts = [];
+  for (let i = 0; i <= segments; i++) {
+    const t = i / segments;
+    if (angle < 1e-6) { pts.push(a.clone()); continue; }
+    const w1 = Math.sin((1 - t) * angle) / Math.sin(angle);
+    const w2 = Math.sin(t * angle) / Math.sin(angle);
+    pts.push(
+      new THREE.Vector3().addScaledVector(a, w1).addScaledVector(b, w2).normalize().multiplyScalar(radius)
+    );
+  }
+  return pts;
+}
+
+const ARC_SEGMENTS = 20;
+const STEPS = STAGE_ORDER.length;
+const threadSegments = [];
+for (let ring = 0; ring < RING_COUNT; ring++) {
+  for (let i = 0; i < STEPS; i++) {
+    const fromIdx = ring * STEPS + i;
+    const toIdx = ring * STEPS + ((i + 1) % STEPS);
+    const isClosing = i === STEPS - 1;
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(new Float32Array((ARC_SEGMENTS + 1) * 3), 3));
+    const mat = isClosing
+      ? new THREE.LineDashedMaterial({ color: 0x141414, transparent: true, opacity: 0.18, depthWrite: false, dashSize: 0.04, gapSize: 0.03 })
+      : new THREE.LineBasicMaterial({ color: 0x141414, transparent: true, opacity: THREE.MathUtils.lerp(0.15, 0.65, i / (STEPS - 2)), depthWrite: false });
+    const line = new THREE.Line(geo, mat);
+    scene.add(line);
+    threadSegments.push({ line, fromIdx, toIdx, isClosing });
+  }
+}
+
+/* ---- the fixed centerpiece — sits at the sphere's core, does not orbit ----
+   Loaded asynchronously and added to the scene whenever it's ready, rather
+   than awaited before the render loop starts below: the orbiting cards have
+   nothing to do with this image, and one failed image load should never be
+   able to blank the entire sphere. */
+let centerFigure = null;
+const CENTER_H = R * 1.1;
+loadCutoutTexture("assets/human-particle.png")
+  .then(({ texture, aspect }) => {
+    centerFigure = new THREE.Mesh(
+      new THREE.PlaneGeometry(CENTER_H * aspect, CENTER_H),
+      makeCutoutMaterial(texture)
+    );
+    centerFigure.position.set(0, 0, 0);
+    scene.add(centerFigure);
+  })
+  .catch((err) => console.warn("center figure failed to load, skipping it:", err));
+
+/* Cards live directly in the scene (world space), not under a rotating
+   parent group. Billboarding sets each card's quaternion to the camera's
+   world quaternion — if the cards were children of a rotating group, that
+   group's rotation would compound with the billboard quaternion and tilt
+   every card. So "orbiting the sphere" instead rotates each card's base
+   point by an accumulated quaternion every frame, and billboarding stays
+   a simple, uncompounded copy. The centerpiece never moves (the sphere's
+   center is invariant under rotation about itself) — it only billboards. */
+const rot = { x: 0, y: 0 };
+const orbitQuat = new THREE.Quaternion();
+const euler = new THREE.Euler();
+
+/* ---------------- interaction: drag orbit + inertia + idle drift ---------------- */
+const SENSITIVITY = 0.005;
+const DAMP = 0.92;
+const IDLE_SPEED = 0.0015;
+
+let dragging = false;
+let lastX = 0, lastY = 0;
+const velocity = { x: 0, y: 0 };
+
+canvas.addEventListener("pointerdown", (e) => {
+  dragging = true;
+  canvas.classList.add("dragging");
+  canvas.setPointerCapture(e.pointerId);
+  lastX = e.clientX; lastY = e.clientY;
+  velocity.x = velocity.y = 0;
+});
+
+canvas.addEventListener("pointermove", (e) => {
+  if (!dragging) return;
+  const dx = e.clientX - lastX;
+  const dy = e.clientY - lastY;
+  lastX = e.clientX; lastY = e.clientY;
+
+  const dyRot = dx * SENSITIVITY;
+  const dxRot = dy * SENSITIVITY;
+  rot.y += dyRot;
+  rot.x = THREE.MathUtils.clamp(rot.x + dxRot, -Math.PI / 2, Math.PI / 2);
+
+  velocity.y = dyRot;
+  velocity.x = dxRot;
+});
+
+function endDrag() {
+  if (!dragging) return;
+  dragging = false;
+  canvas.classList.remove("dragging");
+  if (reduceMotion) { velocity.x = velocity.y = 0; }
+}
+canvas.addEventListener("pointerup", endDrag);
+canvas.addEventListener("pointercancel", endDrag);
+canvas.addEventListener("pointerleave", (e) => { if (e.buttons === 0) endDrag(); });
+
+/* ---------------- resize ---------------- */
+function onResize() {
+  const w = stage.clientWidth, h = stage.clientHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+}
+window.addEventListener("resize", onResize);
+
+/* ---------------- render loop ---------------- */
+const viewDir = new THREE.Vector3();
+const worldPos = new THREE.Vector3();
+const clock = new THREE.Clock();
+
+function tick() {
+  requestAnimationFrame(tick);
+  const delta = Math.min(clock.getDelta(), 0.05);
+  const damp = Math.pow(DAMP, delta * 60);
+
+  if (!dragging) {
+    velocity.x *= damp;
+    velocity.y *= damp;
+    if (Math.abs(velocity.x) < 1e-5) velocity.x = 0;
+    if (Math.abs(velocity.y) < 1e-5) velocity.y = 0;
+
+    rot.y += velocity.y;
+    rot.x += velocity.x;
+
+    if (!reduceMotion && velocity.x === 0 && velocity.y === 0) {
+      rot.y += IDLE_SPEED * delta * 60;
+    }
+    rot.x = THREE.MathUtils.clamp(rot.x, -Math.PI / 2, Math.PI / 2);
+  }
+
+  euler.set(rot.x, rot.y, 0, "YXZ");
+  orbitQuat.setFromEuler(euler);
+
+  camera.getWorldDirection(viewDir);
+  cards.forEach((card) => {
+    worldPos.copy(card.userData.basePoint).applyQuaternion(orbitQuat);
+    card.position.copy(worldPos);
+    card.quaternion.copy(camera.quaternion); // billboard — uncompounded, cards are scene children
+    const t = THREE.MathUtils.clamp((-worldPos.dot(viewDir) / R + 1) / 2, 0, 1);
+    card.material.opacity = THREE.MathUtils.lerp(0.08, 1, t * t);
+  });
+
+  if (centerFigure) centerFigure.quaternion.copy(camera.quaternion); // billboard only — position never changes
+
+  threadSegments.forEach(({ line, fromIdx, toIdx, isClosing }) => {
+    const arc = slerpArc(cards[fromIdx].position, cards[toIdx].position, R, ARC_SEGMENTS);
+    const pos = line.geometry.attributes.position.array;
+    arc.forEach((v, i) => { pos[i * 3] = v.x; pos[i * 3 + 1] = v.y; pos[i * 3 + 2] = v.z; });
+    line.geometry.attributes.position.needsUpdate = true;
+    line.geometry.computeBoundingSphere();
+    if (isClosing) line.computeLineDistances(); // required for dashed segments, every update
+  });
+
+  renderer.render(scene, camera);
+}
+
+onResize();
+tick();
+</script>
 </body>
 </html>

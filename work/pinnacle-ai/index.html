@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pinnacle AI — abcd</title>
+  <meta name="description" content="Designing a scheduling agent a skeptical manager learned to trust.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,900&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../shared.css">
+  <link rel="stylesheet" href="../article.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="brand" href="../../index.html" aria-label="abcd, home">abcd<span class="dot"></span></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="../../index.html#work">Work</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="case-hero">
+      <p class="case-hero__eyebrow">
+        <span>Pinnacle AI — Scheduling agent</span>
+        <span class="case-hero__status">Case study</span>
+      </p>
+      <h1>Pinnacle AI: designing a scheduling agent a skeptical manager learned to trust</h1>
+      <p class="case-hero__meta">Product Designer, Pinnacle AI · Client engagement — a multi-location coffee-shop chain · January 2026 – present</p>
+      <p class="case-hero__tldr">A 10-location coffee-shop chain needed every store manager doing the same repetitive, low-leverage work every week. I shadowed a manager's actual workflow to find the real automatable tasks, then designed a conversational scheduling agent — delivered over iMessage, not an app — that store managers now run daily across all 10 locations. It handles the hard version of the problem (cross-store shift swaps when a location is short-staffed), cut employee-side input from ~10 messages to 3, and turned an initially skeptical manager into someone who no longer builds schedules by hand. The same agent pattern is now shipped (if still supervised) for item and inventory ordering, with food-waste management next.</p>
+    </div>
+
+    <article class="case-body">
+
+      <h2>How it started</h2>
+      <p>The client — a multi-location coffee-shop chain — came to Pinnacle AI already convinced something should be automated. Rather than take the ask at face value, I ran contextual inquiry directly: shadowing a store manager's actual day, mirroring how they worked and collaborated with their pod, instead of asking what they'd like automated.</p>
+      <p>What surfaced wasn't a single obvious task — it was four recurring ones, each costing a manager about <strong>2 hours a week per store</strong>: scheduling, daily item ordering, inventory ordering, and food (donut) waste management. Screened against first-principles financial and technical feasibility, all four were viable — collectively <strong>~8 hours a week of manager time per store</strong>.</p>
+
+      <h2>The problem, in numbers</h2>
+      <p>At a fully loaded manager cost of <strong>$23/hr</strong>, that 8 hours/week/store prices out to <strong>~$184/week per store</strong> — roughly <strong>$1,840/week, or ~$95.7K/year, across all 10 stores</strong> — in supervisory labor-hours that automation could free up.</p>
+
+      <div class="stat-grid">
+        <div class="stat"><span class="stat__value">8 hrs/wk</span><span class="stat__label">automatable manager time, per store</span></div>
+        <div class="stat"><span class="stat__value">~$95.7K/yr</span><span class="stat__label">potential savings across all 10 stores</span></div>
+        <div class="stat"><span class="stat__value">10 → 3</span><span class="stat__label">managers, the team's stretch goal for the fleet</span></div>
+        <div class="stat"><span class="stat__value">10 → 3</span><span class="stat__label">messages in the employee-side scheduling flow</span></div>
+      </div>
+
+      <p>The team's stated stretch goal is steeper: go from <strong>10 managers (one per store)</strong> to roughly <strong>3 managers</strong> covering the same 10-store fleet. That math isn't fully proven yet — it depends on a manager's <em>total</em> weekly workload, not just the 8 automatable hours — but it's the target the roadmap is pointed at, and it's why scheduling was the first task tackled: it's the highest-frequency, most schedule-critical of the four.</p>
+
+      <h2>Why iMessage, not an app</h2>
+      <p>The team shipped the scheduling agent through iMessage rather than building a standalone app. Everyone already has it open — no install, no account creation, no adoption curve. That let the team ship fast and start collecting real training signal (managers correcting the agent mid-conversation) within weeks instead of waiting on app-store adoption.</p>
+      <p>It also wasn't a dead end architecturally: each conversational module is being built so it can later combine into a single unified platform, rather than living as a permanent point solution.</p>
+
+      <h2>My role vs. the developer's</h2>
+      <p>This was a two-person build. I owned:</p>
+      <ul>
+        <li><strong>Research</strong> — shadowing the manager pod and running contextual inquiry to find the real tasks.</li>
+        <li><strong>Product thinking &amp; technical feasibility</strong> — screening candidate tasks against what was actually buildable and worth building.</li>
+        <li><strong>Conversation &amp; workflow design</strong> — the employee-facing question flow, the manager-facing review/correction loop, and the logic for escalating "complex" scenarios.</li>
+        <li><strong>Prototyping</strong> — done solo, in Figma and directly in prompts (no separate prototyping tool in between).</li>
+      </ul>
+      <p>The developer owned model integration, the iMessage plumbing, and backend implementation. I worked in a tight loop with them on what was technically buildable, but the research, the conversation design, and the validation approach were mine end to end.</p>
+
+      <h3>Research &amp; design methods</h3>
+      <ul>
+        <li><strong>First-principles problem framing</strong> — screened the four candidate tasks (scheduling, ordering, inventory, waste) for financial and technical feasibility rather than automating whatever managers asked for.</li>
+        <li><strong>Contextual inquiry / shadowing</strong> — the core research instrument, tracing the manager's actual day rather than asking what they'd like automated.</li>
+        <li><strong>Conversation design</strong> — the actual dialogue trees on both sides: the employee availability check-in and the manager review/correction loop.</li>
+        <li><strong>Agentic interface design &amp; human-AI collaboration patterns</strong> — the manager-corrects, agent-learns loop is a direct, ongoing application of this, not a one-time setup.</li>
+        <li><strong>Autonomy &amp; trust design</strong> — deliberately kept the manager in the loop as the arbiter of correctness rather than shipping a fully autonomous scheduler from day one; autonomy is being earned incrementally, on a stated timeline.</li>
+        <li><strong>Interaction design</strong> — cutting the employee-side flow from ~10 messages to 3 questions was a direct interaction-design intervention, not a model change.</li>
+      </ul>
+      <p><strong>Toolkit on this project:</strong> Figma, direct prompt design/iteration (no intermediate prototyping tool), iMessage as the delivery surface.</p>
+
+      <h2>Designing the solution</h2>
+      <p><strong>Employee side:</strong> the employee answers a few questions confirming availability and gets a schedule back. No back-and-forth required on their end. This flow used to take <strong>~10 messages</strong>; redesigning the question sequence got it down to <strong>3</strong> — a concrete, measurable UX improvement independent of any model quality gain.</p>
+      <p><strong>Manager side:</strong> the manager reviews the AI-drafted schedule, flags what it got wrong, and — critically — builds custom logic for specific recurring scenarios rather than just approving or rejecting outputs one at a time. "Training the model" here means correcting bad outputs <em>and</em> encoding edge-case logic, not just answering clarifying questions.</p>
+      <p><strong>What counts as "complex":</strong> health emergencies, weather-related no-shows, last-minute call-outs — the unpredictable cases that make static scheduling break. The agent also handles <strong>cross-store employee swaps</strong> when a single location is short-staffed, which is the harder version of the scheduling problem: it requires reasoning across locations, not just within one store's roster.</p>
+      <p><strong>A layer still being tested:</strong> gamification for low-availability shifts — points or recognition as positive reinforcement to get unpopular shifts picked up voluntarily, rather than the manager having to chase people down.</p>
+
+      <div class="tbd">Annotated screenshots of the iMessage flow — employee availability check-in, manager correction thread, before/after message-count comparison — to add</div>
+
+      <h2>Validating it — and watching it survive a bad stretch</h2>
+      <p>Accuracy here isn't a held-out test-set metric; it's defined the way the manager experiences it: <strong>the inverse of how often he has to intervene and rebuild.</strong></p>
+
+      <table>
+        <thead><tr><th></th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>Starting accuracy (static-data schedules)</td><td>20–30%</td></tr>
+          <tr><td>Steady improvement rate</td><td>~5%/month</td></tr>
+          <tr><td>Call-out volatility stretch (~3 months)</td><td>accuracy dropped ~20% for ~2 months</td></tr>
+          <tr><td>Recovery</td><td>~5%/month improvement resumed</td></tr>
+        </tbody>
+      </table>
+
+      <p>That dip-and-recovery is, to me, more informative than the raw improvement number: it shows the system degrades gracefully under real volatility and comes back, rather than being a curve that only ever holds under clean conditions.</p>
+      <p><strong>The manager's trust arc tracked the accuracy curve, not the other way around.</strong> Early on, he was skeptical and frustrated — it felt like he was doing his job <em>and</em> training a model to eventually do it for him. Now, he trusts the agent enough that he doesn't manually build schedules anymore. The team's internal target is full scheduling autonomy within a year — a stated goal, not a shipped result yet.</p>
+      <p><strong>Status today:</strong> in production, live across all 10 stores, used daily by real managers, actively handling the harder cross-store swap cases.</p>
+
+      <h2>Extending the pattern: item &amp; inventory ordering</h2>
+      <p>The same agent-based approach has already been built and shipped for daily item ordering and inventory ordering — in use by every store manager today. It's not yet accurate enough to run unsupervised, so there's a manager-facing check/approve layer in front of it for now, with the same one-year target of shrinking manager involvement as accuracy climbs. Food (donut) waste management is next on the roadmap — not yet started.</p>
+
+      <h2>What I'd carry forward</h2>
+      <ul>
+        <li><strong>Trust gets earned through a visible correction loop, not claimed with an accuracy number.</strong> The manager didn't come around because a dashboard said "35% improved" — he came around because his corrections visibly stuck and the agent stopped repeating the same mistakes.</li>
+        <li><strong>The highest-leverage design change wasn't the model — it was the conversation.</strong> Cutting the employee flow from 10 messages to 3 is a pure interaction-design win, and it mattered as much to adoption as any accuracy gain.</li>
+        <li><strong>Real-world accuracy isn't monotonic, and that's fine to show.</strong> The call-out-driven dip and recovery is a more credible signal of a working system than a clean upward line would have been.</li>
+        <li><strong>Go after the harder version of the problem once the easy version is trusted.</strong> Cross-store swaps — reasoning across locations, not just within one — is where the real operational value is, and it only became viable to tackle after single-store scheduling had earned credibility.</li>
+      </ul>
+
+      <h2>Artifacts</h2>
+      <p>Not yet confirmed. Worth pulling in once available: screenshots of the iMessage conversation (employee flow and manager correction thread), the before/after message-count comparison, and any prompt/flow documentation.</p>
+      <div class="tbd">2–3 key screens once available — the manager correction interface, the employee availability check-in, and the cross-store swap flow if visualizable — to add</div>
+
+    </article>
+
+    <div class="case-footer">
+      <a href="../../index.html#work">&larr; All work</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <span>&copy; abcd</span>
+    <a href="../../index.html">Back to home</a>
+  </footer>
+
+</body>
+</html>

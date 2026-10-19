@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Estbuild — abcd</title>
+  <meta name="description" content="Designing trust into an AI estimating tool for an industry that doesn't trust software.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,900&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../shared.css">
+  <link rel="stylesheet" href="../article.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="brand" href="../../index.html" aria-label="abcd, home">abcd<span class="dot"></span></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="../../index.html#work">Work</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="case-hero">
+      <p class="case-hero__eyebrow">
+        <span>Aithraa — Phase 2</span>
+        <span class="case-hero__status">Case study</span>
+      </p>
+      <h1>Estbuild: designing trust into an AI estimating tool for an industry that doesn't trust software</h1>
+      <p class="case-hero__meta">Product Designer &amp; Co-founder · July 2025 – January 2026</p>
+      <p class="case-hero__tldr">A three-person founding team set out to fix cost estimating for demolition contractors — an industry where a single missed measurement can erase a job's margin, and the people doing the estimating actively distrust new software. I led research, workflow design, and validation; my co-founders brought domain expertise and the AI engine. We designed a single AI-assisted workspace that replaced four disconnected tools, tested it with 10 real estimators using a Wizard-of-Oz study, and measured a <strong>90% reduction in estimating time</strong> and unanimous interest in a to-be-notified launch. We paused the project when our technical co-founder moved on and we lacked funding to solve the remaining hard problem: AI measurement accuracy good enough to bid from.</p>
+    </div>
+
+    <article class="case-body">
+
+      <h2>How it started</h2>
+      <p>My cost-estimator co-founder came from the industry and told me how broken the tooling was. Rather than take that at face value, I went and validated it myself — starting with 10 interviews, eventually <strong>30 conversations</strong> across cost estimators and contractors, to understand the workflow from the inside before designing anything.</p>
+      <p>What I found: estimators stitch together <strong>four separate tools</strong> for every single bid.</p>
+      <ol>
+        <li>A comms/planning tool (WhatsApp or email) to receive the job.</li>
+        <li>A takeoff tool (Bluebeam or similar) to manually read and measure the plan.</li>
+        <li>A spreadsheet (Google Sheets or Excel) to record takeoff quantities.</li>
+        <li>A separate pricing database, manually cross-referenced into that spreadsheet.</li>
+      </ol>
+      <p>Every handoff between those four tools is a place a number can quietly get miscopied — and in this business, one wrong number goes straight into the price you bid.</p>
+
+      <h2>The problem, in numbers</h2>
+      <p>I didn't want to design around a vibe ("estimating is slow"). I wanted the actual cost of the status quo. From interviews with 15 estimators at $5–10M-revenue contractors:</p>
+
+      <div class="stat-grid">
+        <div class="stat"><span class="stat__value">150–200</span><span class="stat__label">bids produced per year, per estimator</span></div>
+        <div class="stat"><span class="stat__value">5–20%</span><span class="stat__label">hit rate — only 10–30 of those bids are won</span></div>
+        <div class="stat"><span class="stat__value">~1,600–1,900 hrs</span><span class="stat__label">spent yearly on bids that never become work</span></div>
+        <div class="stat"><span class="stat__value">$80–140K</span><span class="stat__label">a year, per estimator, spent on bids that don't close</span></div>
+      </div>
+      <p>The average job is worth <strong>~$375K</strong> — so <strong>10 more bids a year could mean one more job won</strong>, and <strong>a single point of win-rate improvement is worth about $650K in revenue</strong>.</p>
+      <p>This reframed the problem for me: estimating speed and accuracy aren't back-office overhead here. They're a direct constraint on how fast these companies can grow.</p>
+
+      <h2>Why nobody had solved this yet</h2>
+      <p>The obvious question: if the pain is this quantifiable, why hadn't someone already automated it? I ran a heuristic evaluation of Bluebeam and the existing AI estimating tools on the market directly, alongside what surfaced in interviews, and three reasons kept showing up:</p>
+      <ul>
+        <li><strong>Reliability</strong> — accuracy falls apart on the scanned, marked-up, ambiguously-scaled drawings these contractors actually receive. A scale error goes straight into the bid.</li>
+        <li><strong>Trust</strong> — if an estimator has to re-check every sheet to catch what a tool missed, the tool has added work, not removed it.</li>
+        <li><strong>Usability</strong> — existing tools are built for tech-comfortable teams with time to learn new software. This segment runs on familiar, older workflows, and would only adopt something simple enough to use and verify with no learning curve.</li>
+      </ul>
+      <p>The insight that shaped everything downstream: <strong>the gap wasn't measurement technology — it was a measurement tool this segment could trust and adopt without a learning curve.</strong> That reframing is why the design problem was as much about <em>trust UX</em> as it was about AI capability.</p>
+
+      <h2>Who we built for</h2>
+      <p>We deliberately picked a narrow beachhead: <strong>demolition contractors who submit bids to general contractors</strong>, with B2B estimating-for-hire firms as a secondary segment. The goal was to completely solve the problem for one small, well-understood user before expanding — not build a horizontal estimating platform on day one.</p>
+      <p>My cost-estimator co-founder's industry standing was what got doors open; I did the interviewing and synthesis from there, and used those conversations to find further users myself. The buying trigger was consistent across interviews: <strong>bid volume and error rate</strong>. Willingness to pay tracked directly with accuracy and outcomes.</p>
+
+      <h2>My role on a three-person team</h2>
+      <p>The founding team was three people: a cost estimator (domain expert co-founder), a technical co-founder (built the AI/measurement engine), and me as product designer.</p>
+      <p>I owned:</p>
+      <ul>
+        <li><strong>All user research</strong> — sourcing, interviewing, and synthesis across 30 industry conversations.</li>
+        <li><strong>Workflow and product design</strong> — translating a messy four-tool manual process into a single coherent flow.</li>
+        <li><strong>Validation</strong> — designing and running the Wizard-of-Oz test described below.</li>
+      </ul>
+      <p>I worked in a tight loop with the cost-estimator co-founder for domain grounding and with the technical co-founder on what was actually buildable. I did the interviewing and prototyping myself, designing in Figma and Magic Patterns alongside other AI-assisted design tools.</p>
+
+      <h3>Research &amp; design methods</h3>
+      <p>Naming the methods behind the work above, pulled from my standard toolkit and applied specifically here:</p>
+      <p><strong>Research</strong></p>
+      <ul>
+        <li><strong>First-principles problem framing</strong> — investigated demolition estimating from zero rather than accepting "AI can measure plans" as the starting brief.</li>
+        <li><strong>Problem-space discovery</strong> — 30 conversations across estimators and contractors to map the real workflow before scoping a solution.</li>
+        <li><strong>Contextual inquiry</strong> — traced the actual tool-switching sequence (comms tool &rarr; takeoff tool &rarr; spreadsheet &rarr; pricing database) as practiced, not as assumed.</li>
+        <li><strong>User interviews</strong> — the core research instrument; 15 of the 30 conversations directly anchor the bid-economics figures above.</li>
+        <li><strong>Iterative synthesis</strong> — turned raw interview notes into the reliability/trust/usability framework that drove every downstream design decision.</li>
+        <li><strong>Moderated usability testing &amp; rapid prototype validation</strong> — the Wizard-of-Oz test below: a moderated session format used specifically to validate the experience ahead of the underlying AI being solved.</li>
+        <li><strong>Competitive analysis &amp; heuristic evaluation</strong> — benchmarked Bluebeam and other existing AI estimating tools directly, evaluating them against usability heuristics to pinpoint exactly where their trust and usability gaps lived, rather than relying on interview mentions alone.</li>
+      </ul>
+      <p><strong>Design</strong></p>
+      <ul>
+        <li><strong>Product thinking &amp; experience strategy</strong> — reframing "estimating is slow" into a throughput/growth-lever argument, and choosing one narrow beachhead user over a horizontal platform.</li>
+        <li><strong>Conversation design</strong> — designing how a user talks to the agent: upload a plan, request a takeoff, challenge an assumption, ask for a remeasurement.</li>
+        <li><strong>Interaction design</strong> — the estimate workspace itself: editable line items, per-item Finalize vs. Finalize All, distinct draft/final states.</li>
+        <li><strong>Agentic interface design &amp; human-AI collaboration patterns</strong> — the draft &rarr; flag-assumptions &rarr; estimator-verifies &rarr; finalize loop is a direct application of both.</li>
+        <li><strong>Autonomy &amp; trust design</strong> — the product's core design thesis: an AI that surfaces its own confidence and defers final judgment to the estimator, instead of acting autonomously.</li>
+        <li><strong>Prototyping</strong> — built and iterated the workflow in Figma and Magic Patterns, using AI-assisted tools to move fast from concept to a testable flow.</li>
+      </ul>
+      <p><strong>Toolkit on this project:</strong> Figma and Magic Patterns for design and prototyping, Cursor for AI-assisted prototype builds, Maze for moderated usability/Wizard-of-Oz testing, and AI tools for research synthesis.</p>
+
+      <h2>Designing the solution</h2>
+      <p>The flow we designed: <strong>plan upload &rarr; AI-assisted takeoff and pricing &rarr; estimator review/finalization &rarr; estimate, proposal, and invoice outputs.</strong></p>
+      <p>Critically, this was never framed as a hands-off estimating engine. It generates a draft fast, shows its own assumptions, and keeps the estimator responsible for validating quantities and approving final line items — a direct response to the trust problem surfaced in research.</p>
+
+      <p><strong>Walking through it:</strong></p>
+      <ol>
+        <li><strong>Upload</strong> — the user drops in a demolition-plan PDF and asks the assistant to create a takeoff and estimate for it.</li>
+        <li><strong>AI drafts a takeoff</strong> — reading demolition notes, callouts, and visible plan elements into scoped line items: floor finish removal, ceiling demo, wall protection, partition/door removal, restroom demo, vestibule demo, storefront protection.</li>
+        <li><strong>AI structures the estimate</strong> — organizing the draft into sections (Demolition, Protection) with quantity, unit, unit rate, labor-hours/unit, markup, scope description, and a proposed price — not a flat chat response.</li>
+        <li><strong>Estimator interrogates the draft</strong> — the tool proactively flags low-confidence, note-derived quantities. In testing, one estimator challenged the scale and asked for a proper remeasurement.</li>
+        <li><strong>AI revises</strong> — the corrected pass changed floor/ceiling quantities from 30,000 SF to 24,524 SF and wall protection from 600 LF to 280 LF, while holding steady on count-based items like 11 partition/door instances and 2 restroom demos.</li>
+        <li><strong>Estimator finalizes</strong> — every line item is editable, with per-item <strong>Finalize</strong> and a <strong>Finalize All</strong>, so draft and approved states are always visually distinct.</li>
+        <li><strong>Output</strong> — a costed estimate (subtotal, markup, total, profit, margin, field hours) with one-click paths to a proposal or invoice, and PDF/Excel export.</li>
+      </ol>
+
+      <div class="tbd">Workflow diagram / annotated screenshots of the chat + workspace UI, scale-correction example — to add</div>
+
+      <h3>What "4 tools into 1" actually meant in the UI</h3>
+      <p>Not one undifferentiated canvas, and not a rigid step-by-step wizard — a <strong>unified workspace with an agent chat beside a persistent, structured estimate view</strong>. Chat is where you upload and iterate; the workspace is where the estimate lives, gets reviewed, and gets finalized. Document intake, takeoff, estimating, and proposal/invoice handoff — four previously separate tools — collapsed into one conversational-plus-structured surface.</p>
+
+      <h2>Validating it before the hard tech was built</h2>
+      <p>Rather than wait on AI measurement accuracy to be solved, I designed a <strong>Wizard-of-Oz test</strong>, run through Maze, to validate demand and time savings early: 10 estimators at $5–10M-revenue construction companies uploaded real floor plans into our interface. Behind the scenes, our team did the actual measuring — letting us test the <em>experience</em> independent of whether the AI could yet do the job.</p>
+
+      <table>
+        <thead><tr><th></th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>Time per estimate</td><td>~10 hrs &rarr; ~1 hr (<strong>90% reduction</strong>)</td></tr>
+          <tr><td>Turnaround</td><td>2–4 days &rarr; 0.5–1 day</td></tr>
+          <tr><td>Would use on real bids</td><td><strong>8 of 10</strong></td></tr>
+          <tr><td>Wanted to be contacted at launch</td><td><strong>10 of 10</strong></td></tr>
+        </tbody>
+      </table>
+
+      <p>At their typical 150–200 estimates a year, that gain projects to <strong>~1,350–1,800 hours freed per estimator, annually</strong>. (Because we did the measuring ourselves, the 1-hour figure reflects estimator time under the assumption of accurate AI output — a signal on the experience, not a claim about a finished system.)</p>
+      <p>The 2 of 10 who weren't yet sold gave us exactly the objections research had predicted: <strong>trust</strong> in the AI's quantities, and <strong>usability</strong> friction for teams used to simpler, older tools. That consistency — the same two failure modes showing up in both discovery interviews and the live test — was the strongest signal that we understood the actual adoption barrier.</p>
+
+      <h2>Why it paused</h2>
+      <p>The concept was validated: real estimators saved ~9 hours per estimate in testing, and every single one asked to be contacted when it launched. The remaining blocker was technical, not product-market fit — making AI takeoff accurate enough to bid from, on the messy real-world drawings this segment actually works with. When our technical co-founder moved on, we didn't have the funding to bring in someone to lead that work, and I made the call to pause rather than ship a tool estimators couldn't trust.</p>
+      <p><strong>To restart:</strong> a technical partner focused on AI measurement accuracy, and funding or a partnership to support the build. The research, workflow design, and validated demand are ready to build on as-is.</p>
+
+      <h2>What I'd carry forward</h2>
+      <ul>
+        <li>Quantify the status quo before designing — the bid-volume/win-rate math reframed the entire brief from "make estimating faster" to "estimating throughput is a growth lever."</li>
+        <li>In a low-trust domain, the design problem is trust UX as much as capability — showing assumptions and confidence, not hiding them, is what let a Wizard-of-Oz test even work.</li>
+        <li>Validate the workflow and demand independently of the hardest technical risk. We knew people wanted this and would change behavior for it <em>before</em> spending further runway on the accuracy problem.</li>
+      </ul>
+
+      <h2>Artifacts</h2>
+      <p>Figma files, final screens, working prototype, Wizard-of-Oz test setup, research notes, and decision log exist and are available to pull into the published case study.</p>
+      <div class="tbd">2–4 key screens, the scale-correction before/after, and the Finalize/Finalize All state — to add</div>
+
+    </article>
+
+    <div class="case-footer">
+      <a href="../../index.html#work">&larr; All work</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <span>&copy; abcd</span>
+    <a href="../../index.html">Back to home</a>
+  </footer>
+
+</body>
+</html>
