@@ -30,7 +30,7 @@
 .case-hero h1{
   margin:0 0 .5em;
   font-family:var(--font-display);
-  font-weight:900;
+  font-weight:800;
   text-transform:uppercase;
   font-size:clamp(32px, 5.5vw, 56px);
   line-height:.98;
@@ -61,7 +61,7 @@
 .case-body h2{
   margin:2.4em 0 .6em;
   font-family:var(--font-display);
-  font-weight:900;
+  font-weight:800;
   text-transform:uppercase;
   font-size:clamp(20px, 2.6vw, 26px);
   letter-spacing:.01em;
@@ -121,7 +121,7 @@
 .stat__value{
   display:block;
   font-family:var(--font-display);
-  font-weight:900;
+  font-weight:800;
   font-size:24px;
   margin-bottom:6px;
 }
@@ -197,6 +197,35 @@
   text-transform:uppercase;
   color:var(--stone-3);
 }
+
+/* Inline SVG diagrams and charts, drawn with tokens so they match the
+   page. Inlined (not <img>) so they can read the CSS variables and the
+   webfont. Below ~600px wide the frame scrolls sideways instead of
+   shrinking the labels past legibility. */
+.case-diagram{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  border:1px solid var(--hair);
+  background:var(--paper);
+}
+.case-diagram svg{display:block;width:100%;min-width:600px;height:auto}
+.case-diagram text{font-family:var(--font-sans);fill:var(--ink)}
+.case-diagram .d-title{font-family:var(--font-display);font-weight:700;font-size:16px}
+.case-diagram .d-body{font-size:13px;fill:var(--stone-3)}
+.case-diagram .d-label{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.08em;fill:var(--stone-3)}
+.case-diagram .d-label--ink{fill:var(--ink)}
+.case-diagram .d-label--paper{fill:var(--paper)}
+.case-diagram .d-card{fill:var(--paper);stroke:var(--hair)}
+.case-diagram .d-ink{fill:var(--ink)}
+.case-diagram .d-muted{fill:var(--stone-1)}
+.case-diagram .d-soft{fill:var(--stone-0)}
+.case-diagram .d-outline{fill:none;stroke:var(--ink);stroke-width:1}
+.case-diagram .d-dashed{fill:none;stroke:var(--ink);stroke-width:1;stroke-dasharray:4 3}
+.case-diagram .d-grid{stroke:var(--hair);stroke-width:1}
+.case-diagram .d-axis{stroke:var(--stone-2);stroke-width:1}
+.case-diagram .d-rail{stroke:var(--stone-1);stroke-width:2}
+.case-diagram .d-line{fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.case-diagram .d-hollow{fill:var(--paper);stroke:var(--ink);stroke-width:2}
 
 /* ---------- design decision blocks ---------- */
 .decision{

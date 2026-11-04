@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Estbuild — abcd</title>
-  <meta name="description" content="Designing an AI estimating tool for demolition contractors, an industry that doesn't trust software — and what testing revealed about where AI earns trust.">
+  <meta name="description" content="Estbuild: why estimators would not switch to partial automation, and the 70% accurate, 30% customizable concept I designed in response.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,900&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 
   <link rel="stylesheet" href="../shared.css">
   <link rel="stylesheet" href="../article.css">
@@ -28,210 +28,493 @@
         <span>Aithraa — Phase 2</span>
         <span class="case-hero__status">Case study</span>
       </p>
-      <h1>Estbuild: designing an AI estimator for people who don't trust software</h1>
+      <h1>Estbuild: automating cost estimation for demolition contractors</h1>
       <p class="case-hero__meta">Product Designer &amp; Co-founder · July 2025 – January 2026</p>
 
       <dl class="case-facts">
-        <div><dt>Role</dt><dd>Research, workflow &amp; product design, validation</dd></div>
-        <div><dt>Team</dt><dd>3 co-founders: cost estimator, technical lead, me</dd></div>
-        <div><dt>Users</dt><dd>Demolition contractors bidding to GCs</dd></div>
+        <div><dt>Role</dt><dd>Research, problem framing, workflow &amp; interaction design, prototype testing</dd></div>
+        <div><dt>Team</dt><dd>3 co-founders: product design, engineering, cost estimating</dd></div>
+        <div><dt>Users</dt><dd>Demolition contractors bidding to general contractors</dd></div>
         <div><dt>Tools</dt><dd>Figma, Magic Patterns, Cursor, Maze</dd></div>
       </dl>
 
-      <p class="case-hero__tldr">Demolition estimators juggle four tools for every bid, and one miscopied number goes straight into the price. I designed an AI-assisted workspace that collapses those tools into one, built around a single rule: <strong>the AI drafts, the estimator decides.</strong> A Wizard-of-Oz test with 10 estimators cut estimating time by 90% and drew a $799/month offer — and unaided sessions showed exactly where the AI earns trust and where it doesn't.</p>
+      <p class="case-hero__tldr"><strong>In short:</strong> Estbuild was an AI tool that helps demolition contractors price a job. Our first version automated everything except measuring, and estimators wouldn't switch to it. They needed measurement to be about 60–70% accurate, and our technology had reached about 30%. So I designed and tested a concept with 70% accuracy that lets estimators correct the remaining 30%, which addressed adoption and showed what the finished product had to do.</p>
     </div>
 
     <article class="case-body">
 
       <div class="stat-grid">
-        <div class="stat"><span class="stat__value">~10 → 1 hr</span><span class="stat__label">per estimate in testing (90% less estimator time)</span></div>
-        <div class="stat"><span class="stat__value">$799/mo</span><span class="stat__label">offered by an estimating firm for the full workspace</span></div>
-        <div class="stat"><span class="stat__value">30</span><span class="stat__label">conversations with estimators and contractors</span></div>
+        <div class="stat"><span class="stat__value">~10 hrs</span><span class="stat__label">to prepare one bid, as reported in interviews</span></div>
+        <div class="stat"><span class="stat__value">30% vs 60–70%</span><span class="stat__label">measurement accuracy we reached vs what users needed</span></div>
+        <div class="stat"><span class="stat__value">8 of 10</span><span class="stat__label">said yes to $799/month for the concept (stated interest, not purchases)</span></div>
       </div>
 
       <!-- ========================================================= -->
-      <h2>One wrong number</h2>
-      <p>A demolition bid starts as a plan set in someone's inbox. The estimator reads it in a takeoff tool, measures every floor, ceiling and wall to be removed, types those quantities into a spreadsheet, then looks up prices in a separate database and copies them back in. Four tools, three handoffs, and every handoff is a place a number can quietly get miscopied. In this business, a wrong number doesn't show up as a bug. It shows up as a lost job, or a won job that loses money.</p>
-      <p>My co-founder, a cost estimator, came from this world and told me the tooling was broken. Rather than take that at face value, I went and validated it myself: 10 interviews at first, eventually <strong>30 conversations</strong> with estimators and contractors, mapping the real workflow before designing anything.</p>
+      <h2>What Estbuild is</h2>
+      <p>When a building is renovated or torn down, a general contractor asks demolition contractors to bid on the work. Each contractor has an <strong>estimator</strong>, the person who works out the price. The estimator reads the building's drawings, measures everything to be removed, and applies costs to reach a final number.</p>
+      <p>Estbuild set out to automate that work: upload a plan, get a cost estimate.</p>
+
+      <!-- ========================================================= -->
+      <h2>The problem</h2>
+      <p>Preparing one bid took about <strong>10 hours</strong>, according to the estimators we interviewed. The work is spread across four disconnected tools, and numbers are copied by hand between them. A miscopied number can mean a lost job, or a won job that loses money.</p>
 
       <figure class="case-figure">
-        <div class="case-figure__slot">Diagram — the four-tool workflow: email / WhatsApp → Bluebeam → spreadsheet → pricing database, with each handoff marked as a miscopy risk</div>
+        <div class="case-diagram">
+          <svg viewBox="0 0 760 116" role="img" aria-labelledby="flow-t flow-d">
+            <title id="flow-t">The four-tool estimating workflow</title>
+            <desc id="flow-d">Four boxes in a row, joined by three arrows marked copy. Email or WhatsApp, where plans arrive. Bluebeam, where the plan is measured. A spreadsheet, where quantities are typed in. A pricing database, where rates are looked up.</desc>
+
+            <rect class="d-card" x="1" y="8" width="158" height="100"/>
+            <text class="d-label" x="11" y="32">INTAKE</text>
+            <text class="d-title" x="11" y="62">Email / WhatsApp</text>
+            <text class="d-body" x="11" y="86">Plans arrive</text>
+
+            <rect class="d-card" x="201" y="8" width="158" height="100"/>
+            <text class="d-label" x="211" y="32">TAKEOFF</text>
+            <text class="d-title" x="211" y="62">Bluebeam</text>
+            <text class="d-body" x="211" y="86">Measure the plan</text>
+
+            <rect class="d-card" x="401" y="8" width="158" height="100"/>
+            <text class="d-label" x="411" y="32">ESTIMATE</text>
+            <text class="d-title" x="411" y="62">Spreadsheet</text>
+            <text class="d-body" x="411" y="86">Type in quantities</text>
+
+            <rect class="d-card" x="601" y="8" width="158" height="100"/>
+            <text class="d-label" x="611" y="32">PRICING</text>
+            <text class="d-title" x="611" y="62">Pricing database</text>
+            <text class="d-body" x="611" y="86">Look up rates</text>
+
+            <g>
+              <text class="d-label d-label--ink" x="180" y="50" text-anchor="middle">COPY</text>
+              <line class="d-outline" x1="163" y1="60" x2="191" y2="60"/>
+              <polygon class="d-ink" points="197,60 189,56 189,64"/>
+              <text class="d-label d-label--ink" x="380" y="50" text-anchor="middle">COPY</text>
+              <line class="d-outline" x1="363" y1="60" x2="391" y2="60"/>
+              <polygon class="d-ink" points="397,60 389,56 389,64"/>
+              <text class="d-label d-label--ink" x="580" y="50" text-anchor="middle">COPY</text>
+              <line class="d-outline" x1="563" y1="60" x2="591" y2="60"/>
+              <polygon class="d-ink" points="597,60 589,56 589,64"/>
+            </g>
+          </svg>
+        </div>
         <figcaption>Every bid passes through four disconnected tools. Each arrow is a manual copy.</figcaption>
       </figure>
 
-      <!-- ========================================================= -->
-      <h2>What the status quo actually costs</h2>
-      <p>I didn't want to design around a vibe like "estimating is slow." I wanted the cost. From interviews with 15 estimators at $5–10M-revenue contractors:</p>
+      <p>As a founder, I also wanted to know what those hours cost the business. At the $5–10M-revenue contractors we spoke to, one estimator writes 150–200 bids a year and wins only 5–20% of them. That's ~1,200–1,900 hours and ~$60–140K a year on bids that never become work. The average job is worth ~$375K, so a single point of win rate is worth about $650K in revenue. Estimating isn't back-office overhead. It's the ceiling on how fast these companies can grow.</p>
 
-      <div class="stat-grid">
-        <div class="stat"><span class="stat__value">150–200</span><span class="stat__label">bids per year, per estimator</span></div>
-        <div class="stat"><span class="stat__value">5–20%</span><span class="stat__label">hit rate — only 10–30 of those bids are won</span></div>
-        <div class="stat"><span class="stat__value">~1,600–1,900 hrs</span><span class="stat__label">a year spent on bids that never become work</span></div>
-        <div class="stat"><span class="stat__value">$80–140K</span><span class="stat__label">a year, per estimator, spent on bids that don't close</span></div>
+      <figure class="case-figure">
+        <div class="case-diagram">
+          <svg viewBox="0 0 760 160" role="img" aria-labelledby="bid-t bid-d">
+            <title id="bid-t">What lost bids cost</title>
+            <desc id="bid-d">Twenty squares stand for twenty bids. One is filled for won at the low end, three more are dashed for won at the high end, sixteen are grey for lost. Below: 150 to 200 bids a year per estimator; about 1,200 to 1,900 hours a year on bids that never become work; one point of win rate is worth about 650 thousand dollars in revenue.</desc>
+            <text class="d-label" x="1" y="16">EVERY 20 BIDS</text>
+            <rect class="d-ink" x="1" y="26" width="32" height="32"/>
+            <rect class="d-soft" x="39" y="26" width="32" height="32"/>
+            <rect class="d-dashed" x="39.5" y="26.5" width="31" height="31"/>
+            <rect class="d-soft" x="77" y="26" width="32" height="32"/>
+            <rect class="d-dashed" x="77.5" y="26.5" width="31" height="31"/>
+            <rect class="d-soft" x="115" y="26" width="32" height="32"/>
+            <rect class="d-dashed" x="115.5" y="26.5" width="31" height="31"/>
+            <rect class="d-muted" x="153" y="26" width="32" height="32"/>
+            <rect class="d-muted" x="191" y="26" width="32" height="32"/>
+            <rect class="d-muted" x="229" y="26" width="32" height="32"/>
+            <rect class="d-muted" x="267" y="26" width="32" height="32"/>
+            <rect class="d-muted" x="305" y="26" width="32" height="32"/>
+            <rect class="d-muted" x="343" y="26" width="32" height="32"/>
+            <rect class="d-muted" x="381" y="26" width="32" height="32"/>
+            <rect class="d-muted" x="419" y="26" width="32" height="32"/>
+            <rect class="d-muted" x="457" y="26" width="32" height="32"/>
+            <rect class="d-muted" x="495" y="26" width="32" height="32"/>
+            <rect class="d-muted" x="533" y="26" width="32" height="32"/>
+            <rect class="d-muted" x="571" y="26" width="32" height="32"/>
+            <rect class="d-muted" x="609" y="26" width="32" height="32"/>
+            <rect class="d-muted" x="647" y="26" width="32" height="32"/>
+            <rect class="d-muted" x="685" y="26" width="32" height="32"/>
+            <rect class="d-muted" x="723" y="26" width="32" height="32"/>
+            <text class="d-label d-label--ink" x="1" y="78">WON: 1 TO 4 (5–20%)</text>
+            <text class="d-label" x="755" y="78" text-anchor="end">LOST: THE REST</text>
+            <line class="d-axis" x1="1" y1="94" x2="759" y2="94"/>
+            <text class="d-title" x="1" y="122">150–200 bids</text>
+            <text class="d-body" x="1" y="142">a year per estimator</text>
+            <text class="d-title" x="260" y="120">~1,200–1,900 hours</text>
+            <text class="d-body" x="260" y="142">a year on bids that never pay</text>
+            <text class="d-title" x="519" y="120">1 pt of win rate ≈ $650K</text>
+            <text class="d-body" x="519" y="142">in revenue, at a ~$375K average job</text>
+          </svg>
+        </div>
+        <figcaption>An estimator wins 1 to 4 of every 20 bids. The hours spent on the rest never pay back.</figcaption>
+      </figure>
+
+      <!-- ========================================================= -->
+      <h2>My role and research</h2>
+      <p>We were three co-founders. Our estimating co-founder brought the domain knowledge and our technical co-founder built the AI. I owned research, problem framing, workflow and interaction design, and prototype testing.</p>
+      <p>I started by finding out how far our co-founder's experience held across the industry, growing from initial interviews to about 30 conversations with estimators and contractors. That changed my question from "do people want automation?" to: <strong>what work would we need to remove before an estimator would consider changing tools?</strong></p>
+
+      <!-- ========================================================= -->
+      <h2>First idea: automate two of the three parts</h2>
+      <p>An estimate has three parts. Two of them worked in code, so I proposed starting there, which let a three-person team ship something smaller and learn through use.</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Part</th><th>What it involves</th><th>First version</th></tr></thead>
+          <tbody>
+            <tr><td>Identify the work</td><td>Read the plan and list every item of work</td><td>Automated</td></tr>
+            <tr><td>Measure it</td><td>Work out dimensions and quantities</td><td><strong>0% automated: the estimator enters them</strong></td></tr>
+            <tr><td>Calculate costs</td><td>Apply rates to the quantities</td><td>Automated</td></tr>
+          </tbody>
+        </table>
       </div>
-      <p>The average job is worth <strong>~$375K</strong>. So 10 more bids a year could mean one more job won, and a single point of win-rate improvement is worth about <strong>$650K in revenue</strong>.</p>
-      <p>That reframed the brief. Estimating isn't back-office overhead for these companies. It's the ceiling on how fast they can grow.</p>
+      <p><strong>The tradeoff was deliberate.</strong> We cut engineering scope, and left a large part of the workflow with the user. I believed the automation that remained would make switching worthwhile.</p>
+
+      <!-- Schematic: replace with the real early-prototype screen when available. -->
+      <figure class="case-figure">
+        <div class="case-diagram">
+          <svg viewBox="0 0 760 232" role="img" aria-labelledby="v1-t v1-d">
+            <title id="v1-t">Schematic of the first version</title>
+            <desc id="v1-d">A three-column table. Line items, generated by AI. Quantities, empty fields the estimator fills in by hand. Costs, calculated automatically from rate times quantity.</desc>
+            <text class="d-label" x="1" y="16">AUTOMATED</text>
+            <text class="d-title" x="1" y="40" style="font-size:15px">Line item</text>
+            <rect class="d-ink" x="300" y="0" width="230" height="232"/>
+            <text class="d-label d-label--paper" x="314" y="16">YOU ENTER · 0% AUTOMATED</text>
+            <text class="d-title" x="314" y="40" style="font-size:15px;fill:var(--paper)">Quantity</text>
+            <text class="d-label" x="544" y="16">AUTOMATED</text>
+            <text class="d-title" x="544" y="40" style="font-size:15px">Cost</text>
+            <line class="d-grid" x1="1" y1="56" x2="299" y2="56"/>
+            <line class="d-grid" x1="531" y1="56" x2="759" y2="56"/>
+            <text class="d-body" x="1" y="82" style="fill:var(--ink)">Interior walls</text>
+            <rect x="314" y="64" width="150" height="26" style="fill:none;stroke:var(--paper);stroke-dasharray:4 3"/>
+            <text class="d-body" x="324" y="82" style="fill:var(--paper)">enter…</text>
+            <text class="d-body" x="544" y="82">= rate × quantity</text>
+            <line class="d-grid" x1="1" y1="98" x2="299" y2="98"/>
+            <line class="d-grid" x1="531" y1="98" x2="759" y2="98"/>
+            <text class="d-body" x="1" y="124" style="fill:var(--ink)">Flooring</text>
+            <rect x="314" y="106" width="150" height="26" style="fill:none;stroke:var(--paper);stroke-dasharray:4 3"/>
+            <text class="d-body" x="324" y="124" style="fill:var(--paper)">enter…</text>
+            <text class="d-body" x="544" y="124">= rate × quantity</text>
+            <line class="d-grid" x1="1" y1="140" x2="299" y2="140"/>
+            <line class="d-grid" x1="531" y1="140" x2="759" y2="140"/>
+            <text class="d-body" x="1" y="166" style="fill:var(--ink)">Ceiling</text>
+            <rect x="314" y="148" width="150" height="26" style="fill:none;stroke:var(--paper);stroke-dasharray:4 3"/>
+            <text class="d-body" x="324" y="166" style="fill:var(--paper)">enter…</text>
+            <text class="d-body" x="544" y="166">= rate × quantity</text>
+            <line class="d-grid" x1="1" y1="182" x2="299" y2="182"/>
+            <line class="d-grid" x1="531" y1="182" x2="759" y2="182"/>
+            <text class="d-body" x="1" y="208" style="fill:var(--ink)">Fixtures</text>
+            <rect x="314" y="190" width="150" height="26" style="fill:none;stroke:var(--paper);stroke-dasharray:4 3"/>
+            <text class="d-body" x="324" y="208" style="fill:var(--paper)">enter…</text>
+            <text class="d-body" x="544" y="208">= rate × quantity</text>
+          </svg>
+        </div>
+        <figcaption>Schematic of the first version. AI listed the work and calculated the costs; the estimator still measured every quantity by hand.</figcaption>
+      </figure>
 
       <!-- ========================================================= -->
-      <h2>The real problem was trust</h2>
-      <p>If the pain is this measurable, why hadn't anyone fixed it? I ran a heuristic evaluation of Bluebeam and the AI estimating tools already on the market, and set it against what estimators told me. Three reasons kept coming up:</p>
-      <ul>
-        <li><strong>Reliability.</strong> Accuracy falls apart on the scanned, marked-up, ambiguously scaled drawings demolition contractors actually receive. A scale error goes straight into the bid.</li>
-        <li><strong>Trust.</strong> If an estimator has to re-check every sheet to catch what the tool missed, the tool has added work, not removed it.</li>
-        <li><strong>Usability.</strong> Existing tools assume tech-comfortable teams with time to learn. This segment runs on familiar, older workflows.</li>
-      </ul>
-      <p>The insight that shaped everything after: <strong>the gap wasn't measurement technology. It was a tool this segment could trust.</strong> So the design problem was as much about trust UX as about AI capability.</p>
+      <h2>What users told us: two out of three wasn't enough</h2>
+      <p>When we first showed this to users, they weren't willing to move to a new platform with only line items and cost calculation solved. Measuring was the work they wanted gone.</p>
+      <p>We kept working on measurement, and reached about 30% accuracy. That still wasn't enough. Until measurement was about 60–70% accurate, moving to our platform was out of the question for them.</p>
 
-      <blockquote class="pull-quote is-placeholder">
-        <p>"I don't need software that's fast. I need software I don't have to check twice."</p>
-        <cite>Estimator, demolition contractor — interview</cite>
-      </blockquote>
+      <figure class="case-figure">
+        <div class="case-diagram">
+          <svg viewBox="0 0 760 192" role="img" aria-labelledby="meas-t meas-d">
+            <title id="meas-t">Measurement accuracy</title>
+            <desc id="meas-d">Four bars. First version 0 percent, with no automated measurement. What we reached 30 percent. What users needed 60 to 70 percent. The concept 70 percent, with customization covering the other 30 percent error.</desc>
+            <text class="d-body" x="1" y="28" style="fill:var(--ink)">First version</text>
+            <rect class="d-muted" x="210" y="10" width="460" height="26"/>
+            <text class="d-title" x="682" y="29">0%</text>
+            <text class="d-body" x="1" y="74" style="fill:var(--ink)">What we reached</text>
+            <rect class="d-muted" x="210" y="56" width="460" height="26"/>
+            <rect class="d-ink" x="210" y="56" width="138" height="26"/>
+            <text class="d-title" x="682" y="75">30%</text>
+            <text class="d-body" x="1" y="120" style="fill:var(--ink)">What users needed</text>
+            <rect class="d-muted" x="210" y="102" width="460" height="26"/>
+            <rect class="d-ink" x="210" y="102" width="276" height="26"/>
+            <rect class="d-dashed" x="486" y="102" width="46" height="26"/>
+            <text class="d-title" x="682" y="121">60–70%</text>
+            <text class="d-body" x="1" y="166" style="fill:var(--ink)">The concept</text>
+            <rect class="d-muted" x="210" y="148" width="460" height="26"/>
+            <rect class="d-ink" x="210" y="148" width="322" height="26"/>
+            <text class="d-label d-label--ink" x="601" y="165" text-anchor="middle">CUSTOMIZE 30%</text>
+            <text class="d-title" x="682" y="167">70%</text>
+          </svg>
+        </div>
+        <figcaption>Measurement accuracy. The first version had no automated measurement. The gap between 30% and 60–70% was the real adoption problem.</figcaption>
+      </figure>
+
+      <p>That left a founder's decision: keep shipping what we could build, or design for what would get people to switch.</p>
+
+      <section class="decision">
+        <span class="decision__label">The call</span>
+        <h3>What should we design for?</h3>
+        <ul class="decision__options">
+          <li><b>Partial automation</b>A smaller, achievable scope. Users kept the measuring and wouldn't switch.</li>
+          <li class="is-chosen"><b>Full automation concept</b>A clear answer to what adoption required. We accepted a dependency on accuracy we hadn't reached.</li>
+        </ul>
+      </section>
 
       <!-- ========================================================= -->
-      <h2>Who I designed for</h2>
-      <p>We picked a deliberately narrow beachhead: <strong>demolition contractors who submit bids to general contractors</strong>, with estimating-for-hire firms as a secondary segment. The goal was to fully solve one small, well-understood workflow before going horizontal.</p>
-      <p>On a three-person founding team, my cost-estimator co-founder opened doors and grounded us in the domain, and our technical co-founder built the AI and measurement engine. I owned the research, sourcing and interviewing, the workflow and product design, and the validation study. Estbuild was the second phase of the same venture as <a href="../aithraa/index.html">Aithraa</a>, after that marketplace hit an IP-rights wall.</p>
+      <h2>The design: 70% accurate, 30% customizable</h2>
+      <p>I designed a concept showing what the product looks like when measurement is 70% accurate. The estimator gets a complete estimate, then corrects the remaining 30% error through customization. That addresses adoption, and it defines what the final automated product has to deliver.</p>
 
-      <!-- ========================================================= -->
-      <h2>Three design decisions</h2>
-      <p>The flow itself is simple: <strong>upload a plan → AI drafts the takeoff and pricing → estimator reviews and finalizes → estimate, proposal and invoice.</strong> The hard part was three decisions about how much the AI should do, and where.</p>
+      <figure class="case-figure">
+        <div class="case-diagram">
+          <svg viewBox="0 0 760 210" role="img" aria-labelledby="ba-t ba-d">
+            <title id="ba-t">How the workflow changed</title>
+            <desc id="ba-d">Before: generated items, then manual measurements by the estimator, then calculated costs. After: a complete generated estimate, then inspect, customize and finalize.</desc>
+            <text class="d-label" x="1" y="20">BEFORE: PARTIAL AUTOMATION</text>
+            <rect class="d-card" x="1" y="30" width="168" height="52"/>
+            <text class="d-title" style="font-size:14px" x="85" y="61" text-anchor="middle">Generated items</text>
+            <line class="d-outline" x1="171" y1="56" x2="185" y2="56"/>
+            <polygon class="d-ink" points="190,56 183,52 183,60"/>
+            <rect class="d-ink" x="191" y="30" width="168" height="52"/>
+            <text class="d-title" style="fill:var(--paper);font-size:14px" x="275" y="61" text-anchor="middle">Manual measurements</text>
+            <line class="d-outline" x1="361" y1="56" x2="375" y2="56"/>
+            <polygon class="d-ink" points="380,56 373,52 373,60"/>
+            <rect class="d-card" x="381" y="30" width="168" height="52"/>
+            <text class="d-title" style="font-size:14px" x="465" y="61" text-anchor="middle">Calculated costs</text>
+            <text class="d-label" x="1" y="130">AFTER: FULL AUTOMATION</text>
+            <rect class="d-card" x="1" y="140" width="168" height="52"/>
+            <text class="d-title" style="font-size:14px" x="85" y="171" text-anchor="middle">Complete estimate</text>
+            <line class="d-outline" x1="171" y1="166" x2="185" y2="166"/>
+            <polygon class="d-ink" points="190,166 183,162 183,170"/>
+            <rect class="d-card" x="191" y="140" width="168" height="52"/>
+            <text class="d-title" style="font-size:14px" x="275" y="171" text-anchor="middle">Inspect</text>
+            <line class="d-outline" x1="361" y1="166" x2="375" y2="166"/>
+            <polygon class="d-ink" points="380,166 373,162 373,170"/>
+            <rect class="d-card" x="381" y="140" width="168" height="52"/>
+            <text class="d-title" style="font-size:14px" x="465" y="171" text-anchor="middle">Customize</text>
+            <line class="d-outline" x1="551" y1="166" x2="565" y2="166"/>
+            <polygon class="d-ink" points="570,166 563,162 563,170"/>
+            <rect class="d-card" x="571" y="140" width="168" height="52"/>
+            <text class="d-title" style="font-size:14px" x="655" y="171" text-anchor="middle">Finalize</text>
+          </svg>
+        </div>
+        <figcaption>The concept moved estimators from measuring to reviewing and correcting a complete result. The dark step is the work users did not want to keep.</figcaption>
+      </figure>
+
+      <p>A complete estimate from an imperfect system only works if people stay in charge of it. That shaped three design decisions.</p>
 
       <section class="decision">
         <span class="decision__label">Decision 1</span>
-        <h3>The AI drafts. The estimator decides.</h3>
-        <ul class="decision__options">
-          <li><b>Autopilot</b>AI produces a finished estimate. Fastest on paper, but one silent error and trust is gone.</li>
-          <li><b>Manual + helpers</b>Keep the old workflow, add AI shortcuts. Safe, but doesn't touch the four-tool problem.</li>
-          <li class="is-chosen"><b>Draft + verify</b>AI drafts fast and flags its own assumptions. The estimator approves every line.</li>
-        </ul>
-        <p>Research said re-checking is what kills these tools. So instead of hiding uncertainty, the draft points to it: low-confidence, note-derived quantities are flagged, and the estimator's review goes where it matters instead of everywhere.</p>
-      </section>
-
-      <section class="decision">
-        <span class="decision__label">Decision 2</span>
         <h3>A chat beside a structured estimate</h3>
         <ul class="decision__options">
           <li><b>Chat only</b>Flexible, but an estimate isn't a conversation. It needs to persist, sum and export.</li>
-          <li><b>Step-by-step wizard</b>Easy to learn, but too rigid for revisions and back-and-forth.</li>
+          <li><b>Step-by-step wizard</b>Easy to learn, but too rigid for revisions.</li>
           <li class="is-chosen"><b>Chat + workspace</b>Chat for intent and challenges. A persistent table for the estimate itself.</li>
         </ul>
-        <p>The workspace uses the columns estimators already live in: quantity, unit, unit rate, labor-hours per unit, markup, scope description. The AI organizes the draft into sections like Demolition and Protection, so it reads like their own spreadsheet, not a chat reply.</p>
+        <p>The table uses the columns estimators already live in, so it reads like their own spreadsheet. In testing, estimators went straight to the table. The workspace, not the conversation, was the product to them.</p>
       </section>
 
       <figure class="case-figure">
-        <div class="case-figure__slot">Screen — chat on the left, structured estimate workspace on the right, with low-confidence quantities flagged</div>
-        <figcaption>Chat is where you upload and push back. The workspace is where the estimate lives.</figcaption>
+        <!-- MOCKUP: AI-generated placeholder with invented rates. The real prototype showed confidence as a percentage. Replace with the real Figma screen. -->
+        <img src="../../assets/estbuild/workspace.jpg" width="1536" height="1024" loading="lazy" alt="Mockup of the Estbuild workspace. A chat column on the left holds an uploaded plan and the AI's note that 6 line items are ready and 2 quantities are low confidence. A table on the right lists demolition and protection line items with quantity, unit, unit rate, labor hours and markup, with Low confidence tags on two quantities.">
+        <figcaption>Chat is where you upload and push back. The workspace is where the estimate lives. Illustrative mockup.</figcaption>
       </figure>
 
       <section class="decision">
-        <span class="decision__label">Decision 3</span>
-        <h3>Draft and approved can never look alike</h3>
+        <span class="decision__label">Decision 2</span>
+        <h3>AI-generated and approved can never look alike</h3>
         <ul class="decision__options">
           <li><b>One approve button</b>Quick, but encourages approving everything without reading it.</li>
           <li><b>No states</b>Simple, but an unreviewed AI number looks exactly like a checked one.</li>
           <li class="is-chosen"><b>Per-item + Finalize All</b>Every line is editable and finalized on its own, with a bulk option once reviewed.</li>
         </ul>
-        <p>In a bid, an unreviewed number is a liability. Draft and final states are visually distinct at the line level, so the estimator always knows what they've personally signed off on.</p>
+        <p>When the AI fills every line, the estimator needs to see at a glance which numbers they've personally signed off on.</p>
       </section>
 
       <figure class="case-figure">
-        <div class="case-figure__slot">Screen — estimate with some lines finalized and others still in draft; Finalize and Finalize All controls</div>
-        <figcaption>Each line carries its own state. Nothing reaches the proposal without a human approving it.</figcaption>
+        <!-- MOCKUP: AI-generated placeholder with invented rates. Replace with the real Figma screen. -->
+        <img src="../../assets/estbuild/finalize.jpg" width="1536" height="1024" loading="lazy" alt="Mockup of the estimate table with 3 of 6 lines finalized. Finalized rows have dark text and a check mark. AI-generated rows have lighter text, a stone background and a Finalize button. A Finalize All button sits at the top right.">
+        <figcaption>Each line carries its own state, so an unreviewed number never looks like a checked one. Illustrative mockup.</figcaption>
+      </figure>
+
+      <section class="decision">
+        <span class="decision__label">Decision 3</span>
+        <h3>Show where to look, honestly</h3>
+        <p>The design showed measurement confidence as a percentage out of 100, to point people to where closer inspection might be needed. Because the measurement system was unfinished, this remained a proposed interaction. We hadn't established that its percentages predicted correctness.</p>
+      </section>
+
+      <!-- ========================================================= -->
+      <h2>How we tested it</h2>
+      <p>Customization only helps if people notice what needs correcting, so we tested that directly. We ran the prototype with <strong>10 estimators</strong>. Our estimating co-founder prepared the measurements and correct answers in advance, so we could study the experience before the technology was ready.</p>
+      <p>Most scenarios had about <strong>10–30% missing or incorrect line items</strong>, added on purpose:</p>
+      <ul>
+        <li><strong>The missing wall.</strong> We left out the longest wall scheduled for demolition. A participant noticed and opened customization, where the prototype supplied the prepared correction.</li>
+        <li><strong>The pool area.</strong> The estimate missed renovation work around the pool. A participant spotted it and reached the accurate result.</li>
+      </ul>
+      <p>These moments showed people could recognize certain missing work and use the correction flow. They didn't show that users would catch every error, or fix inaccurate measurements on their own.</p>
+
+      <!-- Schematic: replace with the real test screens when available. -->
+      <figure class="case-figure">
+        <div class="case-diagram">
+          <svg viewBox="0 0 760 244" role="img" aria-labelledby="wall-t wall-d">
+            <title id="wall-t">The missing-wall test</title>
+            <desc id="wall-d">Left, a schematic floor plan whose longest interior wall is dashed because it was left out of the estimate on purpose. Right, the generated estimate lists wall A, wall B and flooring, with an empty dashed row where the longest wall should be. Below, the participant notices the gap, opens customization, and the prepared correction is added.</desc>
+            <defs><marker id="wall-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-ink" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+            <text class="d-label" x="1" y="14">PLAN (SCHEMATIC)</text>
+            <rect class="d-soft" x="2" y="26" width="300" height="210"/>
+            <rect class="d-line" x="2" y="26" width="300" height="210"/>
+            <line class="d-line" x1="150" y1="26" x2="150" y2="130"/>
+            <line class="d-line" x1="210" y1="130" x2="210" y2="236"/>
+            <line class="d-dashed" x1="2" y1="130" x2="302" y2="130" style="stroke-width:3"/>
+            <text class="d-label" x="160" y="80">A</text>
+            <text class="d-label" x="220" y="186">B</text>
+            <text class="d-label d-label--ink" x="76" y="120" text-anchor="middle">LONGEST WALL</text>
+            <text class="d-label" x="360" y="14">ESTIMATE AS GENERATED</text>
+            <rect class="d-card" x="360" y="26" width="399" height="30"/>
+            <text class="d-body" x="374" y="46" style="fill:var(--ink)">Interior wall A</text>
+            <rect class="d-card" x="360" y="64" width="399" height="30"/>
+            <text class="d-body" x="374" y="84" style="fill:var(--ink)">Interior wall B</text>
+            <rect class="d-card" x="360" y="102" width="399" height="30"/>
+            <text class="d-body" x="374" y="122" style="fill:var(--ink)">Flooring</text>
+            <rect class="d-dashed" x="360.5" y="140.5" width="398" height="29"/>
+            <text class="d-body" x="374" y="160">Longest wall: not in the estimate</text>
+            <rect class="d-card" x="360" y="198" width="118" height="38"/>
+            <text class="d-title" x="419" y="222" text-anchor="middle" style="font-size:13px">Notices gap</text>
+            <line class="d-outline" x1="480" y1="217" x2="497" y2="217" marker-end="url(#wall-a)"/>
+            <rect class="d-card" x="500" y="198" width="118" height="38"/>
+            <text class="d-title" x="559" y="222" text-anchor="middle" style="font-size:13px">Customizes</text>
+            <line class="d-outline" x1="620" y1="217" x2="637" y2="217" marker-end="url(#wall-a)"/>
+            <rect class="d-ink" x="640" y="198" width="119" height="38"/>
+            <text class="d-title" x="699" y="222" text-anchor="middle" style="font-size:13px;fill:var(--paper)">Wall added</text>
+          </svg>
+        </div>
+        <figcaption>Schematic of the missing-wall test. We left the longest demolition wall out of the estimate to see whether a participant would notice it and reach customization. The correction was prepared in advance.</figcaption>
       </figure>
 
       <!-- ========================================================= -->
-      <h2>The moment that proved the thesis</h2>
-      <p>In testing, one estimator looked at the AI's first draft, doubted the scale, and asked for a proper remeasurement. The revised pass changed every area- and length-based quantity, and left every count-based quantity alone:</p>
-
-      <div class="table-scroll">
-        <table>
-          <thead>
-            <tr><th>Line item</th><th>Unit</th><th class="num">First draft</th><th class="num">After remeasure</th></tr>
-          </thead>
-          <tbody>
-            <tr class="is-changed"><td>Floor finish removal</td><td>SF</td><td class="num">30,000</td><td class="num">24,524</td></tr>
-            <tr class="is-changed"><td>Ceiling demolition</td><td>SF</td><td class="num">30,000</td><td class="num">24,524</td></tr>
-            <tr class="is-changed"><td>Wall protection</td><td>LF</td><td class="num">600</td><td class="num">280</td></tr>
-            <tr><td>Partition / door removal</td><td>EA</td><td class="num">11</td><td class="num">11</td></tr>
-            <tr><td>Restroom demolition</td><td>EA</td><td class="num">2</td><td class="num">2</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <p>That's the design working as intended. The estimator caught the risk, the system corrected exactly what scale affects, and nothing else moved. The wrong scale had overstated floor and ceiling areas by about 22% and more than doubled the wall protection, before a single price was applied. Here it was caught in one exchange, because the draft invited the challenge instead of hiding behind confidence.</p>
+      <h2>What we learned</h2>
+      <p><strong>Time.</strong> Recorded prototype tasks averaged about <strong>1 hour</strong>, against about <strong>10 hours</strong> reported for a real bid. I don't call that a 90% reduction. One is a self-reported process and the other is a task with the hard work prepared in advance. It suggests potential savings, not a before-and-after result.</p>
 
       <figure class="case-figure">
-        <div class="case-figure__slot">Screen — the scale challenge in chat and the revised quantities highlighted in the workspace</div>
-        <figcaption>The estimator questions the scale; the AI remeasures and shows exactly which lines changed.</figcaption>
+        <div class="case-diagram">
+          <svg viewBox="0 0 760 112" role="img" aria-labelledby="time-t time-d">
+            <title id="time-t">Time per task</title>
+            <desc id="time-d">Two bars. A real bid, as reported in interviews: about 10 hours. A prototype task with the hard work prepared in advance: about 1 hour. Different tasks, so this suggests potential rather than measuring a saving.</desc>
+            <text class="d-body" x="1" y="28" style="fill:var(--ink)">Real bid (reported)</text>
+            <rect class="d-muted" x="210" y="10" width="460" height="26"/>
+            <text class="d-title" x="682" y="29">~10 hrs</text>
+            <text class="d-body" x="1" y="74" style="fill:var(--ink)">Prototype task</text>
+            <rect class="d-ink" x="210" y="56" width="46" height="26"/>
+            <text class="d-title" x="682" y="75">~1 hr</text>
+            <text class="d-label" x="1" y="106">DIFFERENT TASKS: SUGGESTS POTENTIAL, NOT A MEASURED SAVING</text>
+          </svg>
+        </div>
+        <figcaption>About 1 hour for a prototype task against about 10 hours reported for a real bid. Not a like-for-like comparison.</figcaption>
+      </figure>
+      <p><strong>Demand.</strong> We asked whether they'd pay <strong>$799/month</strong> for full automation with customization. <strong>8 said yes and 2 were unsure.</strong> The same 8 said they would use it on real bids. All 10 asked to be contacted when it was ready. This was stated interest, conditional on delivering the complete product. It was not a purchase.</p>
+
+      <figure class="case-figure">
+        <div class="case-diagram">
+          <svg viewBox="0 0 760 88" role="img" aria-labelledby="pay-t pay-d">
+            <title id="pay-t">Would you pay $799/month for full automation with customization?</title>
+            <desc id="pay-d">Ten circles, one per estimator. Eight filled for yes, two hollow for unsure.</desc>
+            <circle class="d-ink" cx="22" cy="44" r="16"/>
+            <circle class="d-ink" cx="70" cy="44" r="16"/>
+            <circle class="d-ink" cx="118" cy="44" r="16"/>
+            <circle class="d-ink" cx="166" cy="44" r="16"/>
+            <circle class="d-ink" cx="214" cy="44" r="16"/>
+            <circle class="d-ink" cx="262" cy="44" r="16"/>
+            <circle class="d-ink" cx="310" cy="44" r="16"/>
+            <circle class="d-ink" cx="358" cy="44" r="16"/>
+            <circle class="d-hollow" cx="406" cy="44" r="16"/>
+            <circle class="d-hollow" cx="454" cy="44" r="16"/>
+            <text class="d-title" x="520" y="40">8 yes</text>
+            <text class="d-body" x="520" y="60">2 unsure</text>
+          </svg>
+        </div>
+        <figcaption>Would you pay $799/month for full automation with customization? Survey responses from 10 estimators: conditional interest, not purchases.</figcaption>
+      </figure>
+
+      <p><strong>Trust.</strong> Price wasn't their objection. Accuracy was. They'd trust AI measurement if its answers were accurate, and not at the accuracy we had then. The two unsure participants also questioned whether leaving familiar tools would be worth the hassle.</p>
+      <p>For a founder, that answer was useful and uncomfortable: demand looked real, and all of it rested on the part we hadn't finished.</p>
+
+      <!-- ========================================================= -->
+      <h2>Why AI, and where it fell short</h2>
+      <p>Not everything here needed AI. Cost arithmetic runs on explicit rates and rules. AI's job was to read varied plans and reduce the manual work of identifying and measuring what belongs in the estimate.</p>
+      <p>That's also where it got hard. Identifying a discrete object, like a bathroom sink, was easier than interpreting walls and deriving their dimensions from 2D plans at different scales. Recognizing an object isn't the same as knowing how much of it needs to be priced.</p>
+
+      <figure class="case-figure">
+        <div class="case-diagram">
+          <svg viewBox="0 0 760 130" role="img" aria-labelledby="ai-t ai-d">
+            <title id="ai-t">Where AI was needed</title>
+            <desc id="ai-d">Three parts of an estimate. Identifying the work needs AI and was easier: recognizing objects like a sink. Measuring needs AI and was hardest: deriving wall dimensions from 2D plans at different scales. Calculating costs needs no AI: explicit rates and rules.</desc>
+            <rect class="d-card" x="1" y="4" width="240" height="120"/>
+            <text class="d-label" x="15" y="30">AI · EASIER</text>
+            <text class="d-title" x="15" y="58">Identify the work</text>
+            <text class="d-body" x="15" y="84">Recognize objects,</text>
+            <text class="d-body" x="15" y="104">like a bathroom sink</text>
+            <rect class="d-ink" x="260" y="4" width="240" height="120"/>
+            <text class="d-label d-label--paper" x="274" y="30">AI · HARDEST</text>
+            <text class="d-title" x="274" y="58" style="fill:var(--paper)">Measure it</text>
+            <text class="d-body" x="274" y="84" style="fill:var(--paper)">Derive wall dimensions from</text>
+            <text class="d-body" x="274" y="104" style="fill:var(--paper)">2D plans at different scales</text>
+            <rect class="d-card" x="519" y="4" width="240" height="120"/>
+            <text class="d-label" x="533" y="30">RULES · NO AI NEEDED</text>
+            <text class="d-title" x="533" y="58">Calculate costs</text>
+            <text class="d-body" x="533" y="84">Apply explicit rates</text>
+            <text class="d-body" x="533" y="104">and rules</text>
+          </svg>
+        </div>
+        <figcaption>Recognizing an object isn't the same as knowing how much of it to price. Measurement was where AI was needed most, and where it fell short.</figcaption>
       </figure>
 
       <!-- ========================================================= -->
-      <h2>Testing it before the AI existed</h2>
-      <p>Rather than wait for AI measurement to be solved, I designed a <strong>Wizard-of-Oz study</strong>: 10 estimators at $5–10M-revenue contractors uploaded real plans into our interface, and behind the scenes our team did the measuring. That let us test the experience separately from the technology.</p>
-
-      <div class="table-scroll">
-        <table>
-          <thead><tr><th>Measure</th><th>Result</th></tr></thead>
-          <tbody>
-            <tr><td>Estimator time per estimate</td><td>~10 hrs → ~1 hr (<strong>90% less</strong>)</td></tr>
-            <tr><td>Turnaround</td><td>2–4 days → 0.5–1 day</td></tr>
-            <tr><td>Would use it on real bids</td><td><strong>8 of 10</strong></td></tr>
-            <tr><td>Asked to be contacted at launch</td><td><strong>10 of 10</strong></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <p>At 150–200 estimates a year, that projects to roughly <strong>1,350–1,800 hours freed per estimator</strong>. One honest caveat, stated once: because our team did the measuring, these numbers describe the experience with accurate AI output. They're a signal about the workflow, not a claim about a finished system.</p>
-
-      <h3>What I saw when I stopped helping</h3>
-      <p>The guided sessions told me the workflow could save time. Watching estimators use it without help told me how they actually wanted to work, and it didn't fully match what I'd designed.</p>
-      <ul>
-        <li><strong>They skipped the chat.</strong> Estimators went straight to the table and edited quantities directly. The workspace, not the conversation, was the product to them.</li>
-        <li><strong>They distrusted numbers I expected them to accept.</strong> Even plausible AI measurements got re-checked.</li>
-        <li><strong>They trusted the scope, not the measurements.</strong> Some used Estbuild to build the list of what needed measuring, pulled from demolition notes and callouts, then measured it themselves.</li>
-        <li><strong>The learning curve was steep.</strong> Some testers would likely have quit early if they hadn't been asked to keep going. The ones who pushed through saw the time savings. In real life, many would never have reached them.</li>
-      </ul>
-
-      <blockquote class="pull-quote is-placeholder">
-        <p>"Give me the list of everything I need to touch. I'll do the measuring — I just can't miss anything."</p>
-        <cite>Estimator — unaided session</cite>
-      </blockquote>
-
-      <h3>Someone offered to pay</h3>
-      <p>Interest is easy to collect; payment isn't. The strongest demand signal didn't come from our beachhead at all. <strong>A firm that does cost estimating for other companies offered $799 a month for the full workspace.</strong> For a business whose whole product is estimates, the time savings are revenue, which made our secondary segment look like a stronger first customer than we'd assumed.</p>
-
-      <!-- ========================================================= -->
-      <h2>What the evidence changed</h2>
-      <p>Version one proved the workflow and the demand. It also showed that I'd put the AI's value in the wrong place. Estimators didn't want the AI to measure for them. They wanted it to make sure nothing got missed. The next iteration follows the evidence:</p>
+      <h2>How I'd build it next</h2>
+      <p>This is a proposed next step, not something we completed. I'd make measurement accuracy the gate before expanding the product:</p>
       <ol>
-        <li><strong>Scope detection becomes the hero.</strong> The AI's main job is reading the plan set and finding every item of work. The estimator measures or confirms.</li>
-        <li><strong>The table leads; chat supports.</strong> The estimate is the primary surface, and the conversation becomes an assistant beside it.</li>
-        <li><strong>Time to first value.</strong> A new user gets one result they trust in their first session, without help, so the learning curve doesn't decide adoption.</li>
-        <li><strong>Every number is traceable.</strong> Each quantity links back to its sheet and plan region, and a revised sheet flags the quantities it changes.</li>
-        <li><strong>Exclusions are part of the estimate.</strong> Demolition bids live or die on what's excluded, like hazmat and haul-off, so the proposal carries them explicitly.</li>
-        <li><strong>The product learns which bids win.</strong> Win/loss tracking ties the tool to the metric that matters most: win rate.</li>
-        <li><strong>Estimating firms as a lead customer,</strong> following the one segment that has already offered to pay.</li>
+        <li><strong>Define a supported use case.</strong> A bounded set of plan types where the required dimensions are available.</li>
+        <li><strong>Evaluate measurement against expert answers.</strong> Test scope and dimensions separately, on representative plans.</li>
+        <li><strong>Make results inspectable.</strong> Connect quantities to their drawing evidence, and show confidence scores only once their meaning has been evaluated.</li>
+        <li><strong>Calculate costs explicitly.</strong> Editable rates and deterministic calculations on reviewed quantities.</li>
+        <li><strong>Test the entire task.</strong> Compare with the existing workflow on comparable projects.</li>
       </ol>
 
       <figure class="case-figure">
-        <div class="case-figure__slot">Concept — next iteration: table-first workspace with a detected-scope checklist and links from each quantity to its source sheet</div>
-        <figcaption>Next iteration: the AI finds the scope, the estimator owns the numbers.</figcaption>
+        <div class="case-diagram">
+          <svg viewBox="0 0 760 150" role="img" aria-labelledby="next-t next-d">
+            <title id="next-t">Proposed build sequence</title>
+            <desc id="next-d">Five steps in order: define a supported use case, evaluate measurement against expert answers, make results inspectable, calculate costs explicitly, test the whole task. A gate after step two: nothing expands until measurement accuracy passes.</desc>
+            <defs><marker id="next-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-ink" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+            <rect class="d-card" x="1" y="8" width="138" height="90"/>
+            <text class="d-label" x="13" y="30">01</text>
+            <text class="d-title" x="13" y="60" style="font-size:14px">Define a</text>
+            <text class="d-title" x="13" y="80" style="font-size:14px">use case</text>
+            <line class="d-outline" x1="141" y1="53" x2="154" y2="53" marker-end="url(#next-a)"/>
+            <rect class="d-ink" x="156" y="8" width="138" height="90"/>
+            <text class="d-label d-label--paper" x="168" y="30">02</text>
+            <text class="d-title" x="168" y="60" style="font-size:14px;fill:var(--paper)">Evaluate</text>
+            <text class="d-title" x="168" y="80" style="font-size:14px;fill:var(--paper)">measurement</text>
+            <line class="d-outline" x1="296" y1="53" x2="309" y2="53" marker-end="url(#next-a)"/>
+            <rect class="d-card" x="311" y="8" width="138" height="90"/>
+            <text class="d-label" x="323" y="30">03</text>
+            <text class="d-title" x="323" y="60" style="font-size:14px">Make results</text>
+            <text class="d-title" x="323" y="80" style="font-size:14px">inspectable</text>
+            <line class="d-outline" x1="451" y1="53" x2="464" y2="53" marker-end="url(#next-a)"/>
+            <rect class="d-card" x="466" y="8" width="138" height="90"/>
+            <text class="d-label" x="478" y="30">04</text>
+            <text class="d-title" x="478" y="60" style="font-size:14px">Calculate</text>
+            <text class="d-title" x="478" y="80" style="font-size:14px">costs</text>
+            <line class="d-outline" x1="606" y1="53" x2="619" y2="53" marker-end="url(#next-a)"/>
+            <rect class="d-card" x="621" y="8" width="138" height="90"/>
+            <text class="d-label" x="633" y="30">05</text>
+            <text class="d-title" x="633" y="60" style="font-size:14px">Test the</text>
+            <text class="d-title" x="633" y="80" style="font-size:14px">whole task</text>
+            <line class="d-dashed" x1="302" y1="0" x2="302" y2="112"/>
+            <text class="d-label d-label--ink" x="302" y="128" text-anchor="middle">GATE: MEASUREMENT ACCURACY</text>
+            <text class="d-body" x="302" y="146" text-anchor="middle">nothing expands until it passes</text>
+          </svg>
+        </div>
+        <figcaption>A proposed sequence, not completed work. Measurement has to pass against expert answers before anything else is built on it.</figcaption>
       </figure>
 
-      <!-- ========================================================= -->
-      <h2>Where it stands</h2>
-      <p>Development paused when our technical co-founder moved on and we didn't have the funding to bring in someone to lead the AI work. I chose to pause rather than ship a tool estimators couldn't trust. The project isn't closed: the research, the validated workflow, a paying-intent customer segment and a sharper product direction are all in place. What it needs next is a technical partner for scope detection and measurement.</p>
+      <p>The deciding measure is how much work remains after checking and correcting the result.</p>
 
       <!-- ========================================================= -->
-      <h2>What I'd carry forward</h2>
-      <ul>
-        <li><strong>Quantify the status quo before designing.</strong> The bid-volume and win-rate math turned "make estimating faster" into "estimating throughput is a growth lever."</li>
-        <li><strong>In a low-trust domain, trust is the design problem.</strong> Showing assumptions and confidence, instead of hiding them, is what let the scale challenge happen at all.</li>
-        <li><strong>Test the experience separately from the hardest technical risk.</strong> We learned people wanted this, and would pay for it, before spending runway on accuracy.</li>
-        <li><strong>A test that keeps people in can hide why they'd leave.</strong> The guided results were real, but the unaided sessions are where I learned what to build next.</li>
-      </ul>
+      <h2>Where it ended, and what I learned</h2>
+      <p>Estbuild reached working line-item generation and cost calculation, measurement at about 30% accuracy, and a tested concept of the full experience. Development paused when our technical co-founder moved on.</p>
+      <p>My most consequential decision was going back on the release strategy I had proposed. Starting with what we could build made sense for the team, but it didn't remove enough work to make anyone switch.</p>
+      <p>I'd carry that into the next product: <strong>define a first release around a complete user outcome, then test the hardest assumption behind that outcome early.</strong> Ease of use, technical feasibility and willingness to adopt have to hold together.</p>
 
-    </article>
+</article>
 
     <div class="case-footer">
       <a href="../../index.html#work">&larr; All work</a>

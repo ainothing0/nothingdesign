@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pinnacle AI — abcd</title>
-  <meta name="description" content="Designing a scheduling agent a skeptical manager learned to trust.">
+  <meta name="description" content="Designing a scheduling agent in iMessage for a 10-location coffee chain: weekly scheduling work went from about 2–3 hours to 5–10 minutes per store.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,900&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 
   <link rel="stylesheet" href="../shared.css">
   <link rel="stylesheet" href="../article.css">
@@ -25,98 +25,354 @@
   <main>
     <div class="case-hero">
       <p class="case-hero__eyebrow">
-        <span>Pinnacle AI — Scheduling agent</span>
+        <span>Pinnacle AI — Store operations agents</span>
         <span class="case-hero__status">Case study</span>
       </p>
-      <h1>Pinnacle AI: designing a scheduling agent a skeptical manager learned to trust</h1>
-      <p class="case-hero__meta">Product Designer, Pinnacle AI · Client engagement — a multi-location coffee-shop chain · January 2026 – present</p>
-      <p class="case-hero__tldr">A 10-location coffee-shop chain needed every store manager doing the same repetitive, low-leverage work every week. I shadowed a manager's actual workflow to find the real automatable tasks, then designed a conversational scheduling agent — delivered over iMessage, not an app — that store managers now run daily across all 10 locations. It handles the hard version of the problem (cross-store shift swaps when a location is short-staffed), cut employee-side input from ~10 messages to 3, and turned an initially skeptical manager into someone who no longer builds schedules by hand. The same agent pattern is now shipped (if still supervised) for item and inventory ordering, with food-waste management next.</p>
+      <h1>Pinnacle AI: automating the repetitive work of running 10 coffee shops</h1>
+      <p class="case-hero__meta">Product Designer · January 2026 – present</p>
+
+      <dl class="case-facts">
+        <div><dt>Role</dt><dd>Product Designer: discovery, problem framing, conversation &amp; workflow design, prototyping</dd></div>
+        <div><dt>Team</dt><dd>Me + one software developer (model integration, messaging connection, backend)</dd></div>
+        <div><dt>Client</dt><dd>A 10-location coffee-shop chain (client of Pinnacle AI)</dd></div>
+        <div><dt>Built with</dt><dd>iMessage, Figma, prompt design</dd></div>
+      </dl>
+
+      <p class="case-hero__tldr"><strong>In short:</strong> Store managers spent 2–3 hours a week per store keeping staff schedules workable. I designed an iMessage agent that talks to employees, builds the schedule and asks the manager only when something is new. That work dropped to about 5–10 minutes.</p>
     </div>
 
     <article class="case-body">
 
-      <h2>How it started</h2>
-      <p>The client — a multi-location coffee-shop chain — came to Pinnacle AI already convinced something should be automated. Rather than take the ask at face value, I ran contextual inquiry directly: shadowing a store manager's actual day, mirroring how they worked and collaborated with their pod, instead of asking what they'd like automated.</p>
-      <p>What surfaced wasn't a single obvious task — it was four recurring ones, each costing a manager about <strong>2 hours a week per store</strong>: scheduling, daily item ordering, inventory ordering, and food (donut) waste management. Screened against first-principles financial and technical feasibility, all four were viable — collectively <strong>~8 hours a week of manager time per store</strong>.</p>
-
-      <h2>The problem, in numbers</h2>
-      <p>At a fully loaded manager cost of <strong>$23/hr</strong>, that 8 hours/week/store prices out to <strong>~$184/week per store</strong> — roughly <strong>$1,840/week, or ~$95.7K/year, across all 10 stores</strong> — in supervisory labor-hours that automation could free up.</p>
-
       <div class="stat-grid">
-        <div class="stat"><span class="stat__value">8 hrs/wk</span><span class="stat__label">automatable manager time, per store</span></div>
-        <div class="stat"><span class="stat__value">~$95.7K/yr</span><span class="stat__label">potential savings across all 10 stores</span></div>
-        <div class="stat"><span class="stat__value">10 → 3</span><span class="stat__label">managers, the team's stretch goal for the fleet</span></div>
-        <div class="stat"><span class="stat__value">10 → 3</span><span class="stat__label">messages in the employee-side scheduling flow</span></div>
+        <div class="stat"><span class="stat__value">10 stores</span><span class="stat__label">live, used daily</span></div>
+        <div class="stat"><span class="stat__value">2–3 hrs → 5–10 min</span><span class="stat__label">weekly scheduling work per manager per store (estimated before, recalled after)</span></div>
+        <div class="stat"><span class="stat__value">~10 → 3</span><span class="stat__label">messages to settle an employee's availability</span></div>
+        <div class="stat"><span class="stat__value">2 agents</span><span class="stat__label">live: scheduling and inventory management; waste management next</span></div>
       </div>
 
-      <p>The team's stated stretch goal is steeper: go from <strong>10 managers (one per store)</strong> to roughly <strong>3 managers</strong> covering the same 10-store fleet. That math isn't fully proven yet — it depends on a manager's <em>total</em> weekly workload, not just the 8 automatable hours — but it's the target the roadmap is pointed at, and it's why scheduling was the first task tackled: it's the highest-frequency, most schedule-critical of the four.</p>
+      <!-- ========================================================= -->
+      <h2>The problem</h2>
+      <p>Pinnacle AI, where I work, builds automation for businesses. Our client runs 10 coffee shops. Each store manager handles staff schedules, ordering, inventory and food waste on top of running the store, so the goal was to take repetitive work off their plate.</p>
+      <p>Schedules were the hardest to keep up. Managers tried to reuse a familiar weekly roster, but people's availability kept changing. Each change meant collecting updates, reassigning shifts and contacting replacements, and each unanswered message left something unresolved.</p>
 
-      <h2>Why iMessage, not an app</h2>
-      <p>The team shipped the scheduling agent through iMessage rather than building a standalone app. Everyone already has it open — no install, no account creation, no adoption curve. That let the team ship fast and start collecting real training signal (managers correcting the agent mid-conversation) within weeks instead of waiting on app-store adoption.</p>
-      <p>It also wasn't a dead end architecturally: each conversational module is being built so it can later combine into a single unified platform, rather than living as a permanent point solution.</p>
+      <figure class="case-figure">
+        <div class="case-diagram">
+          <svg viewBox="0 0 760 170" role="img" aria-labelledby="loop-t loop-d">
+            <title id="loop-t">The scheduling coordination loop</title>
+            <desc id="loop-d">Five steps in a row: availability changes, collect updates, reassign shifts, contact replacements, wait for replies. An arrow loops from the last step back to the first, because every change starts it again.</desc>
+            <defs><marker id="loop-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-ink" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+            <rect class="d-ink" x="1" y="20" width="130" height="70"/>
+            <text class="d-title" x="66" y="50" text-anchor="middle" style="font-size:14px;fill:var(--paper)">Availability</text>
+            <text class="d-title" x="66" y="70" text-anchor="middle" style="font-size:14px;fill:var(--paper)">changes</text>
+            <line class="d-outline" x1="133" y1="55" x2="150" y2="55" marker-end="url(#loop-a)"/>
+            <rect class="d-card" x="153" y="20" width="130" height="70"/>
+            <text class="d-title" x="218" y="50" text-anchor="middle" style="font-size:14px">Collect</text>
+            <text class="d-title" x="218" y="70" text-anchor="middle" style="font-size:14px">updates</text>
+            <line class="d-outline" x1="285" y1="55" x2="302" y2="55" marker-end="url(#loop-a)"/>
+            <rect class="d-card" x="305" y="20" width="130" height="70"/>
+            <text class="d-title" x="370" y="50" text-anchor="middle" style="font-size:14px">Reassign</text>
+            <text class="d-title" x="370" y="70" text-anchor="middle" style="font-size:14px">shifts</text>
+            <line class="d-outline" x1="437" y1="55" x2="454" y2="55" marker-end="url(#loop-a)"/>
+            <rect class="d-card" x="457" y="20" width="130" height="70"/>
+            <text class="d-title" x="522" y="50" text-anchor="middle" style="font-size:14px">Contact</text>
+            <text class="d-title" x="522" y="70" text-anchor="middle" style="font-size:14px">replacements</text>
+            <line class="d-outline" x1="589" y1="55" x2="606" y2="55" marker-end="url(#loop-a)"/>
+            <rect class="d-card" x="609" y="20" width="130" height="70"/>
+            <text class="d-title" x="674" y="50" text-anchor="middle" style="font-size:14px">Wait for</text>
+            <text class="d-title" x="674" y="70" text-anchor="middle" style="font-size:14px">replies</text>
+            <polyline class="d-outline" points="674,92 674,130 66,130 66,94" marker-end="url(#loop-a)"/>
+            <text class="d-label d-label--ink" x="370" y="152" text-anchor="middle">EVERY CHANGE STARTS THE LOOP AGAIN</text>
+          </svg>
+        </div>
+        <figcaption>Before the agent, every change in availability set off another round of messages for the manager.</figcaption>
+      </figure>
 
-      <h2>My role vs. the developer's</h2>
-      <p>This was a two-person build. I owned:</p>
+      <p><strong>How might we cut the back-and-forth of keeping a schedule working, while keeping managers in charge of the decisions that need them?</strong></p>
+
+      <!-- ========================================================= -->
+      <h2>What I found</h2>
+      <p>I started with the work itself rather than the request. We surveyed all 10 managers, I interviewed four, and I shadowed one through a working day to see how they actually ran their team.</p>
+      <p>Four repetitive tasks came up, each taking about 2 hours a week per store. At a loaded manager cost of $23/hr, that adds up to about $95.7K a year across 10 stores: a projection, used to decide what was worth automating.</p>
+
+      <figure class="case-figure">
+        <div class="case-diagram">
+          <svg viewBox="0 0 760 150" role="img" aria-labelledby="task-t task-d">
+            <title id="task-t">Four repetitive tasks per store</title>
+            <desc id="task-d">Four tasks, each about 2 hours a week per store: scheduling, which became the first agent, item ordering, inventory ordering and food waste. Together about 8 hours a week per store, or about 95.7 thousand dollars a year across 10 stores, a projection at 23 dollars an hour.</desc>
+            <rect class="d-ink" x="1" y="8" width="178" height="92"/>
+            <text class="d-label d-label--paper" x="15" y="34">FIRST AGENT</text>
+            <text class="d-title" x="15" y="62" style="fill:var(--paper)">Scheduling</text>
+            <text class="d-body" x="15" y="84" style="fill:var(--paper)">~2 hrs / week</text>
+            <rect class="d-card" x="191" y="8" width="178" height="92"/>
+            <text class="d-label" x="205" y="34">TASK</text>
+            <text class="d-title" x="205" y="62">Item ordering</text>
+            <text class="d-body" x="205" y="84">~2 hrs / week</text>
+            <rect class="d-card" x="381" y="8" width="178" height="92"/>
+            <text class="d-label" x="395" y="34">TASK</text>
+            <text class="d-title" x="395" y="62">Inventory ordering</text>
+            <text class="d-body" x="395" y="84">~2 hrs / week</text>
+            <rect class="d-card" x="571" y="8" width="178" height="92"/>
+            <text class="d-label" x="585" y="34">TASK</text>
+            <text class="d-title" x="585" y="62">Food waste</text>
+            <text class="d-body" x="585" y="84">~2 hrs / week</text>
+            <line class="d-axis" x1="1" y1="116" x2="759" y2="116"/>
+            <text class="d-title" x="1" y="142">≈ 8 hrs a week per store</text>
+            <text class="d-body" x="759" y="142" text-anchor="end">≈ $95.7K a year across 10 stores at $23/hr (projection)</text>
+          </svg>
+        </div>
+        <figcaption>Four repetitive tasks took about 8 hours a week per store. Scheduling became the first agent.</figcaption>
+      </figure>
+
+      <p>Scheduling had a pattern the others didn't. Generating a roster was only part of it; most of the work was the coordination that kept the roster workable. So the product had to take on the conversations, not just the schedule.</p>
+
+      <!-- ========================================================= -->
+      <h2>Five design decisions</h2>
+      <p>Each decision traded something away. Here's what we chose, and why.</p>
+
+      <section class="decision">
+        <span class="decision__label">Decision 1</span>
+        <h3>Start with scheduling, not ordering</h3>
+        <ul class="decision__options">
+          <li><b>Ordering and inventory first</b>Easier to automate: data-based and already on a computer. Not what managers most wanted help with.</li>
+          <li class="is-chosen"><b>Scheduling first</b>Harder: people, changing availability, exceptions. But managers wanted to hand it off and trust an agent with it.</li>
+        </ul>
+        <p>My prioritization weighed technical feasibility against willingness to adopt the result. We accepted more interaction complexity for a workflow managers wanted help with sooner, and it gave a clear test of value: how much scheduling work stays with the manager once the agent is involved?</p>
+      </section>
+
+      <section class="decision">
+        <span class="decision__label">Decision 2</span>
+        <h3>Work in iMessage, not a new app</h3>
+        <ul class="decision__options">
+          <li><b>Standalone app</b>A dense roster is easier to inspect, but needs installs, accounts and learning first.</li>
+          <li class="is-chosen"><b>iMessage</b>Everyone already has it open. The conversation design has to carry all the clarity.</li>
+        </ul>
+        <p>Each employee has a private conversation with the agent, and the manager has a separate thread for updates, approvals and corrections. A manager can change the schedule just by messaging the agent. Each part is built so it can later merge into one platform.</p>
+      </section>
+
+      <figure class="case-figure">
+        <div class="case-diagram">
+          <svg viewBox="0 0 760 262" role="img" aria-labelledby="how-t how-d">
+            <title id="how-t">How the scheduling agent works</title>
+            <desc id="how-d">Three employee threads feed the scheduling agent, which reads replies, extracts availability, builds the schedule and decides whom to contact. Routine changes update the schedule with no manager step. New situations, or an employee who does not reply within 6 hours, go to the manager thread for approval or correction. Manager corrections become saved rules that the agent uses again.</desc>
+            <defs><marker id="how-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-ink" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+            <rect class="d-card" x="1" y="14" width="150" height="62"/>
+            <text class="d-label" x="15" y="38">EMPLOYEE</text>
+            <text class="d-body" x="15" y="60" style="fill:var(--ink)">Private thread</text>
+            <line class="d-outline" x1="153" y1="45" x2="214" y2="96" marker-end="url(#how-a)"/>
+            <rect class="d-card" x="1" y="92" width="150" height="62"/>
+            <text class="d-label" x="15" y="116">EMPLOYEE</text>
+            <text class="d-body" x="15" y="138" style="fill:var(--ink)">Private thread</text>
+            <line class="d-outline" x1="153" y1="123" x2="214" y2="125" marker-end="url(#how-a)"/>
+            <rect class="d-card" x="1" y="170" width="150" height="62"/>
+            <text class="d-label" x="15" y="194">EMPLOYEE</text>
+            <text class="d-body" x="15" y="216" style="fill:var(--ink)">Private thread</text>
+            <line class="d-outline" x1="153" y1="201" x2="214" y2="154" marker-end="url(#how-a)"/>
+            <rect class="d-ink" x="218" y="56" width="236" height="140"/>
+            <text class="d-label d-label--paper" x="234" y="82">AI</text>
+            <text class="d-title" x="234" y="108" style="fill:var(--paper)">Scheduling agent</text>
+            <text class="d-body" x="234" y="134" style="fill:var(--paper)">Reads replies and availability</text>
+            <text class="d-body" x="234" y="154" style="fill:var(--paper)">Builds the schedule</text>
+            <text class="d-body" x="234" y="174" style="fill:var(--paper)">Picks whom to ask</text>
+            <rect class="d-soft" x="256" y="214" width="160" height="40"/>
+            <text class="d-title" x="336" y="239" text-anchor="middle" style="font-size:14px">Saved rules</text>
+            <line class="d-outline" x1="336" y1="212" x2="336" y2="200" marker-end="url(#how-a)"/>
+            <rect class="d-card" x="528" y="14" width="231" height="80"/>
+            <text class="d-label" x="544" y="38">ROUTINE</text>
+            <text class="d-title" x="544" y="62" style="font-size:15px">Schedule updated</text>
+            <text class="d-body" x="544" y="82">No manager step</text>
+            <line class="d-outline" x1="456" y1="100" x2="524" y2="58" marker-end="url(#how-a)"/>
+            <rect class="d-card" x="528" y="144" width="231" height="96"/>
+            <text class="d-label" x="544" y="168">NEW · OR NO REPLY IN 6 H</text>
+            <text class="d-title" x="544" y="192" style="font-size:15px">Manager thread</text>
+            <text class="d-body" x="544" y="214">Approves or corrects by message</text>
+            <line class="d-outline" x1="456" y1="150" x2="524" y2="186" marker-end="url(#how-a)"/>
+            <line class="d-outline" x1="526" y1="232" x2="420" y2="232" marker-end="url(#how-a)"/>
+            <text class="d-label d-label--ink" x="473" y="252" text-anchor="middle">RULE</text>
+          </svg>
+        </div>
+        <figcaption>Employees and the manager each talk to the agent in their own thread. Routine changes update the schedule; new situations go to the manager, and their corrections become saved rules.</figcaption>
+      </figure>
+
+      <section class="decision">
+        <span class="decision__label">Decision 3</span>
+        <h3>Propose a schedule instead of asking questions</h3>
+        <ul class="decision__options">
+          <li><b>Ask one question at a time</b>~10 messages per person, and employees kept getting pulled back in.</li>
+          <li class="is-chosen"><b>Propose, then confirm</b>3 messages: the agent proposes, the employee responds, the agent confirms. The cost is a denser first message.</li>
+        </ul>
+        <p>The first flow asked employees when they could work, built a schedule, then kept coming back whenever something didn't fit: could they adjust their availability, work more hours, or fewer? I redesigned the exchange around a recommendation, so the employee responds to something concrete. No model change: the win was the question flow. Unusual situations can still need clarification.</p>
+      </section>
+
+      <figure class="case-figure">
+        <!-- MOCKUP: AI-generated placeholder with invented names. Replace with a real, anonymized screenshot after client sign-off. -->
+        <img src="../../assets/pinnacle/checkin-proposal.jpg" width="1536" height="1024" loading="lazy" alt="Mockup comparing two iMessage threads. Before: ten messages, the agent asking one question at a time about days, times and hours. After: three messages. The agent proposes a week of shifts, the employee asks to swap Thursday for Friday, and the agent confirms.">
+        <figcaption>Same answer, a third of the messages. The win was the question flow, not the model. Illustrative mockup.</figcaption>
+      </figure>
+
+      <section class="decision">
+        <span class="decision__label">Decision 4</span>
+        <h3>Ask the manager only when something is new</h3>
+        <ul class="decision__options">
+          <li><b>Ask about everything</b>Safe, but the manager still does the job.</li>
+          <li><b>Never ask</b>Fastest, but new situations get decided without anyone's judgment.</li>
+          <li class="is-chosen"><b>Ask only when it's new</b>Routine work runs itself; the manager is interrupted only when their judgment matters.</li>
+        </ul>
+        <p>A delayed flight put this to the test. An employee would miss two morning shifts, and nobody at their store could cover. The agent looked to a nearby store, moved past an unavailable first candidate, found someone who could help, and asked the manager to approve before updating the schedule. The manager made the decision; the agent did the search, the messages and the update.</p>
+        <p>Silence is handled the same way: if an employee doesn't answer a check-in, the agent follows up after 6 hours, then asks the manager. One case doesn't prove every exception works, though. Call-outs and cross-store changes are still harder than routine scheduling.</p>
+      </section>
+
+      <figure class="case-figure">
+        <!-- MOCKUP: AI-generated placeholder with invented names. Replace with a real, anonymized screenshot after client sign-off. -->
+        <img src="../../assets/pinnacle/flight-swap.jpg" width="1536" height="1024" loading="lazy" alt="Mockup of the delayed-flight swap. A diagram shows Store A with two mornings uncovered and Store B, where Alex is unavailable and Jordan is available. In the manager's iMessage thread, the agent explains the gap, says Jordan can cover and asks for approval; the manager approves and the agent confirms the update.">
+        <figcaption>The agent handles the search; the manager makes the call. Illustrative mockup.</figcaption>
+      </figure>
+
+      <section class="decision">
+        <span class="decision__label">Decision 5</span>
+        <h3>Turn a manager's correction into a rule</h3>
+        <ul class="decision__options">
+          <li><b>Fix it each time</b>Simple, but the manager fixes the same mistake every week.</li>
+          <li class="is-chosen"><b>Save it as a rule</b>The manager corrects it once by message, and the agent can use it again.</li>
+        </ul>
+        <p>A busy morning needed four experienced people, but the schedule had three plus a new hire. The headcount was right; the mix was wrong. The same mix would have been fine on a quiet day.</p>
+        <p>The manager set the rule by message: on busy days (Fridays, good weather, festivals, nearby school events), mornings need people with six months or more. A strict rule every day would cut flexibility for no reason; ignoring it on busy days leaves a store underprepared. The agent saves corrections like this as rules. Whether it applies them consistently is still being evaluated.</p>
+      </section>
+
+      <figure class="case-figure">
+        <!-- MOCKUP: AI-generated placeholder with invented names. Replace with a real, anonymized screenshot after client sign-off. -->
+        <img src="../../assets/pinnacle/busy-day-rule.jpg" width="1536" height="1024" loading="lazy" alt="Mockup of the manager's iMessage thread. The agent proposes three experienced employees and one new one for Saturday morning. The manager replies that on busy days mornings should be staffed with people who've been there six months or more. The agent saves it as a rule and swaps the new employee out.">
+        <figcaption>A correction becomes a rule the agent can use again. Illustrative mockup.</figcaption>
+      </figure>
+
+      <!-- ========================================================= -->
+      <h2>Why it needs AI</h2>
+      <p>A roster alone doesn't need AI: fixed scheduling rules work in ordinary software. What needs AI is the conversation around it. People describe availability in their own words, decline, and change plans, so the next useful step depends on what was just said.</p>
+      <p>Today, AI reads replies, extracts availability, builds schedules and decides whom to contact. My part was designing how people take part: what employees are asked, what managers need to know, and where a person decides. The developer built the model integration, messaging and backend.</p>
+
+      <!-- ========================================================= -->
+      <h2>Results</h2>
+      <div class="stat-grid">
+        <div class="stat"><span class="stat__value">~2–3 hours</span><span class="stat__label">weekly scheduling work per manager per store before (managers' estimates)</span></div>
+        <div class="stat"><span class="stat__value">~5–10 minutes</span><span class="stat__label">after (totaled afterward, averaged over a month)</span></div>
+      </div>
+      <p>The comparison covers all 10 stores, including routine scheduling, call-outs and cross-store changes. What's left is mostly approving new situations and improving the rules by message. Both figures rely on recall, so this is an operational comparison, not a controlled study.</p>
+
+      <h3>Accuracy over time</h3>
+      <p>Accuracy means how rarely the manager has to correct or rebuild the schedule. It started at <strong>20–30%</strong>, rose about <strong>5 points a month</strong>, dropped about <strong>20 points</strong> during three months of frequent call-outs, then recovered.</p>
+
+      <figure class="case-figure">
+        <!-- APPROXIMATE: real reported trend; individual points are approximate. Swap in exact monthly values when available. -->
+        <div class="case-diagram">
+          <svg viewBox="0 0 760 380" role="img" aria-labelledby="acc-t acc-d">
+            <title id="acc-t">Scheduling accuracy by month (approximate)</title>
+            <desc id="acc-d">Line chart from the reported trend, with approximate points. Accuracy starts around 25 percent in month 1 and climbs about 5 points a month to 40 percent by month 4. During a three-month call-out volatility stretch it drops about 20 points for two months, then recovers and resumes climbing to about 55 percent by month 10.</desc>
+
+            <rect class="d-soft" x="330.7" y="30" width="208" height="270"/>
+            <text class="d-label" x="434.7" y="50" text-anchor="middle">CALL-OUT VOLATILITY</text>
+
+            <line class="d-grid" x1="64" y1="30" x2="736" y2="30"/>
+            <line class="d-grid" x1="64" y1="120" x2="736" y2="120"/>
+            <line class="d-grid" x1="64" y1="210" x2="736" y2="210"/>
+            <line class="d-axis" x1="64" y1="300" x2="736" y2="300"/>
+            <text class="d-label" x="54" y="34" text-anchor="end">60%</text>
+            <text class="d-label" x="54" y="124" text-anchor="end">40%</text>
+            <text class="d-label" x="54" y="214" text-anchor="end">20%</text>
+            <text class="d-label" x="54" y="304" text-anchor="end">0%</text>
+
+            <polyline class="d-line" points="88,187.5 157.3,165 226.7,142.5 296,120 365.3,210 434.7,201 504,120 573.3,97.5 642.7,75 712,52.5"/>
+            <g class="d-ink">
+              <circle cx="88" cy="187.5" r="4"/><circle cx="157.3" cy="165" r="4"/><circle cx="226.7" cy="142.5" r="4"/><circle cx="296" cy="120" r="4"/>
+              <circle cx="504" cy="120" r="4"/><circle cx="573.3" cy="97.5" r="4"/><circle cx="642.7" cy="75" r="4"/><circle cx="712" cy="52.5" r="4"/>
+            </g>
+            <circle class="d-hollow" cx="365.3" cy="210" r="5"/>
+            <circle class="d-hollow" cx="434.7" cy="201" r="5"/>
+
+            <text class="d-label d-label--ink" x="88" y="208">START 20–30%</text>
+            <text class="d-label d-label--ink" x="365.3" y="232" text-anchor="middle">~20 PT DROP</text>
+            <text class="d-label d-label--ink" x="712" y="38" text-anchor="end">~5 PTS/MO RESUMES</text>
+
+            <g class="d-label" text-anchor="middle">
+              <text x="88" y="322">M1</text><text x="157.3" y="322">M2</text><text x="226.7" y="322">M3</text><text x="296" y="322">M4</text><text x="365.3" y="322">M5</text>
+              <text x="434.7" y="322">M6</text><text x="504" y="322">M7</text><text x="573.3" y="322">M8</text><text x="642.7" y="322">M9</text><text x="712" y="322">M10</text>
+            </g>
+
+            <rect class="d-outline" x="64" y="344" width="112" height="22" rx="11"/>
+            <text class="d-label d-label--ink" x="118" y="359" text-anchor="middle">APPROXIMATE</text>
+            <text class="d-body" x="188" y="359">Real reported trend; individual points are approximate.</text>
+          </svg>
+        </div>
+        <figcaption>A real stress test nobody planned, and the system came back. Points are approximate.</figcaption>
+      </figure>
+
+      <p>Trust followed that curve. At first the manager was skeptical and frustrated: it felt like training the system while still doing the job. Now they no longer build schedules by hand.</p>
+
+      <!-- ========================================================= -->
+      <h2>What's next</h2>
+      <p>Inventory management is live too, with managers approving its output until it's accurate enough to run on its own. Waste management is next. Each agent moves up the same ladder as manager intervention drops.</p>
+
+      <figure class="case-figure">
+        <div class="case-diagram">
+          <svg viewBox="0 0 760 412" role="img" aria-labelledby="lad-t lad-d">
+            <title id="lad-t">The autonomy ladder</title>
+            <desc id="lad-d">Four rungs of agent autonomy. Rung 4, fully autonomous, is the one-year target. Rung 3, runs routine work and the manager approves new situations: scheduling. Rung 2, manager approves: inventory management, which includes item ordering. Rung 1, manual: waste management, not started.</desc>
+
+            <line class="d-rail" x1="40" y1="56" x2="40" y2="332"/>
+
+            <!-- 4 · Fully autonomous (target) -->
+            <rect class="d-card" x="16" y="16" width="728" height="80"/>
+            <circle class="d-muted" cx="40" cy="56" r="14"/>
+            <text class="d-label d-label--ink" x="40" y="60" text-anchor="middle">4</text>
+            <text class="d-title" x="72" y="52">Fully autonomous</text>
+            <text class="d-body" x="72" y="74">No manager step</text>
+            <rect class="d-dashed" x="576" y="44" width="152" height="24" rx="12"/>
+            <text class="d-label d-label--ink" x="652" y="60" text-anchor="middle">ONE-YEAR TARGET</text>
+
+            <!-- 3 · Runs routine work -->
+            <rect class="d-card" x="16" y="108" width="728" height="80"/>
+            <circle class="d-ink" cx="40" cy="148" r="14"/>
+            <text class="d-label d-label--paper" x="40" y="152" text-anchor="middle">3</text>
+            <text class="d-title" x="72" y="144">Runs routine work</text>
+            <text class="d-body" x="72" y="166">Agent runs it; manager approves new situations and corrects it by message</text>
+            <rect class="d-ink" x="612" y="136" width="116" height="24" rx="12"/>
+            <text class="d-label d-label--paper" x="670" y="152" text-anchor="middle">SCHEDULING</text>
+
+            <!-- 2 · Manager approves -->
+            <rect class="d-card" x="16" y="200" width="728" height="80"/>
+            <circle class="d-ink" cx="40" cy="240" r="14"/>
+            <text class="d-label d-label--paper" x="40" y="244" text-anchor="middle">2</text>
+            <text class="d-title" x="72" y="236">Manager approves</text>
+            <text class="d-body" x="72" y="258">Agent proposes; nothing ships until the manager approves</text>
+            <rect class="d-ink" x="528" y="228" width="200" height="24" rx="12"/>
+            <text class="d-label d-label--paper" x="628" y="244" text-anchor="middle">INVENTORY MANAGEMENT</text>
+
+            <!-- 1 · Manual -->
+            <rect class="d-card" x="16" y="292" width="728" height="80"/>
+            <circle class="d-muted" cx="40" cy="332" r="14"/>
+            <text class="d-label d-label--ink" x="40" y="336" text-anchor="middle">1</text>
+            <text class="d-title" x="72" y="328">Manual</text>
+            <text class="d-body" x="72" y="350">Manager does it by hand</text>
+            <rect class="d-soft" x="528" y="320" width="200" height="24" rx="12"/>
+            <text class="d-label" x="628" y="336" text-anchor="middle">WASTE MANAGEMENT · NEXT</text>
+
+            <text class="d-label" x="16" y="398">FILLED = LIVE IN 10 STORES · DASHED = TARGET · GREY = NOT STARTED</text>
+          </svg>
+        </div>
+        <figcaption>Every agent climbs the same ladder. It moves up only when the manager stops needing to step in.</figcaption>
+      </figure>
+
+      <p>We're also testing points or recognition for unpopular shifts, so they get picked up without the manager chasing people. And next time I'd measure more finely, separating wrong outputs from fair approval requests and from changes caused by new availability, since each needs a different fix.</p>
+
+      <!-- ========================================================= -->
+      <h2>What I learned</h2>
+      <p>My most useful decisions came from looking closely at the work people were doing:</p>
       <ul>
-        <li><strong>Research</strong> — shadowing the manager pod and running contextual inquiry to find the real tasks.</li>
-        <li><strong>Product thinking &amp; technical feasibility</strong> — screening candidate tasks against what was actually buildable and worth building.</li>
-        <li><strong>Conversation &amp; workflow design</strong> — the employee-facing question flow, the manager-facing review/correction loop, and the logic for escalating "complex" scenarios.</li>
-        <li><strong>Prototyping</strong> — done solo, in Figma and directly in prompts (no separate prototyping tool in between).</li>
+        <li><strong>Look at the work, not the request.</strong> Shadowing showed that coordination, not roster-building, was the real job.</li>
+        <li><strong>Fix the conversation before the model.</strong> Going from 10 messages to 3 needed no model change.</li>
+        <li><strong>Design the hand-off.</strong> The agent should finish what it can and bring people only the decisions that need them.</li>
       </ul>
-      <p>The developer owned model integration, the iMessage plumbing, and backend implementation. I worked in a tight loop with them on what was technically buildable, but the research, the conversation design, and the validation approach were mine end to end.</p>
+      <p>That's what I want to keep designing toward: managers contributing their judgment without having to hold every conversation needed to act on it.</p>
 
-      <h3>Research &amp; design methods</h3>
-      <ul>
-        <li><strong>First-principles problem framing</strong> — screened the four candidate tasks (scheduling, ordering, inventory, waste) for financial and technical feasibility rather than automating whatever managers asked for.</li>
-        <li><strong>Contextual inquiry / shadowing</strong> — the core research instrument, tracing the manager's actual day rather than asking what they'd like automated.</li>
-        <li><strong>Conversation design</strong> — the actual dialogue trees on both sides: the employee availability check-in and the manager review/correction loop.</li>
-        <li><strong>Agentic interface design &amp; human-AI collaboration patterns</strong> — the manager-corrects, agent-learns loop is a direct, ongoing application of this, not a one-time setup.</li>
-        <li><strong>Autonomy &amp; trust design</strong> — deliberately kept the manager in the loop as the arbiter of correctness rather than shipping a fully autonomous scheduler from day one; autonomy is being earned incrementally, on a stated timeline.</li>
-        <li><strong>Interaction design</strong> — cutting the employee-side flow from ~10 messages to 3 questions was a direct interaction-design intervention, not a model change.</li>
-      </ul>
-      <p><strong>Toolkit on this project:</strong> Figma, direct prompt design/iteration (no intermediate prototyping tool), iMessage as the delivery surface.</p>
-
-      <h2>Designing the solution</h2>
-      <p><strong>Employee side:</strong> the employee answers a few questions confirming availability and gets a schedule back. No back-and-forth required on their end. This flow used to take <strong>~10 messages</strong>; redesigning the question sequence got it down to <strong>3</strong> — a concrete, measurable UX improvement independent of any model quality gain.</p>
-      <p><strong>Manager side:</strong> the manager reviews the AI-drafted schedule, flags what it got wrong, and — critically — builds custom logic for specific recurring scenarios rather than just approving or rejecting outputs one at a time. "Training the model" here means correcting bad outputs <em>and</em> encoding edge-case logic, not just answering clarifying questions.</p>
-      <p><strong>What counts as "complex":</strong> health emergencies, weather-related no-shows, last-minute call-outs — the unpredictable cases that make static scheduling break. The agent also handles <strong>cross-store employee swaps</strong> when a single location is short-staffed, which is the harder version of the scheduling problem: it requires reasoning across locations, not just within one store's roster.</p>
-      <p><strong>A layer still being tested:</strong> gamification for low-availability shifts — points or recognition as positive reinforcement to get unpopular shifts picked up voluntarily, rather than the manager having to chase people down.</p>
-
-      <div class="tbd">Annotated screenshots of the iMessage flow — employee availability check-in, manager correction thread, before/after message-count comparison — to add</div>
-
-      <h2>Validating it — and watching it survive a bad stretch</h2>
-      <p>Accuracy here isn't a held-out test-set metric; it's defined the way the manager experiences it: <strong>the inverse of how often he has to intervene and rebuild.</strong></p>
-
-      <table>
-        <thead><tr><th></th><th>Result</th></tr></thead>
-        <tbody>
-          <tr><td>Starting accuracy (static-data schedules)</td><td>20–30%</td></tr>
-          <tr><td>Steady improvement rate</td><td>~5%/month</td></tr>
-          <tr><td>Call-out volatility stretch (~3 months)</td><td>accuracy dropped ~20% for ~2 months</td></tr>
-          <tr><td>Recovery</td><td>~5%/month improvement resumed</td></tr>
-        </tbody>
-      </table>
-
-      <p>That dip-and-recovery is, to me, more informative than the raw improvement number: it shows the system degrades gracefully under real volatility and comes back, rather than being a curve that only ever holds under clean conditions.</p>
-      <p><strong>The manager's trust arc tracked the accuracy curve, not the other way around.</strong> Early on, he was skeptical and frustrated — it felt like he was doing his job <em>and</em> training a model to eventually do it for him. Now, he trusts the agent enough that he doesn't manually build schedules anymore. The team's internal target is full scheduling autonomy within a year — a stated goal, not a shipped result yet.</p>
-      <p><strong>Status today:</strong> in production, live across all 10 stores, used daily by real managers, actively handling the harder cross-store swap cases.</p>
-
-      <h2>Extending the pattern: item &amp; inventory ordering</h2>
-      <p>The same agent-based approach has already been built and shipped for daily item ordering and inventory ordering — in use by every store manager today. It's not yet accurate enough to run unsupervised, so there's a manager-facing check/approve layer in front of it for now, with the same one-year target of shrinking manager involvement as accuracy climbs. Food (donut) waste management is next on the roadmap — not yet started.</p>
-
-      <h2>What I'd carry forward</h2>
-      <ul>
-        <li><strong>Trust gets earned through a visible correction loop, not claimed with an accuracy number.</strong> The manager didn't come around because a dashboard said "35% improved" — he came around because his corrections visibly stuck and the agent stopped repeating the same mistakes.</li>
-        <li><strong>The highest-leverage design change wasn't the model — it was the conversation.</strong> Cutting the employee flow from 10 messages to 3 is a pure interaction-design win, and it mattered as much to adoption as any accuracy gain.</li>
-        <li><strong>Real-world accuracy isn't monotonic, and that's fine to show.</strong> The call-out-driven dip and recovery is a more credible signal of a working system than a clean upward line would have been.</li>
-        <li><strong>Go after the harder version of the problem once the easy version is trusted.</strong> Cross-store swaps — reasoning across locations, not just within one — is where the real operational value is, and it only became viable to tackle after single-store scheduling had earned credibility.</li>
-      </ul>
-
-      <h2>Artifacts</h2>
-      <p>Not yet confirmed. Worth pulling in once available: screenshots of the iMessage conversation (employee flow and manager correction thread), the before/after message-count comparison, and any prompt/flow documentation.</p>
-      <div class="tbd">2–3 key screens once available — the manager correction interface, the employee availability check-in, and the cross-store swap flow if visualizable — to add</div>
-
-    </article>
+</article>
 
     <div class="case-footer">
       <a href="../../index.html#work">&larr; All work</a>

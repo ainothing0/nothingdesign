@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,900&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -16,12 +16,21 @@
 
   <main class="stage">
     <header class="topbar">
-      <a class="brand" href="#" aria-label="abcd, home">H<span class="dot"></span></a>
+      <a class="brand" href="#" aria-label="abcd, home">ABCD<span class="dot"></span></a>
       <button class="menu-btn" aria-label="Open menu"><i></i><i></i><i></i><i></i></button>
       <nav class="site-nav" aria-label="Primary">
         <a href="#work">Work</a>
       </nav>
     </header>
+
+    <div class="hero-copy">
+      <h1><strong>A conductor</strong> who designs what agents show, and directs the rest.</h1>
+      <p class="role">Product Designer &middot; Agentic Interfaces</p>
+      <div class="hero-actions">
+        <a class="btn btn--primary" href="#work">View work &darr;</a>
+        <a class="btn btn--soft" href="#">Get in touch &rarr;</a>
+      </div>
+    </div>
 
     <canvas id="sphere-canvas" aria-hidden="true"></canvas>
 
@@ -70,7 +79,7 @@
         </div>
         <h3 class="work-card__title">Estbuild</h3>
         <p class="work-card__role">Product Designer &amp; Co-founder — Aithraa, Phase 2</p>
-        <p class="work-card__summary">Designed an AI-assisted estimating workspace for demolition contractors, replacing four disconnected tools with one. Validated a 90% reduction in estimating time before pausing on a hard measurement-accuracy problem.</p>
+        <p class="work-card__summary">Designed an AI-assisted estimating workspace for demolition contractors, replacing four disconnected tools with one. Research moved the first release from partial automation to a complete estimate users could correct.</p>
         <span class="work-card__cta">Read case study &rarr;</span>
       </a>
 
@@ -81,7 +90,7 @@
         </div>
         <h3 class="work-card__title">Pinnacle AI</h3>
         <p class="work-card__role">Product Designer</p>
-        <p class="work-card__summary">Shadowed a coffee-shop manager's real workflow, then designed a conversational scheduling agent over iMessage — now trusted daily across all 10 stores, handling cross-store shift swaps.</p>
+        <p class="work-card__summary">Designed a scheduling agent in iMessage for a 10-store coffee chain. Managers' weekly scheduling work went from about 2–3 hours to 5–10 minutes per store.</p>
         <span class="work-card__cta">Read case study &rarr;</span>
       </a>
 
@@ -234,6 +243,17 @@ function makeCardTexture(card, tone){
   c.width = w; c.height = h;
   const ctx = c.getContext("2d");
 
+  // Rounded corners: clip everything to a rounded rect; the rest stays transparent.
+  const r = 30;
+  ctx.beginPath();
+  ctx.moveTo(r, 0);
+  ctx.arcTo(w, 0, w, h, r);
+  ctx.arcTo(w, h, 0, h, r);
+  ctx.arcTo(0, h, 0, 0, r);
+  ctx.arcTo(0, 0, w, 0, r);
+  ctx.closePath();
+  ctx.clip();
+
   const g = ctx.createLinearGradient(0, 0, w, h);
   g.addColorStop(0, tone.a);
   g.addColorStop(1, tone.b);
@@ -264,14 +284,14 @@ function makeCardTexture(card, tone){
   // past the card's right edge.
   let titleSize = 30;
   const maxTitleWidth = w - 18 * 2;
-  ctx.font = `700 ${titleSize}px Arial`;
+  ctx.font = `700 ${titleSize}px "Plus Jakarta Sans", Arial`;
   while (ctx.measureText(title).width > maxTitleWidth && titleSize > 20) {
     titleSize -= 1;
-    ctx.font = `700 ${titleSize}px Arial`;
+    ctx.font = `700 ${titleSize}px "Plus Jakarta Sans", Arial`;
   }
   ctx.fillText(title, 18, h - 56);
   if (meta) {
-    ctx.font = "500 13px Arial";
+    ctx.font = "500 13px 'Plus Jakarta Sans', Arial";
     ctx.globalAlpha = .75;
     ctx.fillText(meta.toUpperCase(), 18, h - 32);
   }
@@ -281,15 +301,23 @@ function makeCardTexture(card, tone){
   return tex;
 }
 
+// One tone per stage, lightest to darkest: a card's shade tells you how far
+// along the process it is, and each stage forms a clean column across rings.
 const TONES = [
-  { a: "#2c2b2a", b: "#6b6762", text: "#fff" },
-  { a: "#d7d3cd", b: "#a9a49c", text: "#141414" },
-  { a: "#141414", b: "#2c2b2a", text: "#fff" },
-  { a: "#f2f0ed", b: "#d7d3cd", text: "#141414" },
-  { a: "#6b6762", b: "#2c2b2a", text: "#fff" },
+  { a: "#f2f0ed", b: "#d7d3cd", text: "#141414" }, // problem
+  { a: "#d7d3cd", b: "#bdb8b0", text: "#141414" }, // flow
+  { a: "#bdb8b0", b: "#a9a49c", text: "#141414" }, // prototype
+  { a: "#6b6762", b: "#4a4846", text: "#fff" },    // test
+  { a: "#2c2b2a", b: "#3a3836", text: "#fff" },    // fix
+  { a: "#141414", b: "#2c2b2a", text: "#fff" },    // ship
 ];
 
-const cardTextures = CARDS.map((card, i) => makeCardTexture(card, TONES[i % TONES.length]));
+// Card text is drawn to canvas once, so wait for the webfont (capped) first.
+await Promise.race([
+  Promise.all([document.fonts.load('700 30px "Plus Jakarta Sans"'), document.fonts.load('500 13px "Plus Jakarta Sans"')]),
+  new Promise((r) => setTimeout(r, 2000)),
+]);
+const cardTextures = CARDS.map((card) => makeCardTexture(card, TONES[STAGE_ORDER.indexOf(card.stage)]));
 
 /* ---------------- centerpiece: cut the white ground out of the source PNG ----------------
    human-particle.png is an opaque RGB image with a flat white background
@@ -371,7 +399,7 @@ function makeCutoutMaterial(texture) {
    them in order traces a clean loop around the ring instead of a line
    cutting through the sphere's middle. Points are generated ring-major,
    stage-minor, matching the order CARDS was built in above. */
-const RING_LATITUDES = [0.78, 0.26, -0.26, -0.78]; // 4 rings, evenly spaced, as a fraction of R
+const RING_LATITUDES = [0.84, 0.28, -0.28, -0.84]; // 4 rings, evenly spaced, as a fraction of R
 
 function ringPoints(radius) {
   const pts = [];
@@ -394,12 +422,12 @@ const stage = document.querySelector(".stage");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(50, stage.clientWidth / stage.clientHeight, 0.1, 100);
+const camera = new THREE.PerspectiveCamera(50, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
 camera.position.set(0, 0, 3.25 * R);
 
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setSize(stage.clientWidth, stage.clientHeight);
+renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
 
 /* ---- the orbiting process cards ---- */
 const points = ringPoints(R);
@@ -538,10 +566,10 @@ canvas.addEventListener("pointerleave", (e) => { if (e.buttons === 0) endDrag();
 
 /* ---------------- resize ---------------- */
 function onResize() {
-  const w = stage.clientWidth, h = stage.clientHeight;
+  const w = canvas.clientWidth, h = canvas.clientHeight;
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
-  renderer.setSize(w, h);
+  renderer.setSize(w, h, false);
 }
 window.addEventListener("resize", onResize);
 
@@ -579,7 +607,7 @@ function tick() {
     card.position.copy(worldPos);
     card.quaternion.copy(camera.quaternion); // billboard — uncompounded, cards are scene children
     const t = THREE.MathUtils.clamp((-worldPos.dot(viewDir) / R + 1) / 2, 0, 1);
-    card.material.opacity = THREE.MathUtils.lerp(0.08, 1, t * t);
+    card.material.opacity = THREE.MathUtils.lerp(0.05, 1, THREE.MathUtils.smoothstep(t, 0.4, 0.85));
   });
 
   if (centerFigure) centerFigure.quaternion.copy(camera.quaternion); // billboard only — position never changes

@@ -50,12 +50,59 @@ body{
 
 #sphere-canvas{
   display:block;
-  width:100%;
+  position:absolute;
+  top:0;right:0;
+  width:55%;
   height:100%;
   touch-action:none;
   cursor:grab;
 }
 #sphere-canvas.dragging{cursor:grabbing}
+
+/* ---------------- hero copy (left) ---------------- */
+
+.hero-copy{
+  position:absolute;z-index:5;
+  left:var(--pad);top:50%;transform:translateY(-50%);
+  width:min(38%, 600px);
+  padding-left:clamp(0px, 2vw, 40px);
+  pointer-events:none;
+}
+.hero-copy h1{
+  margin:0 0 20px;
+  font-family:"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-weight:400;
+  font-size:clamp(26px, 3vw, 48px);
+  line-height:1.12;
+  letter-spacing:-.025em;
+  text-wrap:balance;
+  color:var(--ink);
+}
+.hero-copy h1 strong{font-weight:600}
+.hero-copy .role{
+  margin:0 0 32px;
+  font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--stone-3);
+}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;pointer-events:auto}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  height:44px;padding:0 22px;
+  border-radius:var(--radius-pill, 999px);
+  font-family:inherit;
+  font-size:14px;font-weight:500;
+  text-decoration:none;
+  transition:background-color .3s var(--ease), color .3s var(--ease);
+}
+.btn--primary{background:var(--ink);color:var(--paper)}
+.btn--primary:hover{background:var(--stone-4)}
+.btn--soft{background:var(--stone-0);color:var(--ink)}
+.btn--soft:hover{background:var(--stone-1)}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+
 
 /* ---------------- top bar ---------------- */
 
@@ -73,8 +120,8 @@ body{
   display:inline-flex;
   align-items:baseline;
   gap:.18em;
-  font-family:"Archivo","Arial Black",Arial,sans-serif;
-  font-weight:900;
+  font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-weight:800;
   font-size:15px;
   letter-spacing:.1em;
   text-transform:uppercase;
@@ -93,7 +140,7 @@ body{
   display:flex;
   align-items:center;
   gap:24px;
-  font-family:"DM Mono",ui-monospace,monospace;
+  font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
   font-size:12px;
   letter-spacing:.06em;
   text-transform:uppercase;
@@ -127,7 +174,7 @@ body{
   display:grid;place-items:center;
   border:1px solid var(--hair);
   border-radius:999px;
-  font-family:"DM Mono",ui-monospace,monospace;
+  font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
   font-size:11px;letter-spacing:.06em;
   color:var(--ink);text-decoration:none;
   background:transparent;
@@ -165,7 +212,7 @@ body{
 .cta:hover .arrow{transform:translate(3px,-3px)}
 .cta .roll{
   position:relative;height:1em;overflow:hidden;
-  font-family:"DM Mono",ui-monospace,monospace;
+  font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
   font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-align:center;
 }
 .cta .roll span{display:block;transition:transform .5s var(--ease)}
@@ -180,6 +227,14 @@ body{
 /* The sphere's own idle drift and drag inertia already check this in JS
    (see index.html) — this just keeps the cursor from suggesting a drag
    interaction that won't animate. */
+/* hero: stack on phones */
+@media (max-width:900px){
+  #sphere-canvas{width:100%;height:58%;top:auto;bottom:0}
+  .hero-copy{top:calc(var(--pad) * 3.2);transform:none;width:auto;right:var(--pad)}
+  .hero-copy h1{font-size:clamp(26px, 7vw, 38px)}
+  .hero-copy .role{margin-bottom:20px}
+}
+
 @media (prefers-reduced-motion:reduce){
   #sphere-canvas{cursor:default}
 }
@@ -200,8 +255,8 @@ body{
 }
 .work-intro h2{
   margin:0 0 .4em;
-  font-family:"Archivo","Arial Black",Arial,sans-serif;
-  font-weight:900;
+  font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-weight:800;
   text-transform:uppercase;
   font-size:clamp(28px, 4vw, 40px);
   letter-spacing:.01em;
@@ -241,7 +296,7 @@ a.work-card:hover{background:var(--stone-0)}
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  font-family:"DM Mono",ui-monospace,monospace;
+  font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
   font-size:11px;
   letter-spacing:.06em;
   text-transform:uppercase;
@@ -257,8 +312,8 @@ a.work-card:hover{background:var(--stone-0)}
 
 .work-card__title{
   margin:0;
-  font-family:"Archivo","Arial Black",Arial,sans-serif;
-  font-weight:900;
+  font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-weight:800;
   text-transform:uppercase;
   font-size:20px;
   letter-spacing:.01em;
@@ -279,7 +334,7 @@ a.work-card:hover{background:var(--stone-0)}
 
 .work-card__cta{
   margin-top:auto;
-  font-family:"DM Mono",ui-monospace,monospace;
+  font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
   font-size:11px;
   letter-spacing:.08em;
   text-transform:uppercase;
