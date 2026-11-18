@@ -192,6 +192,13 @@ Build order: (1) shared chrome, (2) case-study pages, (3) home page and hero,
   IP wall with the real positions and the real ending). All three case
   studies now share the pattern: hero entrance, a cinematic opening, one
   interactive piece on the key decision, scroll-played diagrams.
+- **Opening flash fixed (2026-11-17).** The process row used to show on load,
+  fade out when the hero script arrived, then fade in again (every visit).
+  Now `.stage` carries `is-intro` in the markup, so the row is hidden from the
+  first paint (only with JS and motion allowed); the hero script takes it over
+  (`window.heroIntroOwned`), and if it never runs the page shows the row after
+  12s. The headline-first phase (`hl-first`) is likewise decided in `<head>`,
+  before the first paint, so the headline can't flash on a slow load.
 - **Hero v2 is a trial in `hero-v2.html` (2026-11-17), not live.** Unlinked lab
   page; `index.html` is unchanged. It has redesigned cards (the stage is the
   card's name; tool and its category below), three rings, a tilted orbit, depth

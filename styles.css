@@ -147,12 +147,16 @@ html:not(.hl-first) .hero-loader:not(.is-done){display:none}
 
 /* opening, part 2: the six stages land one by one as the rings swing in
    (timing in the hero script). Only applied when that script runs it. */
-.stage.is-intro .hero-steps li{
-  opacity:0;
-  transform:translateY(10px);
-  transition:opacity .8s var(--ease), transform .8s var(--ease), color var(--dur-2) var(--ease);
+/* .is-intro is in the markup, so the row is hidden from the first paint;
+   only with JavaScript (.js, set in <head>) and only when motion is allowed. */
+@media (prefers-reduced-motion:no-preference){
+  .js .stage.is-intro .hero-steps li{
+    opacity:0;
+    transform:translateY(10px);
+    transition:opacity .8s var(--ease), transform .8s var(--ease), color var(--dur-2) var(--ease);
+  }
+  .js .stage.is-intro .hero-steps li.is-in{opacity:1;transform:none}
 }
-.stage.is-intro .hero-steps li.is-in{opacity:1;transform:none}
 
 /* caption: the stage in focus, in a sentence, above the process row */
 .hero-caption{
