@@ -1,0 +1,145 @@
+/* Aithraa Phase 1 case study: styles for its cinematic and interactive
+   pieces (aithraa.js). Page-specific; tokens only. Same convention as the
+   other case studies: accent marks a good match, --failed a bad one. */
+
+.ai-kicker{
+  margin:0 0 var(--space-3);
+  font:400 var(--text-label)/1.2 var(--font-text);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-2);
+}
+.ai-kicker--ink{color:var(--ink)}
+.ai-cap{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)}
+.ai-chip-btn,
+.ai-btn{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  min-height:36px;
+  padding:0 var(--space-3);
+  font:400 var(--text-small)/1 var(--font-text);
+  color:var(--ink);
+  background:color-mix(in srgb, var(--surface) 60%, transparent);
+  border:1px solid var(--line);
+  border-radius:var(--radius-nested);
+  cursor:pointer;
+  white-space:nowrap;
+  transition:background-color var(--dur-1) var(--ease);
+}
+.ai-chip-btn::after,.ai-btn::after{content:"";position:absolute;inset:-4px 0}
+.ai-chip-btn:hover,.ai-btn:hover{background:var(--sunk)}
+.ai-chip-btn[hidden],.ai-btn[hidden]{display:none}
+.ai-btn--ink{color:var(--on-ink);background:var(--ink);border-color:var(--ink)}
+.ai-btn--ink:hover{background:var(--ink-2)}
+
+/* ---------------- 1. opening ---------------- */
+.ai-intro{margin-top:0}
+.ai-stage{
+  padding:var(--space-6);
+  overflow-x:auto;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+}
+.ai-stage svg{display:block;width:100%;min-width:600px;height:auto;margin-top:var(--space-2)}
+.ai-col{font:400 10.5px/1 var(--font-text);letter-spacing:.08em;fill:var(--ink-2)}
+.ai-card__box{fill:var(--surface);stroke:var(--line)}
+.ai-card__name{font:500 15px/1 var(--font-text);fill:var(--ink)}
+.ai-chip rect{fill:var(--sunk);stroke:transparent;transition:fill .5s var(--ease), stroke .5s var(--ease)}
+.ai-chip text{font:400 12px/1 var(--font-text);fill:var(--ink-2);transition:fill .5s var(--ease)}
+.ai-chip.is-match rect{fill:color-mix(in srgb, var(--accent) 10%, var(--surface));stroke:var(--accent)}
+.ai-chip.is-match text{fill:var(--accent)}
+.ai-link{fill:none;stroke-width:1.5;stroke-dasharray:1;stroke-dashoffset:1;opacity:0;transition:stroke-dashoffset 1.2s cubic-bezier(.45,0,.2,1), opacity .4s var(--ease)}
+.ai-link--bad{stroke:var(--ink-3)}
+.ai-link--good{stroke:var(--accent);stroke-width:2}
+.ai-mark{font:500 16px/1 var(--font-text);fill:var(--failed);opacity:0;transition:opacity .4s var(--ease)}
+.ai-intro[data-state^="bad"] .ai-link--bad{opacity:1;stroke-dashoffset:0}
+.ai-intro[data-state="bad-marked"] .ai-mark{opacity:1}
+.ai-intro[data-state="bad-marked"] .ai-link--bad{stroke:color-mix(in srgb, var(--failed) 55%, transparent)}
+.ai-intro[data-state="clearing"] .ai-link--bad{opacity:0;stroke-dashoffset:0}
+.ai-intro[data-state="good"] .ai-link--good{opacity:1;stroke-dashoffset:0}
+.ai-intro .ai-card{opacity:0;transition:opacity .6s var(--ease)}
+.ai-intro[data-state] .ai-card{opacity:1}
+
+/* ---------------- 2. try it ---------------- */
+.ai-try__top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:var(--space-2) var(--space-4);margin-bottom:var(--space-3)}
+.ai-try__top .ai-kicker{margin:0}
+.case-body .ai-steps{display:flex;gap:var(--space-4);margin:0;padding:0;list-style:none;font:400 var(--text-label)/1.2 var(--font-text);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.case-body .ai-steps li{margin:0}
+.ai-steps .is-current{color:var(--ink);font-weight:500}
+.ai-steps .is-done::after{content:" ✓"}
+.ai-try__stage{
+  display:grid;
+  grid-template-columns:minmax(0, .9fr) minmax(0, 1.4fr);
+  gap:var(--space-6);
+  padding:var(--space-6);
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+}
+.ai-brief__name{margin:0 0 var(--space-4);font:400 var(--text-h3, 24px)/1.15 var(--font-display)}
+.ai-brief__list{margin:0;display:grid;gap:var(--space-3)}
+.ai-brief__list div{display:grid;gap:2px}
+.ai-brief__list dt{font:400 var(--text-label)/1.2 var(--font-text);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.ai-brief__list dd{margin:0;font:400 var(--text-small)/1.4 var(--font-text)}
+.ai-opts{display:grid;gap:var(--space-2);align-content:start}
+.ai-opts .ai-kicker{margin-bottom:var(--space-1)}
+.ai-opt{
+  display:grid;
+  gap:4px;
+  padding:var(--space-3) var(--space-4);
+  font:inherit;
+  text-align:left;
+  color:var(--ink);
+  background:color-mix(in srgb, var(--surface) 60%, transparent);
+  border:1px solid var(--line);
+  border-radius:var(--radius-nested);
+  cursor:pointer;
+  transition:border-color var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease);
+}
+.ai-opt:hover{background:var(--sunk)}
+.ai-opt__name{font:500 var(--text-small)/1.3 var(--font-text)}
+.ai-opt__who{font:400 12px/1.3 var(--font-text);color:var(--ink-2)}
+.ai-opt__meta{font:400 12px/1.3 var(--font-text);color:var(--ink-2)}
+.ai-fit{display:none;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-1)}
+.ai-fit em{padding:3px 7px;font:400 11.5px/1 var(--font-text);font-style:normal;border-radius:4px}
+.ai-fit .is-yes{color:var(--accent);border:1px solid color-mix(in srgb, var(--accent) 45%, transparent)}
+.ai-fit .is-no{color:var(--failed);background:var(--failed-bg)}
+.ai-opt.is-picked{border-color:var(--ink)}
+.ai-opt.is-picked .ai-fit{display:flex}
+.ai-try.is-walled .ai-opt:not(.is-picked){opacity:.45}
+.ai-start{margin-top:var(--space-4)}
+.ai-start:empty,.ai-start:has(> [hidden]:only-child){margin:0}
+.ai-wall{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) 72px minmax(0, 1fr);
+  align-items:stretch;
+  gap:0;
+  margin-top:var(--space-4);
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity .6s var(--ease), transform .6s var(--ease);
+}
+.ai-wall[hidden]{display:none}
+.ai-wall.is-in{opacity:1;transform:none}
+.ai-wall__side{padding:var(--space-4) var(--space-5);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-nested)}
+.ai-wall__side .ai-kicker{margin-bottom:var(--space-2)}
+.ai-wall__claim{margin:0 0 4px;font:400 22px/1.15 var(--font-display)}
+.ai-wall__why{margin:0;font:400 var(--text-small)/1.4 var(--font-text);color:var(--ink-2)}
+.ai-wall__mid{display:grid;place-items:center;position:relative}
+.ai-wall__mid::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:1px dashed var(--ink-3)}
+.ai-wall__mid span{position:relative;display:grid;place-items:center;width:32px;height:32px;font:500 16px/1 var(--font-text);color:var(--failed);background:var(--failed-bg);border-radius:var(--radius-nested)}
+.ai-say{min-height:3em;margin:var(--space-4) 0 0;max-width:62ch;font:400 16px/1.5 var(--font-text);color:var(--ink)}
+
+/* ---------------- phones ---------------- */
+@media (max-width:760px){
+  .ai-stage{padding:var(--space-4)}
+  .ai-try__stage{grid-template-columns:1fr;gap:var(--space-5);padding:var(--space-4)}
+  .ai-wall{grid-template-columns:1fr;grid-template-rows:auto 40px auto}
+  .ai-wall__mid::before{left:50%;right:auto;top:0;bottom:0;border-top:0;border-left:1px dashed var(--ink-3)}
+  .ai-cap{flex-direction:column;align-items:flex-start}
+}
+@media (prefers-reduced-motion:reduce){
+  .ai-link,.ai-chip rect,.ai-chip text,.ai-mark,.ai-intro .ai-card,.ai-wall{transition:none}
+}

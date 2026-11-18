@@ -1,331 +1,569 @@
 /* ============================================================
-   Case study article layout — shared across every /work/<slug>/ page.
-   Loaded after ./shared.css (nav/footer chrome + inlined design tokens).
-   Nothing in this file is specific to any one case study; it's the
-   reusable hero/body/stat-grid/table language all case studies share.
+   Case-study layout (v1) — shared by every /work/<slug>/ page.
+   Loaded after design-system/tokens.css and site.css.
+
+   Two voices: Instrument Serif speaks (titles, headings, numbers,
+   quotes); Geist is the instrument (facts, cards, diagrams, labels).
+   Text sits in a reading column on the left; figures run wider.
+   The empty right-hand space is intentional.
    ============================================================ */
 
-.case-hero{
-  max-width:820px;
+.case-hero,
+.case-body,
+.case-footer{
+  max-width:1120px;
   margin:0 auto;
-  padding:calc(var(--pad) * 1.8) var(--pad) var(--pad);
+  padding-left:var(--pad);
+  padding-right:var(--pad);
 }
-.case-hero__eyebrow{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:14px;
-  font-family:var(--font-mono);
-  font-size:12px;
+
+/* small uppercase label, used throughout */
+.case-hero__eyebrow,
+.case-hero__meta,
+.case-facts dt,
+.decision__label,
+.case-body th,
+.pull-quote cite,
+.tbd,
+.case-figure__slot{
+  font:400 var(--text-label)/1.4 var(--font-text);
   letter-spacing:.08em;
   text-transform:uppercase;
-  color:var(--stone-3);
+  color:var(--ink-2);
+}
+
+/* ---------------- hero ---------------- */
+
+.case-hero{padding-top:var(--space-8)}
+.case-hero__eyebrow{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:var(--space-2) var(--space-4);
+  margin:0 0 var(--space-5);
 }
 .case-hero__status{
-  padding:3px 9px;
-  border:1px solid var(--ink);
-  border-radius:var(--radius-pill);
+  padding:6px 8px;
+  border:1px solid var(--line);
+  border-radius:var(--radius-nested);
   color:var(--ink);
 }
 .case-hero h1{
-  margin:0 0 .5em;
-  font-family:var(--font-display);
-  font-weight:800;
-  text-transform:uppercase;
-  font-size:clamp(32px, 5.5vw, 56px);
-  line-height:.98;
-  letter-spacing:.005em;
+  margin:0 0 var(--space-5);
+  max-width:17em;
+  font:400 var(--text-h1)/1.04 var(--font-display);
+  letter-spacing:-.012em;
+  text-wrap:balance;
 }
-.case-hero__meta{
-  margin:0 0 22px;
-  font-size:14px;
-  color:var(--stone-3);
+.case-hero__dek{
+  margin:0 0 var(--space-5);
+  max-width:32em;
+  font-size:var(--text-lead);
+  line-height:1.4;
+  color:var(--ink-2);
 }
+.case-hero__meta{margin:0}
+
+.case-facts{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));
+  gap:var(--space-5);
+  margin:var(--space-7) 0 0;
+  padding:var(--space-5);
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+}
+.case-facts dt{margin-bottom:var(--space-2)}
+.case-facts dd{margin:0;font-size:var(--text-ui);line-height:1.45}
+
 .case-hero__tldr{
-  margin:0;
-  padding:20px;
-  border:1px solid var(--hair);
-  font-size:15px;
-  line-height:1.65;
-  background:var(--paper);
+  margin:var(--space-7) 0 0;
+  padding-left:var(--space-5);
+  border-left:1px solid var(--ink);
+  max-width:var(--measure);
+  font:400 var(--text-body)/1.6 var(--font-prose);
 }
+
+/* ---------------- body ---------------- */
 
 .case-body{
-  max-width:820px;
-  margin:0 auto;
-  padding:0 var(--pad) calc(var(--pad) * 2.4);
-  font-size:15.5px;
-  line-height:1.7;
+  padding-top:var(--space-7);
+  padding-bottom:var(--space-9);
+  font:400 var(--text-body)/1.6 var(--font-prose);
 }
+.case-body > p,
+.case-body > ul,
+.case-body > ol,
+.decision > p{max-width:var(--measure);margin:0 0 var(--space-4)}
+.case-body ul,
+.case-body ol{padding-left:1.2em}
+.case-body li{margin-bottom:var(--space-2)}
+.case-body strong,
+.case-hero__tldr strong{font-weight:600}
+.case-body a{color:var(--accent);text-underline-offset:3px}
 
 .case-body h2{
-  margin:2.4em 0 .6em;
-  font-family:var(--font-display);
-  font-weight:800;
-  text-transform:uppercase;
-  font-size:clamp(20px, 2.6vw, 26px);
-  letter-spacing:.01em;
-  border-top:1px solid var(--hair);
-  padding-top:.9em;
+  margin:var(--space-9) 0 var(--space-4);
+  max-width:22em;
+  font:400 var(--text-h2)/1.12 var(--font-display);
+  letter-spacing:-.008em;
+  text-wrap:balance;
 }
-.case-body h2:first-child{border-top:0;margin-top:0;padding-top:0}
-
 .case-body h3{
-  margin:1.8em 0 .5em;
-  font-family:var(--font-sans);
-  font-weight:600;
-  font-size:16px;
+  margin:var(--space-7) 0 var(--space-3);
+  max-width:26em;
+  font:400 var(--text-h3)/1.2 var(--font-display);
 }
 
-.case-body p{margin:0 0 1em}
-.case-body ul,
-.case-body ol{margin:0 0 1em;padding-left:1.3em}
-.case-body li{margin-bottom:.4em}
-
-.case-body strong{font-weight:700}
-
-.case-body table{
-  width:100%;
-  margin:1em 0 1.6em;
-  border-collapse:collapse;
-  font-size:14px;
-}
-.case-body th,
-.case-body td{
-  padding:10px 12px;
-  border:1px solid var(--hair);
-  text-align:left;
-  vertical-align:top;
-}
-.case-body th{
-  font-family:var(--font-mono);
-  font-size:11px;
-  letter-spacing:.05em;
-  text-transform:uppercase;
-  color:var(--stone-3);
-  background:var(--stone-0);
-}
+/* ---------------- stats ---------------- */
 
 .stat-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
-  gap:1px;
-  background:var(--hair);
-  border:1px solid var(--hair);
-  margin:1.4em 0 1.8em;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:var(--space-4);
+  margin:0 0 var(--space-7);
 }
+.case-body > .stat-grid:first-child{margin-top:var(--space-4)}
 .stat{
-  background:var(--paper);
-  padding:18px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:var(--space-3);
+  padding:var(--space-5);
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
 }
 .stat__value{
-  display:block;
-  font-family:var(--font-display);
-  font-weight:800;
-  font-size:24px;
-  margin-bottom:6px;
+  font:400 clamp(30px, 3.2vw, 42px)/1.05 var(--font-display);
+  font-variant-numeric:tabular-nums;
 }
-.stat__label{
-  display:block;
-  font-size:12.5px;
-  color:var(--stone-3);
-  line-height:1.4;
-}
+.stat__label{font:400 var(--text-ui)/1.45 var(--font-text);color:var(--ink-2)}
 
-.case-body blockquote{
-  margin:1.4em 0;
-  padding-left:16px;
-  border-left:2px solid var(--ink);
-  font-size:14.5px;
-  color:var(--stone-3);
-}
+/* ---------------- quotes ---------------- */
 
-.tbd{
-  margin:1.6em 0;
-  padding:26px 20px;
-  border:1px dashed var(--stone-2);
-  text-align:center;
-  font-family:var(--font-mono);
-  font-size:12px;
-  letter-spacing:.04em;
-  text-transform:uppercase;
-  color:var(--stone-3);
+.case-body blockquote,
+.pull-quote{
+  margin:var(--space-7) 0;
+  padding-left:var(--space-5);
+  border-left:1px solid var(--ink);
+  max-width:26em;
+  font:italic 400 clamp(24px, 2.8vw, 32px)/1.25 var(--font-display);
+  text-wrap:balance;
 }
+.pull-quote p{margin:0 0 var(--space-3)}
+.pull-quote cite{font-style:normal;display:block}
 
-/* ---------- project facts strip (role, team, timeline, tools) ---------- */
-.case-facts{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
-  gap:1px;
-  margin:0 0 22px;
-  background:var(--hair);
-  border:1px solid var(--hair);
-}
-.case-facts div{background:var(--paper);padding:12px 14px}
-.case-facts dt{
-  margin-bottom:4px;
-  font-family:var(--font-mono);
-  font-size:10.5px;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  color:var(--stone-3);
-}
-.case-facts dd{margin:0;font-size:13.5px;line-height:1.45}
+/* ---------------- design decisions ---------------- */
 
-/* ---------- figures (screens, diagrams) ---------- */
-.case-figure{margin:1.8em 0 2em}
-.case-figure img{width:100%;height:auto;border:1px solid var(--hair)}
-.case-figure figcaption{
-  margin-top:10px;
-  font-size:13px;
-  line-height:1.5;
-  color:var(--stone-3);
-}
-/* Stand-in frame until the real screen is exported. Swap the whole
-   .case-figure__slot div for an <img> when the asset exists. */
-.case-figure__slot{
-  display:grid;
-  place-items:center;
-  aspect-ratio:16 / 10;
-  padding:20px;
-  border:1px dashed var(--stone-2);
-  background:var(--stone-0);
-  text-align:center;
-  font-family:var(--font-mono);
-  font-size:11.5px;
-  letter-spacing:.04em;
-  text-transform:uppercase;
-  color:var(--stone-3);
-}
-
-/* Inline SVG diagrams and charts, drawn with tokens so they match the
-   page. Inlined (not <img>) so they can read the CSS variables and the
-   webfont. Below ~600px wide the frame scrolls sideways instead of
-   shrinking the labels past legibility. */
-.case-diagram{
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-  border:1px solid var(--hair);
-  background:var(--paper);
-}
-.case-diagram svg{display:block;width:100%;min-width:600px;height:auto}
-.case-diagram text{font-family:var(--font-sans);fill:var(--ink)}
-.case-diagram .d-title{font-family:var(--font-display);font-weight:700;font-size:16px}
-.case-diagram .d-body{font-size:13px;fill:var(--stone-3)}
-.case-diagram .d-label{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.08em;fill:var(--stone-3)}
-.case-diagram .d-label--ink{fill:var(--ink)}
-.case-diagram .d-label--paper{fill:var(--paper)}
-.case-diagram .d-card{fill:var(--paper);stroke:var(--hair)}
-.case-diagram .d-ink{fill:var(--ink)}
-.case-diagram .d-muted{fill:var(--stone-1)}
-.case-diagram .d-soft{fill:var(--stone-0)}
-.case-diagram .d-outline{fill:none;stroke:var(--ink);stroke-width:1}
-.case-diagram .d-dashed{fill:none;stroke:var(--ink);stroke-width:1;stroke-dasharray:4 3}
-.case-diagram .d-grid{stroke:var(--hair);stroke-width:1}
-.case-diagram .d-axis{stroke:var(--stone-2);stroke-width:1}
-.case-diagram .d-rail{stroke:var(--stone-1);stroke-width:2}
-.case-diagram .d-line{fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
-.case-diagram .d-hollow{fill:var(--paper);stroke:var(--ink);stroke-width:2}
-
-/* ---------- design decision blocks ---------- */
 .decision{
-  margin:1.6em 0 2em;
-  padding:20px;
-  border:1px solid var(--hair);
+  margin:var(--space-7) 0 0;
+  padding-top:var(--space-5);
+  border-top:1px solid var(--line);
 }
-.decision__label{
-  display:block;
-  margin-bottom:6px;
-  font-family:var(--font-mono);
-  font-size:11px;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  color:var(--stone-3);
-}
-.case-body .decision h3{margin:0 0 .6em;font-size:17px}
-.case-body .decision__options{padding:0}
-.decision__options{
+.decision__label{display:block}
+.case-body .decision h3{margin:var(--space-2) 0 var(--space-5)}
+.case-body .decision__options{
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));
-  gap:1px;
-  margin:0 0 1em;
+  grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));
+  gap:var(--space-3);
+  max-width:920px;
+  margin:0 0 var(--space-5);
   padding:0;
   list-style:none;
-  background:var(--hair);
-  border:1px solid var(--hair);
 }
 .case-body .decision__options li{
   margin:0;
-  padding:12px 14px;
-  background:var(--paper);
-  font-size:13.5px;
-  line-height:1.5;
-  color:var(--stone-3);
+  padding:var(--space-4);
+  font:400 var(--text-ui)/1.45 var(--font-text);
+  color:var(--ink-2);
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
 }
-.case-body .decision__options li.is-chosen{background:var(--ink);color:var(--paper)}
 .decision__options b{
   display:block;
-  margin-bottom:2px;
-  font-weight:600;
-  color:inherit;
+  margin-bottom:var(--space-1);
+  font-weight:500;
+  color:var(--ink);
 }
+.case-body .decision__options li.is-chosen{
+  background:var(--ink);
+  border-color:var(--ink);
+  color:var(--on-ink);
+}
+.decision__options li.is-chosen b{color:var(--on-ink)}
 .case-body .decision p:last-child{margin-bottom:0}
 
-/* ---------- tables that need to scroll on phones ---------- */
-.table-scroll{overflow-x:auto;margin:1em 0 1.6em}
+/* ---------------- figures ---------------- */
+
+.case-figure{margin:var(--space-7) 0;max-width:920px}
+.case-figure img{
+  display:block;
+  width:100%;
+  height:auto;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+}
+.case-figure figcaption{
+  margin-top:var(--space-3);
+  font:400 var(--text-small)/1.45 var(--font-text);
+  color:var(--ink-2);
+}
+
+/* Stand-in frame until the real screen is exported. Swap the whole
+   .case-figure__slot div for an <img> when the asset exists. */
+.case-figure__slot,
+.tbd{
+  display:grid;
+  place-items:center;
+  padding:var(--space-5);
+  text-align:center;
+  background:var(--sunk);
+  border:1px dashed var(--ink-3);
+  border-radius:var(--radius);
+}
+.case-figure__slot{aspect-ratio:16 / 10}
+.tbd{margin:var(--space-7) 0;max-width:920px;min-height:120px}
+
+/* Inline SVG diagrams, drawn with tokens so they follow the theme.
+   Below ~600px the frame scrolls sideways instead of shrinking the
+   labels past legibility. */
+.case-diagram{
+  --paper:var(--on-ink);   /* text and strokes drawn on an ink shape */
+  padding:var(--space-5);
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+}
+.case-diagram svg{display:block;width:100%;min-width:600px;height:auto}
+.case-diagram rect{rx:6px}
+.case-diagram text{font-family:var(--font-text);fill:var(--ink)}
+.case-diagram .d-title{font-weight:500;font-size:16px}
+.case-diagram .d-body{font-size:13px;fill:var(--ink-2)}
+.case-diagram .d-label{font-size:10.5px;letter-spacing:.08em;fill:var(--ink-2)}
+.case-diagram .d-label--ink{fill:var(--ink)}
+.case-diagram .d-label--paper{fill:var(--on-ink)}
+.case-diagram .d-card{fill:var(--surface);stroke:var(--line)}
+.case-diagram .d-ink{fill:var(--ink)}
+.case-diagram .d-muted{fill:color-mix(in srgb, var(--ink) 16%, var(--surface))}
+.case-diagram .d-soft{fill:var(--sunk)}
+.case-diagram .d-outline{fill:none;stroke:var(--ink);stroke-width:1}
+.case-diagram .d-dashed{fill:none;stroke:var(--ink);stroke-width:1;stroke-dasharray:4 3}
+.case-diagram .d-grid{stroke:var(--line);stroke-width:1}
+.case-diagram .d-axis{stroke:var(--ink-3);stroke-width:1}
+.case-diagram .d-rail{stroke:color-mix(in srgb, var(--ink) 16%, var(--surface));stroke-width:2}
+.case-diagram .d-line{fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.case-diagram .d-hollow{fill:var(--surface);stroke:var(--ink);stroke-width:2}
+
+/* ---------------- tables ---------------- */
+
+.table-scroll{overflow-x:auto;margin:var(--space-6) 0;max-width:920px}
+.case-body table{
+  width:100%;
+  margin:var(--space-6) 0;
+  border-collapse:collapse;
+  font:400 var(--text-ui)/1.45 var(--font-text);
+}
 .case-body .table-scroll table{margin:0;min-width:520px}
+.case-body th,
+.case-body td{
+  padding:var(--space-3) var(--space-4) var(--space-3) 0;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+  vertical-align:top;
+}
 .case-body td.num,
-.case-body th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-.case-body tr.is-changed td{background:var(--stone-0)}
-.case-body tr.is-changed td.num:last-child{font-weight:700}
+.case-body th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;padding-right:0}
+.case-body tr.is-changed td{background:var(--sunk)}
+.case-body tr.is-changed td.num:last-child{font-weight:600}
 
-/* ---------- pull quote ---------- */
-.pull-quote{
-  margin:1.8em 0;
-  padding:4px 0 4px 18px;
-  border-left:2px solid var(--ink);
-}
-.pull-quote p{
-  margin:0 0 .5em;
-  font-size:18px;
-  line-height:1.5;
-}
-.pull-quote cite{
-  font-style:normal;
-  font-family:var(--font-mono);
-  font-size:11px;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  color:var(--stone-3);
-}
-
-/* ---------- placeholder marker ----------
+/* ---------------- placeholder marker ----------------
    Anything still holding dummy content carries .is-placeholder, so it
    stays visibly flagged until replaced. Remove the class with the swap. */
-.is-placeholder{position:relative;outline:1px dashed var(--stone-2);outline-offset:6px}
+.is-placeholder{position:relative;outline:1px dashed var(--ink-3);outline-offset:6px}
 .is-placeholder::before{
   content:"Placeholder — replace";
   position:absolute;
   top:-22px;
   right:0;
-  font-family:var(--font-mono);
-  font-size:10px;
-  letter-spacing:.06em;
+  font:400 10px/1 var(--font-text);
+  letter-spacing:.08em;
   text-transform:uppercase;
-  color:var(--stone-3);
+  color:var(--ink-2);
 }
 
-.case-footer{
-  max-width:820px;
-  margin:0 auto;
-  padding:0 var(--pad) calc(var(--pad) * 1.6);
+/* a placeholder wireframe: the marker sits inside the frame, which scrolls */
+.case-diagram.is-placeholder{outline-offset:0;outline:0;border-style:dashed;border-color:var(--ink-3)}
+.case-diagram.is-placeholder::before{
+  content:"Placeholder wireframe — replace with the real screen";
+  position:static;
+  display:block;
+  margin-bottom:var(--space-4);
 }
-.case-footer a{
-  display:inline-block;
-  font-family:var(--font-mono);
-  font-size:12px;
-  letter-spacing:.06em;
+
+/* numbered notes under an annotated screen; numbers match the dots on it */
+.case-body .callouts{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+  gap:var(--space-3) var(--space-5);
+  margin:var(--space-4) 0 0;
+  padding:0;
+  list-style:none;
+  counter-reset:callout;
+  font:400 var(--text-ui)/1.45 var(--font-text);
+}
+.case-body .callouts li{
+  position:relative;
+  margin:0;
+  padding-left:34px;
+  counter-increment:callout;
+}
+.callouts li::before{
+  content:counter(callout);
+  position:absolute;
+  left:0;top:-1px;
+  display:grid;
+  place-items:center;
+  width:22px;height:22px;
+  border-radius:50%;
+  corner-shape:round;
+  font:500 12px/1 var(--font-text);
+  color:var(--on-ink);
+  background:var(--ink);
+}
+
+/* ---------------- timeline strip ---------------- */
+.case-figure--wide{max-width:none}
+.timeline{
+  display:grid;
+  grid-template-columns:repeat(6, minmax(0, 1fr));
+  margin:0;
+  padding:0;
+  list-style:none;
+  border-top:1px solid var(--line);
+}
+.case-body .timeline li{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap:var(--space-1);
+  margin:0;
+  padding:var(--space-5) var(--space-4) 0 0;
+  font:400 var(--text-small)/1.45 var(--font-text);
+  color:var(--ink-2);
+}
+.timeline li::before{
+  content:"";
+  position:absolute;
+  left:0;top:-5px;
+  width:9px;height:9px;
+  border-radius:50%;
+  corner-shape:round;
+  background:var(--bg);
+  border:1px solid var(--ink);
+}
+.timeline li.is-turn::before{background:var(--ink)}
+.timeline--4{grid-template-columns:repeat(4, minmax(0, 1fr))}
+.timeline + figcaption{margin-top:var(--space-5)}
+.timeline__n{
+  font:400 var(--text-label)/1.4 var(--font-text);
+  letter-spacing:.08em;
   text-transform:uppercase;
-  text-decoration:none;
-  border-bottom:1px solid var(--ink);
 }
+.timeline b{font:400 var(--text-h3)/1.15 var(--font-display);color:var(--ink)}
+
+/* ---------------- section index ---------------- */
+/* Sticks to the top of the window once you scroll past it, so any section
+   is one click away. One row; on narrow screens it scrolls sideways. */
+.case-index{
+  position:sticky;
+  top:0;
+  z-index:10;
+  margin:var(--space-7) calc(var(--pad) * -1) 0;
+  /* 12px + the strip's 4px = 16px, so the links sit level with the theme switch */
+  padding:var(--space-3) var(--pad);
+  background:color-mix(in srgb, var(--bg) 86%, transparent);
+  -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid transparent;
+  transition:border-color var(--dur-2) var(--ease);
+}
+/* the links scroll sideways on narrow screens; the strip stops short of the
+   theme switch (36px + gap) and fades at its end to hint there is more */
+.case-index__scroll{
+  display:flex;
+  gap:var(--space-2);
+  margin-right:52px;
+  padding:var(--space-1) 0;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.case-index__scroll::-webkit-scrollbar{display:none}
+.case-index__scroll.is-clipped{
+  -webkit-mask-image:linear-gradient(to right, #000 calc(100% - 32px), transparent);
+  mask-image:linear-gradient(to right, #000 calc(100% - 32px), transparent);
+}
+.case-index.is-stuck{border-bottom-color:var(--line)}
+.case-body .case-index a{flex:none;white-space:nowrap}
+.case-body .case-index a[aria-current="true"]{color:var(--on-ink);background:var(--ink);border-color:var(--ink)}
+/* each link is the site's 36px box (same as the nav dock and page-foot
+   fields); the ::after keeps the tap area 44px tall */
+.case-body .case-index a{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  min-height:36px;
+  padding:0 var(--space-3);
+  font:400 var(--text-small)/1 var(--font-text);
+  color:var(--ink-2);
+  text-decoration:none;
+  background:color-mix(in srgb, var(--surface) 60%, transparent);
+  border:1px solid var(--line);
+  border-radius:var(--radius-nested);
+  transition:color var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease);
+}
+.case-body .case-index a::after{content:"";position:absolute;inset:-4px 0}
+.case-body .case-index a:hover{color:var(--ink);background:var(--sunk)}
+.case-body h2[id]{scroll-margin-top:88px}
+
+/* ---------------- who did what ---------------- */
+.team-strip{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:var(--space-3);
+  max-width:920px;
+  margin:0 0 var(--space-6);
+}
+.team-strip__who{
+  display:flex;
+  flex-direction:column;
+  gap:var(--space-2);
+  padding:var(--space-4);
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+}
+.team-strip__who span{
+  font:400 var(--text-label)/1.4 var(--font-text);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-2);
+}
+.team-strip__who b{font:400 var(--text-h3)/1.15 var(--font-display)}
+.team-strip__who p{margin:0;font:400 var(--text-ui)/1.45 var(--font-text);color:var(--ink-2)}
+.team-strip__who.is-me{background:var(--ink);border-color:var(--ink);color:var(--on-ink)}
+.team-strip__who.is-me span,
+.team-strip__who.is-me p{color:var(--on-ink);opacity:.78}
+
+/* ---------------- results, each with its limit ---------------- */
+.result-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+  gap:var(--space-4);
+  margin:0 0 var(--space-6);
+}
+.result{
+  display:flex;
+  flex-direction:column;
+  gap:var(--space-3);
+  padding:var(--space-5);
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+}
+.result__value{font:400 clamp(28px, 3vw, 38px)/1.05 var(--font-display)}
+.result p{margin:0;font:400 var(--text-ui)/1.45 var(--font-text)}
+.result__label{color:var(--ink-2)}
+.result__caveat{
+  margin-top:auto !important;
+  padding-top:var(--space-3);
+  border-top:1px solid var(--line);
+}
+.result__caveat span{
+  display:block;
+  margin-bottom:var(--space-1);
+  font:400 var(--text-label)/1.4 var(--font-text);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-2);
+}
+
+/* ---------------- what this project shows ---------------- */
+.shows{margin:0;max-width:920px;border-bottom:1px solid var(--line)}
+.shows div{
+  display:grid;
+  grid-template-columns:minmax(0, 4fr) minmax(0, 8fr);
+  gap:var(--space-2) var(--space-5);
+  padding:var(--space-4) 0;
+  border-top:1px solid var(--line);
+}
+.shows dt{font:400 var(--text-h3)/1.2 var(--font-display)}
+.shows dd{margin:0;font:400 var(--text-ui)/1.5 var(--font-text);color:var(--ink-2);align-self:center}
+
+/* ---------------- back link ---------------- */
+
+.case-footer{padding-bottom:var(--space-9)}
+.case-footer a{
+  display:inline-flex;
+  align-items:center;
+  min-height:44px;
+  padding:0 var(--space-4);
+  font:500 var(--text-ui)/1 var(--font-text);
+  color:var(--ink);
+  text-decoration:none;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  transition:background-color var(--dur-1) var(--ease);
+}
+.case-footer a:hover{background:var(--sunk)}
+
+@media (max-width:900px){
+  .timeline{grid-template-columns:1fr;border-top:0;border-left:1px solid var(--line)}
+  .case-body .timeline li{padding:0 0 var(--space-5) var(--space-5)}
+  .timeline li::before{left:-5px;top:4px}
+  .shows div{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .case-hero{padding-top:var(--space-6)}
+  .case-body h2{margin-top:var(--space-8)}
+  .case-facts,.stat,.case-diagram{padding:var(--space-4)}
+}
+@media (prefers-reduced-motion:reduce){
+  .case-footer a,.case-body .case-index a{transition:none}
+}
+
+/* ---------------- scroll plays ----------------
+   A diagram marked data-play builds as it comes into view (site.js adds
+   .is-waiting until then, then .is-playing): shapes grow from the left one after another,
+   labels rise in, and lines marked d-line draw themselves. */
+@media (prefers-reduced-motion:no-preference){
+  [data-play] svg :is(rect, text, line, circle, polyline, path){
+    transform-box:fill-box;
+    transform-origin:0 50%;
+  }
+  /* animated only while playing, so the hidden state is applied instantly */
+  [data-play].is-playing svg :is(rect, text, line, circle, polyline, path){
+    transition:opacity .5s var(--ease), transform .7s cubic-bezier(.2,.8,.2,1), stroke-dashoffset 1.8s cubic-bezier(.45,0,.2,1);
+    transition-delay:calc(var(--i, 0) * 40ms);
+  }
+  [data-play].is-waiting svg rect{opacity:0;transform:scaleX(.001)}
+  [data-play].is-waiting svg :is(text, line, circle){opacity:0;transform:translateY(6px)}
+  [data-play] svg .d-line{stroke-dasharray:1;stroke-dashoffset:0}
+  [data-play].is-waiting svg .d-line{stroke-dashoffset:1}
+  [data-play].is-waiting svg :is(polyline, path):not(.d-line){opacity:0}
+}
+
+/* ---------------- hero entrance ----------------
+   The case-study hero rises in, one block after another. */
+@media (prefers-reduced-motion:no-preference){
+  .js .case-hero > *{animation:case-rise .9s var(--ease) both}
+  .js .case-hero > :nth-child(2){animation-delay:.12s}
+  .js .case-hero > :nth-child(3){animation-delay:.24s}
+  .js .case-hero > :nth-child(4){animation-delay:.36s}
+  .js .case-hero > :nth-child(5){animation-delay:.48s}
+  .js .case-hero > :nth-child(6){animation-delay:.6s}
+}
+@keyframes case-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}

@@ -5,22 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Estbuild — nothingdesign</title>
   <meta name="description" content="Estbuild: why estimators would not switch to partial automation, and the 70% accurate, 30% customizable concept I designed in response.">
+  <!-- link previews (LinkedIn, Slack, email). TODO(owner): add og:image and og:url once the site has its address -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="nothingdesign">
+  <meta property="og:title" content="Estbuild — nothingdesign">
+  <meta property="og:description" content="Estbuild: why estimators would not switch to partial automation, and the 70% accurate, 30% customizable concept I designed in response.">
+  <meta name="twitter:card" content="summary">
 
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
 
-  <link rel="stylesheet" href="../shared.css">
+  <link rel="stylesheet" href="../../design-system/tokens.css">
+  <link rel="stylesheet" href="../../site.css">
+  <script src="../../site.js"></script>
   <link rel="stylesheet" href="../article.css">
+  <link rel="stylesheet" href="estbuild.css">
+  <script src="estbuild.js" defer></script>
 </head>
 <body>
 
   <header class="site-header">
-    <a class="brand" href="../../index.html" aria-label="nothingdesign, home">nothingdesign<span class="dot"></span></a>
-    <nav class="site-nav" aria-label="Primary">
-      <a href="../../index.html#work">Work</a>
+    <a class="wordmark" href="../../index.html" aria-label="nothingdesign, home"><span class="wordmark__n">nothing</span>design</a>
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
+      <a class="site-nav__link site-nav__work" href="../../index.html#work" aria-current="true">Work <span class="site-nav__count" aria-hidden="true">3</span></a>
+      <a class="site-nav__link" href="../../about/index.html">About</a>
+      <a class="button button--quiet" href="../../book/index.html">Book<span class="site-header__long">&nbsp;a call</span></a>
     </nav>
   </header>
+  <button class="theme-toggle theme-switch" type="button" aria-label="Switch theme">
+    <svg class="theme-switch__moon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+    <svg class="theme-switch__sun" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>
+  </button>
 
   <main>
     <div class="case-hero">
@@ -43,20 +60,42 @@
 
     <article class="case-body">
 
+      <!-- Opening: a plan draws itself and the estimate fills in (estbuild.js) -->
+      <div id="eb-intro" hidden></div>
+
       <div class="stat-grid">
         <div class="stat"><span class="stat__value">~10 hrs</span><span class="stat__label">to prepare one bid, as reported in interviews</span></div>
         <div class="stat"><span class="stat__value">30% vs 60–70%</span><span class="stat__label">measurement accuracy we reached vs what users needed</span></div>
         <div class="stat"><span class="stat__value">8 of 10</span><span class="stat__label">said yes to $799/month for the concept (stated interest, not purchases)</span></div>
       </div>
 
-      <!-- ========================================================= -->
-      <h2>What Estbuild is</h2>
-      <p>When a building is renovated or torn down, a general contractor asks demolition contractors to bid on the work. Each contractor has an <strong>estimator</strong>, the person who works out the price. The estimator reads the building's drawings, measures everything to be removed, and applies costs to reach a final number.</p>
-      <p>Estbuild set out to automate that work: upload a plan, get a cost estimate.</p>
+      <figure class="case-figure case-figure--wide">
+        <ol class="timeline" aria-label="Project timeline, July 2025 to January 2026">
+          <li><span class="timeline__n">01 · Jul 2025</span><b>Research</b><span>About 30 conversations with estimators and contractors</span></li>
+          <li><span class="timeline__n">02</span><b>First version</b><span>Two of three parts automated</span></li>
+          <li class="is-turn"><span class="timeline__n">03</span><b>Rejected</b><span>Estimators wouldn't switch without measurement</span></li>
+          <li><span class="timeline__n">04</span><b>Concept</b><span>70% accurate, 30% customizable</span></li>
+          <li><span class="timeline__n">05</span><b>Tested</b><span>With 10 estimators</span></li>
+          <li><span class="timeline__n">06 · Jan 2026</span><b>Paused</b><span>Technical co-founder moved on</span></li>
+        </ol>
+      </figure>
+
+      <nav class="case-index" aria-label="Sections">
+        <div class="case-index__scroll">
+          <a href="#problem">Problem</a>
+          <a href="#research">Role and research</a>
+          <a href="#first-release">First release</a>
+          <a href="#design">Design</a>
+          <a href="#testing">Testing</a>
+          <a href="#results">Results</a>
+          <a href="#learned">What I learned</a>
+        </div>
+      </nav>
 
       <!-- ========================================================= -->
-      <h2>The problem</h2>
-      <p>Preparing one bid took about <strong>10 hours</strong>, according to the estimators we interviewed. The work is spread across four disconnected tools, and numbers are copied by hand between them. A miscopied number can mean a lost job, or a won job that loses money.</p>
+      <h2 id="problem">The problem</h2>
+      <p>When a building is renovated or torn down, demolition contractors bid for the work. Each has an <strong>estimator</strong>, who reads the drawings, measures everything to be removed, and applies costs to reach a price. Estbuild set out to automate that: upload a plan, get an estimate.</p>
+      <p>One bid took about <strong>10 hours</strong>, according to the estimators we interviewed, spread across four disconnected tools with numbers copied by hand between them.</p>
 
       <figure class="case-figure">
         <div class="case-diagram">
@@ -100,9 +139,9 @@
         <figcaption>Every bid passes through four disconnected tools. Each arrow is a manual copy.</figcaption>
       </figure>
 
-      <p>As a founder, I also wanted to know what those hours cost the business. At the $5–10M-revenue contractors we spoke to, one estimator writes 150–200 bids a year and wins only 5–20% of them. That's ~1,200–1,900 hours and ~$60–140K a year on bids that never become work. The average job is worth ~$375K, so a single point of win rate is worth about $650K in revenue. Estimating isn't back-office overhead. It's the ceiling on how fast these companies can grow.</p>
+      <p>As a founder, I also worked out what those hours cost. Most bids are lost, so estimating is the ceiling on how fast these companies can grow.</p>
 
-      <figure class="case-figure">
+      <figure class="case-figure" data-play>
         <div class="case-diagram">
           <svg viewBox="0 0 760 160" role="img" aria-labelledby="bid-t bid-d">
             <title id="bid-t">What lost bids cost</title>
@@ -146,13 +185,23 @@
       </figure>
 
       <!-- ========================================================= -->
-      <h2>My role and research</h2>
-      <p>We were three co-founders. Our estimating co-founder brought the domain knowledge and our technical co-founder built the AI. I owned research, problem framing, workflow and interaction design, and prototype testing.</p>
-      <p>I started by finding out how far our co-founder's experience held across the industry, growing from initial interviews to about 30 conversations with estimators and contractors. That changed my question from "do people want automation?" to: <strong>what work would we need to remove before an estimator would consider changing tools?</strong></p>
+      <h2 id="research">My role and research</h2>
+
+      <div class="team-strip">
+        <div class="team-strip__who is-me"><span>Me</span><b>Product design</b><p>Research, problem framing, workflow and interaction design, prototype testing</p></div>
+        <div class="team-strip__who"><span>Co-founder</span><b>Cost estimating</b><p>Domain knowledge; prepared the test measurements and correct answers</p></div>
+        <div class="team-strip__who"><span>Co-founder</span><b>Engineering</b><p>Built the AI</p></div>
+      </div>
+
+      <p>I started by checking how far our co-founder's experience held across the industry, growing to about 30 conversations with estimators and contractors. That changed my question from "do people want automation?" to: <strong>what work would we need to remove before an estimator would consider changing tools?</strong></p>
+
+      <!-- TODO(owner): add a real estimator quote here as <blockquote class="pull-quote"><p>…</p><cite>…</cite></blockquote>, or delete this slot -->
+      <div class="tbd">Estimator quote: to be added</div>
 
       <!-- ========================================================= -->
-      <h2>First idea: automate two of the three parts</h2>
-      <p>An estimate has three parts. Two of them worked in code, so I proposed starting there, which let a three-person team ship something smaller and learn through use.</p>
+      <h2 id="first-release">The first release, overturned</h2>
+      <p>An estimate has three parts. Two of them worked in code, so I proposed shipping those first: a smaller scope for a three-person team.</p>
+
       <div class="table-scroll">
         <table>
           <thead><tr><th>Part</th><th>What it involves</th><th>First version</th></tr></thead>
@@ -163,9 +212,7 @@
           </tbody>
         </table>
       </div>
-      <p><strong>The tradeoff was deliberate.</strong> We cut engineering scope, and left a large part of the workflow with the user. I believed the automation that remained would make switching worthwhile.</p>
 
-      <!-- Schematic: replace with the real early-prototype screen when available. -->
       <figure class="case-figure">
         <div class="case-diagram">
           <svg viewBox="0 0 760 232" role="img" aria-labelledby="v1-t v1-d">
@@ -207,12 +254,9 @@
         <figcaption>Schematic of the first version. AI listed the work and calculated the costs; the estimator still measured every quantity by hand.</figcaption>
       </figure>
 
-      <!-- ========================================================= -->
-      <h2>What users told us: two out of three wasn't enough</h2>
-      <p>When we first showed this to users, they weren't willing to move to a new platform with only line items and cost calculation solved. Measuring was the work they wanted gone.</p>
-      <p>We kept working on measurement, and reached about 30% accuracy. That still wasn't enough. Until measurement was about 60–70% accurate, moving to our platform was out of the question for them.</p>
+      <p>Estimators wouldn't switch. Measuring was the work they wanted gone. We kept at it and reached about 30% accuracy, but until measurement was about 60–70% accurate, moving to our platform was out of the question for them.</p>
 
-      <figure class="case-figure">
+      <figure class="case-figure" data-play>
         <div class="case-diagram">
           <svg viewBox="0 0 760 192" role="img" aria-labelledby="meas-t meas-d">
             <title id="meas-t">Measurement accuracy</title>
@@ -236,13 +280,13 @@
             <text class="d-title" x="682" y="167">70%</text>
           </svg>
         </div>
-        <figcaption>Measurement accuracy. The first version had no automated measurement. The gap between 30% and 60–70% was the real adoption problem.</figcaption>
+        <figcaption>The gap between 30% and 60–70% was the real adoption problem.</figcaption>
       </figure>
 
       <p>That left a founder's decision: keep shipping what we could build, or design for what would get people to switch.</p>
 
       <section class="decision">
-        <span class="decision__label">The call</span>
+        <span class="decision__label">The founder's decision</span>
         <h3>What should we design for?</h3>
         <ul class="decision__options">
           <li><b>Partial automation</b>A smaller, achievable scope. Users kept the measuring and wouldn't switch.</li>
@@ -251,8 +295,8 @@
       </section>
 
       <!-- ========================================================= -->
-      <h2>The design: 70% accurate, 30% customizable</h2>
-      <p>I designed a concept showing what the product looks like when measurement is 70% accurate. The estimator gets a complete estimate, then corrects the remaining 30% error through customization. That addresses adoption, and it defines what the final automated product has to deliver.</p>
+      <h2 id="design">The design: 70% accurate, 30% customizable</h2>
+      <p>I designed what the product looks like when measurement is 70% accurate: the estimator gets a complete estimate, then corrects the remaining 30% through customization.</p>
 
       <figure class="case-figure">
         <div class="case-diagram">
@@ -290,7 +334,7 @@
         <figcaption>The concept moved estimators from measuring to reviewing and correcting a complete result. The dark step is the work users did not want to keep.</figcaption>
       </figure>
 
-      <p>A complete estimate from an imperfect system only works if people stay in charge of it. That shaped three design decisions.</p>
+      <p>A complete estimate from an imperfect system only works if people stay in charge of it. That shaped three decisions.</p>
 
       <section class="decision">
         <span class="decision__label">Decision 1</span>
@@ -300,13 +344,67 @@
           <li><b>Step-by-step wizard</b>Easy to learn, but too rigid for revisions.</li>
           <li class="is-chosen"><b>Chat + workspace</b>Chat for intent and challenges. A persistent table for the estimate itself.</li>
         </ul>
-        <p>The table uses the columns estimators already live in, so it reads like their own spreadsheet. In testing, estimators went straight to the table. The workspace, not the conversation, was the product to them.</p>
+        <p>In testing, estimators went straight to the table. The workspace, not the conversation, was the product to them.</p>
       </section>
 
       <figure class="case-figure">
-        <!-- MOCKUP: AI-generated placeholder with invented rates. The real prototype showed confidence as a percentage. Replace with the real Figma screen. -->
-        <img src="../../assets/estbuild/workspace.jpg" width="1536" height="1024" loading="lazy" alt="Mockup of the Estbuild workspace. A chat column on the left holds an uploaded plan and the AI's note that 6 line items are ready and 2 quantities are low confidence. A table on the right lists demolition and protection line items with quantity, unit, unit rate, labor hours and markup, with Low confidence tags on two quantities.">
-        <figcaption>Chat is where you upload and push back. The workspace is where the estimate lives. Illustrative mockup.</figcaption>
+        <!-- PLACEHOLDER WIREFRAME: replace the whole .case-diagram with the real Figma screen, keep the callouts. -->
+        <div class="case-diagram is-placeholder">
+          <svg viewBox="0 0 760 350" role="img" aria-labelledby="w1-t w1-d">
+            <title id="w1-t">The estimating workspace (placeholder wireframe)</title>
+            <desc id="w1-d">A chat column on the left with an uploaded plan, a request and a reply. On the right, an estimate table with columns for line item, quantity, unit, rate and total. Three numbered callouts.</desc>
+            <rect class="d-card" x="1" y="1" width="758" height="348"/>
+            <line class="d-grid" x1="240" y1="1" x2="240" y2="349"/>
+            <text class="d-label" x="18" y="30">CHAT</text>
+            <rect class="d-soft" x="18" y="48" width="170" height="36"/>
+            <text class="d-body" x="30" y="71">plan.pdf</text>
+            <rect class="d-ink" x="52" y="96" width="170" height="36"/>
+            <text class="d-body" x="64" y="119" style="fill:var(--paper)">Estimate this plan</text>
+            <rect class="d-soft" x="18" y="144" width="190" height="52"/>
+            <text class="d-body" x="30" y="166">Estimate ready.</text>
+            <text class="d-body" x="30" y="184">Review the lines.</text>
+            <rect x="18" y="296" width="204" height="36" style="fill:none;stroke:var(--ink-3);stroke-dasharray:4 3"/>
+            <text class="d-body" x="30" y="319">Ask or correct…</text>
+            <text class="d-label" x="264" y="30">ESTIMATE</text>
+            <text class="d-label" x="264" y="74">LINE ITEM</text><text class="d-label" x="470" y="74">QTY</text><text class="d-label" x="548" y="74">UNIT</text><text class="d-label" x="612" y="74">RATE</text><text class="d-label" x="690" y="74">TOTAL</text>
+            <line class="d-axis" x1="264" y1="84" x2="740" y2="84"/>
+            <line class="d-grid" x1="264" y1="126" x2="740" y2="126"/>
+            <rect class="d-muted" x="264" y="104" width="150" height="8"/>
+            <rect class="d-muted" x="470" y="104" width="40" height="8"/>
+            <rect class="d-muted" x="548" y="104" width="26" height="8"/>
+            <rect class="d-muted" x="612" y="104" width="44" height="8"/>
+            <rect class="d-muted" x="690" y="104" width="50" height="8"/>
+            <line class="d-grid" x1="264" y1="170" x2="740" y2="170"/>
+            <rect class="d-muted" x="264" y="148" width="120" height="8"/>
+            <rect class="d-muted" x="470" y="148" width="40" height="8"/>
+            <rect class="d-muted" x="548" y="148" width="26" height="8"/>
+            <rect class="d-muted" x="612" y="148" width="44" height="8"/>
+            <rect class="d-muted" x="690" y="148" width="50" height="8"/>
+            <line class="d-grid" x1="264" y1="214" x2="740" y2="214"/>
+            <rect class="d-muted" x="264" y="192" width="170" height="8"/>
+            <rect class="d-muted" x="470" y="192" width="40" height="8"/>
+            <rect class="d-muted" x="548" y="192" width="26" height="8"/>
+            <rect class="d-muted" x="612" y="192" width="44" height="8"/>
+            <rect class="d-muted" x="690" y="192" width="50" height="8"/>
+            <line class="d-grid" x1="264" y1="258" x2="740" y2="258"/>
+            <rect class="d-muted" x="264" y="236" width="110" height="8"/>
+            <rect class="d-muted" x="470" y="236" width="40" height="8"/>
+            <rect class="d-muted" x="548" y="236" width="26" height="8"/>
+            <rect class="d-muted" x="612" y="236" width="44" height="8"/>
+            <rect class="d-muted" x="690" y="236" width="50" height="8"/>
+            <line class="d-grid" x1="264" y1="302" x2="740" y2="302"/>
+            <rect class="d-muted" x="264" y="280" width="140" height="8"/>
+            <rect class="d-muted" x="470" y="280" width="40" height="8"/>
+            <rect class="d-muted" x="548" y="280" width="26" height="8"/>
+            <rect class="d-muted" x="612" y="280" width="44" height="8"/>
+            <rect class="d-muted" x="690" y="280" width="50" height="8"/>
+            <circle class="d-ink" cx="222" cy="28" r="11"/><text class="d-label d-label--paper" x="222" y="32" text-anchor="middle" style="font-size:12px;letter-spacing:0">1</text>
+            <circle class="d-ink" cx="726" cy="56" r="11"/><text class="d-label d-label--paper" x="726" y="60" text-anchor="middle" style="font-size:12px;letter-spacing:0">2</text>
+            <circle class="d-ink" cx="726" cy="326" r="11"/><text class="d-label d-label--paper" x="726" y="330" text-anchor="middle" style="font-size:12px;letter-spacing:0">3</text>
+            <text class="d-title" x="612" y="331" style="font-size:14px">Total</text>
+          </svg>
+        </div>
+        <ol class="callouts"><li>Chat is where you upload a plan and push back.</li><li>The table uses the columns estimators already live in.</li><li>A complete estimate arrives first, then gets corrected.</li></ol>
       </figure>
 
       <section class="decision">
@@ -317,33 +415,104 @@
           <li><b>No states</b>Simple, but an unreviewed AI number looks exactly like a checked one.</li>
           <li class="is-chosen"><b>Per-item + Finalize All</b>Every line is editable and finalized on its own, with a bulk option once reviewed.</li>
         </ul>
-        <p>When the AI fills every line, the estimator needs to see at a glance which numbers they've personally signed off on.</p>
+        <p>The estimator sees at a glance which numbers they've personally signed off on.</p>
       </section>
 
       <figure class="case-figure">
-        <!-- MOCKUP: AI-generated placeholder with invented rates. Replace with the real Figma screen. -->
-        <img src="../../assets/estbuild/finalize.jpg" width="1536" height="1024" loading="lazy" alt="Mockup of the estimate table with 3 of 6 lines finalized. Finalized rows have dark text and a check mark. AI-generated rows have lighter text, a stone background and a Finalize button. A Finalize All button sits at the top right.">
-        <figcaption>Each line carries its own state, so an unreviewed number never looks like a checked one. Illustrative mockup.</figcaption>
+        <!-- PLACEHOLDER WIREFRAME: replace the whole .case-diagram with the real Figma screen, keep the callouts. -->
+        <div class="case-diagram is-placeholder">
+          <svg viewBox="0 0 760 340" role="img" aria-labelledby="w2-t w2-d">
+            <title id="w2-t">Line states (placeholder wireframe)</title>
+            <desc id="w2-d">An estimate table with six lines. Three are marked finalized with a solid tag. Three are marked AI-generated with a dashed tag on a tinted row. A Finalize all button sits below.</desc>
+            <rect class="d-card" x="1" y="1" width="758" height="338"/>
+            <text class="d-label" x="30" y="34">LINE ITEM</text><text class="d-label" x="300" y="34">QTY</text><text class="d-label" x="400" y="34">TOTAL</text><text class="d-label" x="600" y="34">STATE</text>
+            <line class="d-axis" x1="18" y1="44" x2="742" y2="44"/>
+            <rect class="d-muted" x="30" y="66" width="150" height="8"/>
+            <rect class="d-muted" x="300" y="66" width="40" height="8"/>
+            <rect class="d-muted" x="400" y="66" width="50" height="8"/>
+            <rect class="d-ink" x="600" y="59" width="118" height="22"/><text class="d-label d-label--paper" x="659" y="74" text-anchor="middle">FINALIZED</text>
+            <line class="d-grid" x1="18" y1="86" x2="742" y2="86"/>
+            <rect class="d-muted" x="30" y="104" width="120" height="8"/>
+            <rect class="d-muted" x="300" y="104" width="40" height="8"/>
+            <rect class="d-muted" x="400" y="104" width="50" height="8"/>
+            <rect class="d-ink" x="600" y="97" width="118" height="22"/><text class="d-label d-label--paper" x="659" y="112" text-anchor="middle">FINALIZED</text>
+            <line class="d-grid" x1="18" y1="124" x2="742" y2="124"/>
+            <rect class="d-muted" x="30" y="142" width="170" height="8"/>
+            <rect class="d-muted" x="300" y="142" width="40" height="8"/>
+            <rect class="d-muted" x="400" y="142" width="50" height="8"/>
+            <rect class="d-ink" x="600" y="135" width="118" height="22"/><text class="d-label d-label--paper" x="659" y="150" text-anchor="middle">FINALIZED</text>
+            <line class="d-grid" x1="18" y1="162" x2="742" y2="162"/>
+            <rect class="d-soft" x="18" y="168" width="724" height="32"/>
+            <rect class="d-muted" x="30" y="180" width="110" height="8"/>
+            <rect class="d-muted" x="300" y="180" width="40" height="8"/>
+            <rect class="d-muted" x="400" y="180" width="50" height="8"/>
+            <rect x="600" y="173" width="118" height="22" style="fill:none;stroke:var(--ink);stroke-dasharray:4 3"/><text class="d-label d-label--ink" x="659" y="188" text-anchor="middle">AI-GENERATED</text>
+            <line class="d-grid" x1="18" y1="200" x2="742" y2="200"/>
+            <rect class="d-soft" x="18" y="206" width="724" height="32"/>
+            <rect class="d-muted" x="30" y="218" width="140" height="8"/>
+            <rect class="d-muted" x="300" y="218" width="40" height="8"/>
+            <rect class="d-muted" x="400" y="218" width="50" height="8"/>
+            <rect x="600" y="211" width="118" height="22" style="fill:none;stroke:var(--ink);stroke-dasharray:4 3"/><text class="d-label d-label--ink" x="659" y="226" text-anchor="middle">AI-GENERATED</text>
+            <line class="d-grid" x1="18" y1="238" x2="742" y2="238"/>
+            <rect class="d-soft" x="18" y="244" width="724" height="32"/>
+            <rect class="d-muted" x="30" y="256" width="130" height="8"/>
+            <rect class="d-muted" x="300" y="256" width="40" height="8"/>
+            <rect class="d-muted" x="400" y="256" width="50" height="8"/>
+            <rect x="600" y="249" width="118" height="22" style="fill:none;stroke:var(--ink);stroke-dasharray:4 3"/><text class="d-label d-label--ink" x="659" y="264" text-anchor="middle">AI-GENERATED</text>
+            <line class="d-grid" x1="18" y1="276" x2="742" y2="276"/>
+            <rect class="d-ink" x="600" y="296" width="142" height="30"/><text class="d-title" x="671" y="316" text-anchor="middle" style="font-size:13px;fill:var(--paper)">Finalize all</text>
+            <circle class="d-ink" cx="580" cy="70" r="11"/><text class="d-label d-label--paper" x="580" y="74" text-anchor="middle" style="font-size:12px;letter-spacing:0">1</text>
+            <circle class="d-ink" cx="580" cy="184" r="11"/><text class="d-label d-label--paper" x="580" y="188" text-anchor="middle" style="font-size:12px;letter-spacing:0">2</text>
+            <circle class="d-ink" cx="580" cy="311" r="11"/><text class="d-label d-label--paper" x="580" y="315" text-anchor="middle" style="font-size:12px;letter-spacing:0">3</text>
+          </svg>
+        </div>
+        <ol class="callouts"><li>A finalized line is solid: a person has signed it off.</li><li>An AI-generated line is visibly unreviewed.</li><li>Finalize all comes only after review.</li></ol>
       </figure>
 
       <section class="decision">
         <span class="decision__label">Decision 3</span>
         <h3>Show where to look, honestly</h3>
-        <p>The design showed measurement confidence as a percentage out of 100, to point people to where closer inspection might be needed. Because the measurement system was unfinished, this remained a proposed interaction. We hadn't established that its percentages predicted correctness.</p>
+        <p>Measurement confidence was shown as a percentage, to point people to where closer inspection might be needed. Because the measurement system was unfinished, this stayed a proposed interaction: we hadn't established that its percentages predicted correctness.</p>
       </section>
 
-      <!-- ========================================================= -->
-      <h2>How we tested it</h2>
-      <p>Customization only helps if people notice what needs correcting, so we tested that directly. We ran the prototype with <strong>10 estimators</strong>. Our estimating co-founder prepared the measurements and correct answers in advance, so we could study the experience before the technology was ready.</p>
-      <p>Most scenarios had about <strong>10–30% missing or incorrect line items</strong>, added on purpose:</p>
-      <ul>
-        <li><strong>The missing wall.</strong> We left out the longest wall scheduled for demolition. A participant noticed and opened customization, where the prototype supplied the prepared correction.</li>
-        <li><strong>The pool area.</strong> The estimate missed renovation work around the pool. A participant spotted it and reached the accurate result.</li>
-      </ul>
-      <p>These moments showed people could recognize certain missing work and use the correction flow. They didn't show that users would catch every error, or fix inaccurate measurements on their own.</p>
-
-      <!-- Schematic: replace with the real test screens when available. -->
       <figure class="case-figure">
+        <!-- PLACEHOLDER WIREFRAME: replace the whole .case-diagram with the real Figma screen, keep the callouts. -->
+        <div class="case-diagram is-placeholder">
+          <svg viewBox="0 0 760 210" role="img" aria-labelledby="w3-t w3-d">
+            <title id="w3-t">Measurement confidence (placeholder wireframe)</title>
+            <desc id="w3-d">Three estimate lines, each with a confidence bar. The middle line has a short bar and a dashed tag reading check this.</desc>
+            <rect class="d-card" x="1" y="1" width="758" height="208"/>
+            <text class="d-label" x="30" y="34">LINE ITEM</text><text class="d-label" x="300" y="34">QTY</text><text class="d-label" x="430" y="34">MEASUREMENT CONFIDENCE</text>
+            <line class="d-axis" x1="18" y1="44" x2="742" y2="44"/>
+            <rect class="d-muted" x="30" y="70" width="150" height="8"/>
+            <rect class="d-muted" x="300" y="70" width="44" height="8"/>
+            <rect class="d-muted" x="430" y="68" width="170" height="12"/><rect class="d-ink" x="430" y="68" width="150" height="12"/>
+            <line class="d-grid" x1="18" y1="92" x2="742" y2="92"/>
+            <rect class="d-soft" x="18" y="100" width="724" height="36"/>
+            <rect class="d-muted" x="30" y="114" width="170" height="8"/>
+            <rect class="d-muted" x="300" y="114" width="44" height="8"/>
+            <rect class="d-muted" x="430" y="112" width="170" height="12"/><rect class="d-ink" x="430" y="112" width="60" height="12"/>
+            <rect x="630" y="107" width="92" height="22" style="fill:none;stroke:var(--ink);stroke-dasharray:4 3"/><text class="d-label d-label--ink" x="676" y="122" text-anchor="middle">CHECK THIS</text>
+            <line class="d-grid" x1="18" y1="136" x2="742" y2="136"/>
+            <rect class="d-muted" x="30" y="158" width="120" height="8"/>
+            <rect class="d-muted" x="300" y="158" width="44" height="8"/>
+            <rect class="d-muted" x="430" y="156" width="170" height="12"/><rect class="d-ink" x="430" y="156" width="128" height="12"/>
+            <line class="d-grid" x1="18" y1="180" x2="742" y2="180"/>
+            <circle class="d-ink" cx="412" cy="114" r="11"/><text class="d-label d-label--paper" x="412" y="118" text-anchor="middle" style="font-size:12px;letter-spacing:0">1</text>
+            <circle class="d-ink" cx="726" cy="26" r="11"/><text class="d-label d-label--paper" x="726" y="30" text-anchor="middle" style="font-size:12px;letter-spacing:0">2</text>
+          </svg>
+        </div>
+        <ol class="callouts"><li>A low score marks where to look first.</li><li>Proposed only: the scores were never validated.</li></ol>
+      </figure>
+
+      <!-- ========================================================= -->
+      <h2 id="testing">How we tested it</h2>
+      <p>Customization only helps if people notice what needs correcting, so we tested that directly with <strong>10 estimators</strong>. Our estimating co-founder prepared the measurements and correct answers in advance, and we left <strong>10–30% of line items missing or incorrect</strong> on purpose. In one scenario we removed the longest wall scheduled for demolition; in another, the renovation work around a pool.</p>
+
+      <!-- Try it: the missing-wall test, interactive (estbuild.js). The static
+           diagram below stays as the version without JavaScript. -->
+      <div id="eb-try" hidden></div>
+      <figure class="case-figure" id="eb-try-static">
         <div class="case-diagram">
           <svg viewBox="0 0 760 244" role="img" aria-labelledby="wall-t wall-d">
             <title id="wall-t">The missing-wall test</title>
@@ -377,60 +546,35 @@
             <text class="d-title" x="699" y="222" text-anchor="middle" style="font-size:13px;fill:var(--paper)">Wall added</text>
           </svg>
         </div>
-        <figcaption>Schematic of the missing-wall test. We left the longest demolition wall out of the estimate to see whether a participant would notice it and reach customization. The correction was prepared in advance.</figcaption>
+        <figcaption>The missing-wall test. A participant noticed the gap and opened customization, where the prototype supplied the prepared correction.</figcaption>
       </figure>
+
+      <p>Participants spotted these gaps and used the correction flow. That showed people could recognize certain missing work. It didn't show they would catch every error, or fix inaccurate measurements on their own.</p>
 
       <!-- ========================================================= -->
-      <h2>What we learned</h2>
-      <p><strong>Time.</strong> Recorded prototype tasks averaged about <strong>1 hour</strong>, against about <strong>10 hours</strong> reported for a real bid. I don't call that a 90% reduction. One is a self-reported process and the other is a task with the hard work prepared in advance. It suggests potential savings, not a before-and-after result.</p>
-
-      <figure class="case-figure">
-        <div class="case-diagram">
-          <svg viewBox="0 0 760 112" role="img" aria-labelledby="time-t time-d">
-            <title id="time-t">Time per task</title>
-            <desc id="time-d">Two bars. A real bid, as reported in interviews: about 10 hours. A prototype task with the hard work prepared in advance: about 1 hour. Different tasks, so this suggests potential rather than measuring a saving.</desc>
-            <text class="d-body" x="1" y="28" style="fill:var(--ink)">Real bid (reported)</text>
-            <rect class="d-muted" x="210" y="10" width="460" height="26"/>
-            <text class="d-title" x="682" y="29">~10 hrs</text>
-            <text class="d-body" x="1" y="74" style="fill:var(--ink)">Prototype task</text>
-            <rect class="d-ink" x="210" y="56" width="46" height="26"/>
-            <text class="d-title" x="682" y="75">~1 hr</text>
-            <text class="d-label" x="1" y="106">DIFFERENT TASKS: SUGGESTS POTENTIAL, NOT A MEASURED SAVING</text>
-          </svg>
+      <h2 id="results">Results</h2>
+      <div class="result-grid">
+        <div class="result">
+          <b class="result__value">~1 hr vs ~10 hrs</b>
+          <p class="result__label">a prototype task against a reported real bid</p>
+          <p class="result__caveat"><span>Limit</span>Not like-for-like: the hard work was prepared in advance. I don't call it a 90% reduction.</p>
         </div>
-        <figcaption>About 1 hour for a prototype task against about 10 hours reported for a real bid. Not a like-for-like comparison.</figcaption>
-      </figure>
-      <p><strong>Demand.</strong> We asked whether they'd pay <strong>$799/month</strong> for full automation with customization. <strong>8 said yes and 2 were unsure.</strong> The same 8 said they would use it on real bids. All 10 asked to be contacted when it was ready. This was stated interest, conditional on delivering the complete product. It was not a purchase.</p>
-
-      <figure class="case-figure">
-        <div class="case-diagram">
-          <svg viewBox="0 0 760 88" role="img" aria-labelledby="pay-t pay-d">
-            <title id="pay-t">Would you pay $799/month for full automation with customization?</title>
-            <desc id="pay-d">Ten circles, one per estimator. Eight filled for yes, two hollow for unsure.</desc>
-            <circle class="d-ink" cx="22" cy="44" r="16"/>
-            <circle class="d-ink" cx="70" cy="44" r="16"/>
-            <circle class="d-ink" cx="118" cy="44" r="16"/>
-            <circle class="d-ink" cx="166" cy="44" r="16"/>
-            <circle class="d-ink" cx="214" cy="44" r="16"/>
-            <circle class="d-ink" cx="262" cy="44" r="16"/>
-            <circle class="d-ink" cx="310" cy="44" r="16"/>
-            <circle class="d-ink" cx="358" cy="44" r="16"/>
-            <circle class="d-hollow" cx="406" cy="44" r="16"/>
-            <circle class="d-hollow" cx="454" cy="44" r="16"/>
-            <text class="d-title" x="520" y="40">8 yes</text>
-            <text class="d-body" x="520" y="60">2 unsure</text>
-          </svg>
+        <div class="result">
+          <b class="result__value">8 of 10</b>
+          <p class="result__label">said yes to $799/month; 2 were unsure, and all 10 asked to be contacted</p>
+          <p class="result__caveat"><span>Limit</span>Stated interest, conditional on the complete product. Not purchases.</p>
         </div>
-        <figcaption>Would you pay $799/month for full automation with customization? Survey responses from 10 estimators: conditional interest, not purchases.</figcaption>
-      </figure>
-
-      <p><strong>Trust.</strong> Price wasn't their objection. Accuracy was. They'd trust AI measurement if its answers were accurate, and not at the accuracy we had then. The two unsure participants also questioned whether leaving familiar tools would be worth the hassle.</p>
-      <p>For a founder, that answer was useful and uncomfortable: demand looked real, and all of it rested on the part we hadn't finished.</p>
+        <div class="result">
+          <b class="result__value">Accuracy, not price</b>
+          <p class="result__label">was the objection. They'd trust AI measurement once its answers were accurate</p>
+          <p class="result__caveat"><span>Limit</span>The two unsure participants also questioned leaving familiar tools.</p>
+        </div>
+      </div>
+      <p>For a founder, that was useful and uncomfortable: demand looked real, and all of it rested on the part we hadn't finished.</p>
 
       <!-- ========================================================= -->
-      <h2>Why AI, and where it fell short</h2>
-      <p>Not everything here needed AI. Cost arithmetic runs on explicit rates and rules. AI's job was to read varied plans and reduce the manual work of identifying and measuring what belongs in the estimate.</p>
-      <p>That's also where it got hard. Identifying a discrete object, like a bathroom sink, was easier than interpreting walls and deriving their dimensions from 2D plans at different scales. Recognizing an object isn't the same as knowing how much of it needs to be priced.</p>
+      <h2 id="ai">Why AI, and what comes next</h2>
+      <p>Cost arithmetic needs no AI. AI's job was reading varied plans, and that is where it fell short: recognizing a sink is easier than deriving a wall's dimensions from 2D plans at different scales.</p>
 
       <figure class="case-figure">
         <div class="case-diagram">
@@ -454,19 +598,10 @@
             <text class="d-body" x="533" y="104">and rules</text>
           </svg>
         </div>
-        <figcaption>Recognizing an object isn't the same as knowing how much of it to price. Measurement was where AI was needed most, and where it fell short.</figcaption>
+        <figcaption>Recognizing an object isn't the same as knowing how much of it to price.</figcaption>
       </figure>
 
-      <!-- ========================================================= -->
-      <h2>How I'd build it next</h2>
-      <p>This is a proposed next step, not something we completed. I'd make measurement accuracy the gate before expanding the product:</p>
-      <ol>
-        <li><strong>Define a supported use case.</strong> A bounded set of plan types where the required dimensions are available.</li>
-        <li><strong>Evaluate measurement against expert answers.</strong> Test scope and dimensions separately, on representative plans.</li>
-        <li><strong>Make results inspectable.</strong> Connect quantities to their drawing evidence, and show confidence scores only once their meaning has been evaluated.</li>
-        <li><strong>Calculate costs explicitly.</strong> Editable rates and deterministic calculations on reviewed quantities.</li>
-        <li><strong>Test the entire task.</strong> Compare with the existing workflow on comparable projects.</li>
-      </ol>
+      <p>If I built it next, measurement accuracy would be the gate before anything else.</p>
 
       <figure class="case-figure">
         <div class="case-diagram">
@@ -503,18 +638,25 @@
             <text class="d-body" x="302" y="146" text-anchor="middle">nothing expands until it passes</text>
           </svg>
         </div>
-        <figcaption>A proposed sequence, not completed work. Measurement has to pass against expert answers before anything else is built on it.</figcaption>
+        <figcaption>A proposed sequence, not completed work. The deciding measure is how much work remains after checking and correcting the result.</figcaption>
       </figure>
 
-      <p>The deciding measure is how much work remains after checking and correcting the result.</p>
-
       <!-- PROTOTYPE RECORDING: user to add a live/recorded prototype here -->
+      <div class="tbd">Prototype recording: to be added</div>
 
       <!-- ========================================================= -->
-      <h2>Where it ended, and what I learned</h2>
+      <h2 id="learned">Where it ended, and what I learned</h2>
       <p>Estbuild reached working line-item generation and cost calculation, measurement at about 30% accuracy, and a tested concept of the full experience. Development paused when our technical co-founder moved on.</p>
       <p>My most consequential decision was going back on the release strategy I had proposed. Starting with what we could build made sense for the team, but it didn't remove enough work to make anyone switch.</p>
-      <p>I'd carry that into the next product: <strong>define a first release around a complete user outcome, then test the hardest assumption behind that outcome early.</strong> Ease of use, technical feasibility and willingness to adopt have to hold together.</p>
+      <p>I'd carry that into the next product: <strong>define a first release around a complete user outcome, then test the hardest assumption behind that outcome early.</strong></p>
+
+      <h2 id="shows">What this project shows</h2>
+      <dl class="shows">
+        <div><dt>Problem framing</dt><dd>I changed the question from "do people want automation?" to what work had to disappear before anyone would switch.</dd></div>
+        <div><dt>Founder judgment</dt><dd>I reversed my own release strategy when the research contradicted it.</dd></div>
+        <div><dt>Designing for trust in AI</dt><dd>AI-generated and approved numbers never look alike, and confidence was shown only as a proposal.</dd></div>
+        <div><dt>Research rigor</dt><dd>I tested with deliberately flawed estimates, and reported results with their limits.</dd></div>
+      </dl>
 
 </article>
 
@@ -524,8 +666,15 @@
   </main>
 
   <footer class="site-footer">
-    <span>&copy; nothingdesign</span>
-    <a href="../../index.html">Back to home</a>
+    <p class="foot-chip">
+      <span>2026 nothingdesign</span>
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M10.2 6.2a2.6 2.6 0 1 0 0 3.6"/></svg>
+    </p>
+    <!-- TODO(owner): add the LinkedIn profile URL -->
+    <a class="foot-chip foot-chip--link" href="#" rel="me">
+      <span>LinkedIn</span>
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 12L12 4M5.5 4H12v6.5"/></svg>
+    </a>
   </footer>
 
 </body>

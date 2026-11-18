@@ -1,0 +1,50 @@
+/* ============================================================
+   Portfolio design tokens — shared foundation
+
+   Link this before any page-specific stylesheet:
+     <link rel="stylesheet" href="../design-system/tokens.css">
+     <link rel="stylesheet" href="styles.css">
+
+   Page stylesheets should only define page-specific mechanics
+   (geometry, timing, one-off textures) and reach for these
+   variables for anything visual — color, type, motion, shape.
+   See README.md in this folder for the rationale.
+   ============================================================ */
+
+:root{
+  color-scheme: light;
+
+  /* ---- color: one neutral (stone) scale, ground to ink ----
+     No accent color by design — contrast and motion carry the
+     hierarchy. Add an accent token here only when a page
+     actually needs one, not speculatively. */
+  --ground:#e7e7e7;
+  --paper:#ffffff;
+  --ink:#141414;
+  --stone-0:#f2f0ed;
+  --stone-1:#d7d3cd;
+  --stone-2:#a9a49c;
+  --stone-3:#6b6762;
+  --stone-4:#2c2b2a;
+  --hair:rgba(20,20,20,.14);   /* hairline borders, dividers */
+
+  /* ---- type: three faces, one job each ---- */
+  --font-display:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --font-sans:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --font-mono:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+
+  /* ---- motion ----
+     Default ease for UI micro-interactions (hovers, toggles).
+     A page with its own large-scale choreography (e.g. a hero
+     animation) defines additional easing curves locally instead
+     of overloading this one. */
+  --ease:cubic-bezier(.22,.61,.24,1);
+
+  /* ---- spacing ----
+     Fluid page-edge inset. Extend with --pad-sm/--pad-lg if a
+     page needs more than one step — don't invent ad-hoc values. */
+  --pad:clamp(18px, 2.8vw, 40px);
+
+  /* ---- shape ---- */
+  --radius-pill:999px;
+}

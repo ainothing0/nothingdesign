@@ -4,54 +4,165 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>nothingdesign</title>
-  <meta name="description" content="Product design portfolio — an interactive sphere tracing the design process, stage by stage.">
+  <meta name="description" content="Product designer for agentic AI interfaces: a conductor who designs what agents show, and directs the rest.">
+  <!-- link previews (LinkedIn, Slack, email). TODO(owner): add og:image and og:url once the site has its address -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="nothingdesign">
+  <meta property="og:title" content="nothingdesign">
+  <meta property="og:description" content="Product designer for agentic AI interfaces: a conductor who designs what agents show, and directs the rest.">
+  <meta name="twitter:card" content="summary">
 
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
 
+  <link rel="stylesheet" href="design-system/tokens.css">
+  <link rel="stylesheet" href="site.css">
   <link rel="stylesheet" href="styles.css">
+  <script src="site.js"></script>
 </head>
 <body>
 
-  <main class="stage">
-    <header class="topbar">
-      <a class="brand" href="#" aria-label="nothingdesign, home">nothingdesign<span class="dot"></span></a>
-      <button class="menu-btn" aria-label="Open menu"><i></i><i></i><i></i><i></i></button>
-      <nav class="site-nav" aria-label="Primary">
-        <a href="#work">Work</a>
-      </nav>
-    </header>
+  <header class="site-header">
+    <a class="wordmark" href="#" aria-label="nothingdesign, home"><span class="wordmark__n">nothing</span>design</a>
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
+      <a class="site-nav__link site-nav__work" href="#work">Work <span class="site-nav__count" aria-hidden="true">3</span></a>
+      <a class="site-nav__link" href="about/index.html">About</a>
+      <a class="button button--quiet" href="book/index.html">Book<span class="site-header__long">&nbsp;a call</span></a>
+    </nav>
+  </header>
+  <button class="theme-toggle theme-switch" type="button" aria-label="Switch theme">
+    <svg class="theme-switch__moon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+    <svg class="theme-switch__sun" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>
+  </button>
 
+  <main class="stage">
     <div class="hero-copy">
-      <h1><strong>A conductor</strong> who designs what agents show, and directs the rest.</h1>
-      <p class="role">Product Designer &middot; Agentic Interfaces</p>
-      <div class="hero-actions">
-        <a class="btn btn--primary" href="#work">View work &darr;</a>
-        <a class="btn btn--soft" href="#">Get in touch &rarr;</a>
-      </div>
+      <p class="hero-role">Product Designer &middot; Agentic Interfaces</p>
+      <h1 id="hero-line"><span class="hl-line"><em>A conductor</em></span> <span class="hl-line">who composes the experience,</span> <span class="hl-line">and cues when agents act.</span></h1>
     </div>
 
+    <!-- What the stage in focus means, typed out as it changes (and the tool on a
+         hovered card). Decorative: it changes constantly. -->
+    <p class="hero-caption" id="hero-caption" aria-hidden="true"></p>
+
+    <!-- The six stages the sphere traces; the stage in focus is marked.
+         Decorative, so hidden from screen readers. -->
+    <ol class="hero-steps" id="hero-steps" aria-hidden="true">
+      <li data-stage="problem">Problem</li>
+      <li data-stage="flow">Flow</li>
+      <li data-stage="prototype">Prototype</li>
+      <li data-stage="test">Test</li>
+      <li data-stage="fix">Fix</li>
+      <li data-stage="ship">Ship</li>
+    </ol>
+
     <canvas id="sphere-canvas" aria-hidden="true"></canvas>
-
-    <!-- <div class="bottombar">
-      <nav class="corner left" aria-label="Social">
-        <a class="chip" href="#" aria-label="Instagram">IG</a>
-        <a class="chip" href="#" aria-label="X">X</a>
-      </nav>
-
-      <a class="cta" href="#">
-        <span class="arrow" aria-hidden="true">&#8599;</span>
-        <span class="roll"><span>Get in touch</span><span>Get in touch</span></span>
-        <span class="arrow" aria-hidden="true">&#8599;</span>
-      </a>
-
-      <nav class="corner right" aria-label="Portfolios">
-        <a class="chip" href="#" aria-label="Behance">B&#275;</a>
-        <a class="chip" href="#" aria-label="Dribbble">Dr</a>
-      </nav>
-    </div> -->
   </main>
+  <!-- Opening, part 1: headline first, while the page loads.
+       The headline stands alone, centred. If loading takes more than a moment,
+       a quiet hairline at the bottom of the screen shows real progress: the
+       figure image (most of the bytes) is downloaded here with its progress
+       counted, then the fonts, the 3D library and the scene's warm-up. When it has been on screen long
+       enough to read AND everything has loaded, the read-out fades, the
+       headline glides to its corner, the nav fades in, and then the sphere's
+       opening starts (window.heroGo). Any click, key, scroll or touch skips
+       ahead. Once per visit; skipped with reduced motion. -->
+  <div class="hero-loader" id="hero-loader" aria-hidden="true">
+    <span class="hero-loader__label">Loading</span>
+    <div class="hero-loader__track"><div class="hero-loader__bar"></div></div>
+  </div>
+  <script>
+    (function () {
+      var root = document.documentElement, go;
+      window.heroGo = new Promise(function (r) { go = r; });
+      var loader = document.getElementById("hero-loader");
+      var seen = false;
+      try { seen = sessionStorage.getItem("hero-seen") === "1"; sessionStorage.setItem("hero-seen", "1"); } catch (e) {}
+      if (seen || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        loader.remove(); window.heroReady = function () {}; go(); return;
+      }
+
+      var copy = document.querySelector(".hero-copy"), h1 = document.getElementById("hero-line");
+      var parts = [document.querySelector(".hero-role")].concat([].slice.call(h1.querySelectorAll(".hl-line")));
+      var bar = loader.querySelector(".hero-loader__bar");
+      root.classList.add("hl-first");
+
+      var READ = 3200, MAX_WAIT = 8000, GLIDE = 1200, SHOW_AFTER = 700;   // ms
+      var t0 = performance.now(), handed = false, timers = [], ready = false;
+      // real progress, by weight: the figure's bytes as they arrive, then the
+      // fonts, the 3D library and the scene warm-up as each finishes
+      var W = { figure: 0.8, fonts: 0.05, lib: 0.1, warm: 0.05 }, got = { figure: 0, fonts: 0, lib: 0, warm: 0 };
+      function draw() {
+        var p = 0; for (var k in W) p += W[k] * got[k];
+        bar.style.transform = "scaleX(" + Math.min(1, p) + ")";
+        if (ready && performance.now() - t0 > READ) handoff();
+      }
+      window.heroReady = function () { got.warm = 1; got.figure = 1; got.lib = 1; ready = true; draw(); };
+      window.heroModuleIn = function () { got.lib = 1; draw(); };
+      timers.push(setTimeout(function () { if (!ready) loader.classList.add("is-on"); }, SHOW_AFTER));
+      timers.push(setTimeout(function () { if (ready) handoff(); }, READ + 20));
+      timers.push(setTimeout(handoff, MAX_WAIT));
+
+      // the figure: fetched here so its download can be measured; the hero
+      // script uses the result (window.heroFigure) instead of loading it again
+      var src = "assets/human-conductor-aura.png";
+      window.heroFigure = (location.protocol === "file:" || !window.fetch || !window.ReadableStream)
+        ? Promise.resolve(src)
+        : fetch(src).then(function (res) {
+            var total = +res.headers.get("content-length") || 0;
+            if (!res.ok || !res.body || !total) { got.figure = 0.5; draw(); return res.blob(); }
+            var reader = res.body.getReader(), parts = [], n = 0;
+            return (function pump() {
+              return reader.read().then(function (r) {
+                if (r.done) return new Blob(parts, { type: "image/png" });
+                parts.push(r.value); n += r.value.length; got.figure = n / total; draw();
+                return pump();
+              });
+            })();
+          }).then(function (blob) { got.figure = 1; draw(); return URL.createObjectURL(blob); })
+            .catch(function () { return src; });
+
+      function place() {   // centre the headline block over the empty hero, scaled up on wide screens
+        var stage = copy.parentElement.getBoundingClientRect(), c = copy.getBoundingClientRect();
+        var range = document.createRange(); range.selectNodeContents(h1);
+        var w = Math.max(range.getBoundingClientRect().width, parts[0].getBoundingClientRect().width), h = c.height;
+        var wide = innerWidth > 900;   // phones: keep its size and margin, just bring it to the middle
+        var k = wide ? Math.max(1, Math.min(1.5, (stage.width * 0.8) / w)) : 1;
+        var left = wide ? stage.left + stage.width / 2 - w * k / 2 : c.left;
+        var top = stage.top + stage.height * 0.42 - h * k / 2;
+        copy.style.transform = "translate(" + (left - c.left) + "px," + (top - c.top) + "px) scale(" + k + ")";
+
+      }
+      function handoff() {
+        if (handed) return; handed = true;
+        timers.forEach(clearTimeout);
+        ["pointerdown", "keydown", "wheel", "touchstart"].forEach(function (e) { removeEventListener(e, handoff); });
+        parts.forEach(function (el) { el.classList.add("is-in"); });
+        loader.classList.add("is-done");
+        // glide on the next frame, with transform-origin and line layout unchanged, so nothing jumps
+        requestAnimationFrame(function () {
+          root.classList.add("hl-moving");
+          copy.style.transform = "";
+          root.classList.add("hl-nav-in");
+        });
+        setTimeout(function () {   // only after the glide: the sphere's first frames are heavy
+          root.classList.remove("hl-first", "hl-moving", "hl-nav-in");
+          loader.remove();
+          go();
+        }, GLIDE + 60);
+      }
+      function start() {
+        place();
+        got.fonts = 1; draw();
+        parts.forEach(function (el, i) { timers.push(setTimeout(function () { el.classList.add("is-in"); }, 150 + i * 380)); });
+      }
+      ["pointerdown", "keydown", "wheel", "touchstart"].forEach(function (e) { addEventListener(e, handoff, { passive: true }); });
+      var fonts = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+      Promise.race([fonts, new Promise(function (r) { setTimeout(r, 1200); })]).then(function () { if (!handed) start(); });
+    })();
+  </script>
 
   <section class="work-section" id="work">
     <div class="work-intro">
@@ -62,52 +173,199 @@
     <div class="work-grid">
 
       <a class="work-card" href="work/pinnacle-ai/index.html">
-        <div class="work-card__meta">
-          <span>Pinnacle AI · 2026–present</span>
-          <span class="work-card__status" data-status="featured">Case study</span>
+        <div class="work-card__text">
+          <div class="work-card__meta">
+            <span>2026–present</span>
+          </div>
+          <div class="work-card__head">
+            <h3 class="work-card__title">Pinnacle AI</h3>
+            <p class="work-card__role">Product Designer — AI workflow design for store operations</p>
+          </div>
+          <div class="work-card__body">
+            <span class="work-card__cta">Read case study &rarr;</span>
+            <p class="work-card__stat"><b>2–3 hrs &rarr; 5–10 min</b><span>weekly scheduling work per manager per store</span></p>
+          </div>
         </div>
-        <h3 class="work-card__title">Pinnacle AI</h3>
-        <p class="work-card__role">Product Designer — AI workflow design for store operations</p>
-        <p class="work-card__summary">Designed the workflow for a scheduling agent in iMessage at a 10-store coffee chain, including when it asks the manager and how corrections become rules. Weekly scheduling work went from about 2–3 hours to 5–10 minutes per store.</p>
-        <span class="work-card__cta">Read case study &rarr;</span>
+        <!-- TODO(owner): placeholder wireframe; replace with the real screen (an <img class="work-card__shot-img"> works) -->
+        <div class="work-card__shot">
+          <span class="work-card__shot-note">Placeholder wireframe</span>
+        <svg viewBox="0 0 760 330" role="img" aria-labelledby="hw-p-t hw-p-d">
+        <title id="hw-p-t">The check-in, before and after</title>
+        <desc id="hw-p-d">Two message threads side by side. Before: about ten short messages going back and forth. After: three messages, where the agent proposes a whole schedule, the employee responds and the agent confirms.</desc>
+        <rect class="d-card" x="1" y="1" width="366" height="328"/>
+        <rect class="d-card" x="393" y="1" width="366" height="328"/>
+        <text class="d-label" x="20" y="30">BEFORE · ABOUT 10 MESSAGES</text>
+        <text class="d-label" x="412" y="30">AFTER · 3 MESSAGES</text>
+        <rect class="d-soft" x="20" y="46" width="150" height="20"/>
+        <rect class="d-ink" x="246" y="73" width="100" height="20"/>
+        <rect class="d-soft" x="20" y="100" width="120" height="20"/>
+        <rect class="d-ink" x="216" y="127" width="130" height="20"/>
+        <rect class="d-soft" x="20" y="154" width="170" height="20"/>
+        <rect class="d-ink" x="266" y="181" width="80" height="20"/>
+        <rect class="d-soft" x="20" y="208" width="110" height="20"/>
+        <rect class="d-ink" x="236" y="235" width="110" height="20"/>
+        <rect class="d-soft" x="20" y="262" width="160" height="20"/>
+        <rect class="d-ink" x="256" y="289" width="90" height="20"/>
+        <rect class="d-soft" x="412" y="46" width="230" height="86"/>
+        <rect class="d-muted" x="424" y="58" width="190" height="7"/>
+        <rect class="d-muted" x="424" y="72" width="170" height="7"/>
+        <rect class="d-muted" x="424" y="86" width="200" height="7"/>
+        <rect class="d-muted" x="424" y="100" width="120" height="7"/>
+        <text class="d-label" x="424" y="150">PROPOSES A WHOLE SCHEDULE</text>
+        <rect class="d-ink" x="560" y="166" width="180" height="34"/>
+        <rect x="572" y="178" width="120" height="7" style="fill:var(--paper);opacity:.55"/>
+        <text class="d-label" x="740" y="218" text-anchor="end">RESPONDS</text>
+        <rect class="d-soft" x="412" y="232" width="200" height="34"/>
+        <rect class="d-muted" x="424" y="244" width="150" height="7"/>
+        <text class="d-label" x="424" y="284">CONFIRMS</text>
+
+        </svg>
+        </div>
       </a>
 
       <a class="work-card" href="work/estbuild/index.html">
-        <div class="work-card__meta">
-          <span>Aithraa · Phase 2 · 2025–2026</span>
-          <span class="work-card__status" data-status="featured">Case study</span>
+        <div class="work-card__text">
+          <div class="work-card__meta">
+            <span>Aithraa · Phase 2 · 2025–2026</span>
+          </div>
+          <div class="work-card__head">
+            <h3 class="work-card__title">Estbuild</h3>
+            <p class="work-card__role">Product Designer &amp; Co-founder — AI-assisted estimating</p>
+          </div>
+          <div class="work-card__body">
+            <span class="work-card__cta">Read case study &rarr;</span>
+            <p class="work-card__stat"><b>30% vs 60–70%</b><span>measurement accuracy we reached vs what users needed</span></p>
+          </div>
         </div>
-        <h3 class="work-card__title">Estbuild</h3>
-        <p class="work-card__role">Product Designer &amp; Co-founder — AI-assisted estimating</p>
-        <p class="work-card__summary">Designed an AI estimating workspace for demolition contractors. Estimators wouldn't switch until AI measurement was about 60–70% accurate, so I designed a concept where AI-generated lines look different from approved ones and every line can be corrected.</p>
-        <span class="work-card__cta">Read case study &rarr;</span>
+        <!-- TODO(owner): placeholder wireframe; replace with the real screen (an <img class="work-card__shot-img"> works) -->
+        <div class="work-card__shot">
+          <span class="work-card__shot-note">Placeholder wireframe</span>
+        <svg viewBox="0 0 760 350" role="img" aria-labelledby="hw-e-t hw-e-d">
+        <title id="hw-e-t">The estimating workspace</title>
+        <desc id="hw-e-d">A chat column on the left with an uploaded plan, a request and a reply. On the right, an estimate table with columns for line item, quantity, unit, rate and total. Three numbered callouts.</desc>
+        <rect class="d-card" x="1" y="1" width="758" height="348"/>
+        <line class="d-grid" x1="240" y1="1" x2="240" y2="349"/>
+        <text class="d-label" x="18" y="30">CHAT</text>
+        <rect class="d-soft" x="18" y="48" width="170" height="36"/>
+        <text class="d-body" x="30" y="71">plan.pdf</text>
+        <rect class="d-ink" x="52" y="96" width="170" height="36"/>
+        <text class="d-body" x="64" y="119" style="fill:var(--paper)">Estimate this plan</text>
+        <rect class="d-soft" x="18" y="144" width="190" height="52"/>
+        <text class="d-body" x="30" y="166">Estimate ready.</text>
+        <text class="d-body" x="30" y="184">Review the lines.</text>
+        <rect x="18" y="296" width="204" height="36" style="fill:none;stroke:var(--ink-3);stroke-dasharray:4 3"/>
+        <text class="d-body" x="30" y="319">Ask or correct…</text>
+        <text class="d-label" x="264" y="30">ESTIMATE</text>
+        <text class="d-label" x="264" y="74">LINE ITEM</text><text class="d-label" x="470" y="74">QTY</text><text class="d-label" x="548" y="74">UNIT</text><text class="d-label" x="612" y="74">RATE</text><text class="d-label" x="690" y="74">TOTAL</text>
+        <line class="d-axis" x1="264" y1="84" x2="740" y2="84"/>
+        <line class="d-grid" x1="264" y1="126" x2="740" y2="126"/>
+        <rect class="d-muted" x="264" y="104" width="150" height="8"/>
+        <rect class="d-muted" x="470" y="104" width="40" height="8"/>
+        <rect class="d-muted" x="548" y="104" width="26" height="8"/>
+        <rect class="d-muted" x="612" y="104" width="44" height="8"/>
+        <rect class="d-muted" x="690" y="104" width="50" height="8"/>
+        <line class="d-grid" x1="264" y1="170" x2="740" y2="170"/>
+        <rect class="d-muted" x="264" y="148" width="120" height="8"/>
+        <rect class="d-muted" x="470" y="148" width="40" height="8"/>
+        <rect class="d-muted" x="548" y="148" width="26" height="8"/>
+        <rect class="d-muted" x="612" y="148" width="44" height="8"/>
+        <rect class="d-muted" x="690" y="148" width="50" height="8"/>
+        <line class="d-grid" x1="264" y1="214" x2="740" y2="214"/>
+        <rect class="d-muted" x="264" y="192" width="170" height="8"/>
+        <rect class="d-muted" x="470" y="192" width="40" height="8"/>
+        <rect class="d-muted" x="548" y="192" width="26" height="8"/>
+        <rect class="d-muted" x="612" y="192" width="44" height="8"/>
+        <rect class="d-muted" x="690" y="192" width="50" height="8"/>
+        <line class="d-grid" x1="264" y1="258" x2="740" y2="258"/>
+        <rect class="d-muted" x="264" y="236" width="110" height="8"/>
+        <rect class="d-muted" x="470" y="236" width="40" height="8"/>
+        <rect class="d-muted" x="548" y="236" width="26" height="8"/>
+        <rect class="d-muted" x="612" y="236" width="44" height="8"/>
+        <rect class="d-muted" x="690" y="236" width="50" height="8"/>
+        <line class="d-grid" x1="264" y1="302" x2="740" y2="302"/>
+        <rect class="d-muted" x="264" y="280" width="140" height="8"/>
+        <rect class="d-muted" x="470" y="280" width="40" height="8"/>
+        <rect class="d-muted" x="548" y="280" width="26" height="8"/>
+        <rect class="d-muted" x="612" y="280" width="44" height="8"/>
+        <rect class="d-muted" x="690" y="280" width="50" height="8"/>
+        <text class="d-title" x="612" y="331" style="font-size:14px">Total</text>
+        </svg>
+        </div>
+      </a>
+
+      <a class="work-card" href="work/aithraa/index.html">
+        <div class="work-card__text">
+          <div class="work-card__meta">
+            <span>Aithraa · Phase 1 · 2025</span>
+          </div>
+          <div class="work-card__head">
+            <h3 class="work-card__title">Aithraa</h3>
+            <p class="work-card__role">Product Designer &amp; Founder — 3-sided marketplace</p>
+          </div>
+          <div class="work-card__body">
+            <span class="work-card__cta">Read case study &rarr;</span>
+            <p class="work-card__stat"><b>3 universities</b><span>and 3 startup founders lined up, before an IP-rights conflict stopped the launch</span></p>
+          </div>
+        </div>
+        <!-- TODO(owner): placeholder wireframe; replace with the real screen (an <img class="work-card__shot-img"> works) -->
+        <div class="work-card__shot">
+          <span class="work-card__shot-note">Placeholder wireframe</span>
+        <svg viewBox="0 0 760 260" role="img" aria-labelledby="hw-a-t hw-a-d">
+        <title id="hw-a-t">Submitting a brief and getting matched</title>
+        <desc id="hw-a-d">On the left, a startup brief form with a submit button. An arrow leads to a matched course card on the right, showing it was matched on goals, skills and timeline, with a prompt to talk with the professor.</desc>
+        <defs><marker id="hw-a-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--ink)"/></marker></defs>
+        <rect class="d-card" x="1" y="1" width="300" height="258"/>
+        <text class="d-label" x="20" y="30">STARTUP BRIEF</text>
+        <rect class="d-muted" x="20" y="52" width="220" height="7"/>
+        <rect class="d-muted" x="20" y="72" width="190" height="7"/>
+        <rect class="d-muted" x="20" y="92" width="240" height="7"/>
+        <rect class="d-muted" x="20" y="112" width="160" height="7"/>
+        <rect class="d-soft" x="20" y="150" width="260" height="60"/>
+        <rect class="d-muted" x="32" y="166" width="200" height="7"/>
+        <rect class="d-muted" x="32" y="186" width="150" height="7"/>
+        <rect class="d-ink" x="20" y="222" width="110" height="26"/><text class="d-title" x="75" y="240" text-anchor="middle" style="font-size:13px;fill:var(--paper)">Submit</text>
+        <line class="d-outline" x1="306" y1="130" x2="352" y2="130" marker-end="url(#hw-a-arrow)"/>
+        <rect class="d-card" x="358" y="1" width="401" height="258"/>
+        <text class="d-label" x="378" y="30">MATCHED COURSE</text>
+        <rect class="d-muted" x="378" y="52" width="230" height="7"/>
+        <rect class="d-muted" x="378" y="72" width="170" height="7"/>
+        <rect class="d-ink" x="378" y="100" width="106" height="24"/><text class="d-label d-label--paper" x="431" y="116" text-anchor="middle">GOALS</text>
+        <rect class="d-ink" x="496" y="100" width="106" height="24"/><text class="d-label d-label--paper" x="549" y="116" text-anchor="middle">SKILLS</text>
+        <rect class="d-ink" x="614" y="100" width="106" height="24"/><text class="d-label d-label--paper" x="667" y="116" text-anchor="middle">TIMELINE</text>
+        <text class="d-label" x="378" y="146">MATCHED ON</text>
+        <rect x="378" y="172" width="361" height="64" style="fill:none;stroke:var(--ink-3);stroke-dasharray:4 3"/>
+        <text class="d-title" x="394" y="200" style="font-size:15px">Talk with the professor</text><text class="d-body" x="394" y="220">Shape the roadmap together</text>
+        </svg>
+        </div>
       </a>
 
       <div class="work-card is-disabled">
-        <div class="work-card__meta">
-          <span>Aithraa · Phase 1 · 2025</span>
-          <span class="work-card__status">Coming soon</span>
+        <div class="work-card__text">
+          <div class="work-card__meta">
+            <span>IU Indianapolis · 2023–2024</span>
+            <span class="work-card__status">Coming soon</span>
+          </div>
+          <div class="work-card__head">
+            <h3 class="work-card__title">PacAR</h3>
+            <p class="work-card__role">Product Designer, HCI Research</p>
+          </div>
         </div>
-        <h3 class="work-card__title">Aithraa</h3>
-        <p class="work-card__role">Product Designer &amp; Founder — 3-sided marketplace</p>
-        <p class="work-card__summary">Built a marketplace matching startups, students, and professors on fit instead of convenience — validated with 25+ interviews and 3 university partnerships, then shut down when a non-negotiable IP-rights conflict surfaced.</p>
-        <span class="work-card__cta">Case study coming soon</span>
-      </div>
-
-      <div class="work-card is-disabled">
-        <div class="work-card__meta">
-          <span>IU Indianapolis · 2023–2024</span>
-          <span class="work-card__status">Coming soon</span>
-        </div>
-        <h3 class="work-card__title">PacAR</h3>
-        <p class="work-card__role">Product Designer, HCI Research</p>
-        <p class="work-card__summary">An AR concept trading text and video recipes for hands-free, step-by-step guidance — researched with 50+ participants and validated for reduced cognitive load mid-task.</p>
-        <span class="work-card__cta">Case study coming soon</span>
       </div>
 
     </div>
   </section>
 
+  <footer class="site-footer">
+    <p class="foot-chip">
+      <span>2026 nothingdesign</span>
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M10.2 6.2a2.6 2.6 0 1 0 0 3.6"/></svg>
+    </p>
+    <!-- TODO(owner): add the LinkedIn profile URL -->
+    <a class="foot-chip foot-chip--link" href="#" rel="me">
+      <span>LinkedIn</span>
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 12L12 4M5.5 4H12v6.5"/></svg>
+    </a>
+  </footer>
 
 <script type="importmap">
 { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
@@ -115,13 +373,52 @@
 <script type="module">
 import * as THREE from "three";
 
-/* ---------------- the process: 6 stages, 4 cycles ----------------
-   Each card is a process stage (drawn as a hand-rolled geometric icon — no
-   icon font, keeping this file dependency-free) with an optional tool mark
-   in the bottom-right corner. A few cards (test/interviews, fix/synthesis,
-   ship) are methods or stages with no single tool, so they render icon-only
-   — the corner badge simply doesn't exist for them. Tool marks are
-   typographic, not reproductions of each company's actual trademarked logo. */
+/* ============================================================
+   Hero: the console. The figure works a holographic
+   instrument: glass panels on fine orbit arcs, the stage in focus
+   held in his left hand, the next one pointed at with his right.
+   (Based on v2: same process, choreography, opening and exit.)
+   The figure cues each stage with a downbeat: a ring that ripples out
+   from it and lights the stage's panel as it passes.
+
+   Three rings of six stages (Problem → Ship) orbit the figure on
+   a tilted axis. One stage is in focus at a time; the thread to
+   the next stage draws itself, and the row under the sphere
+   follows. Depth of field: only the nearest cards are sharp.
+
+   Everything is drawn from the design tokens, so it follows the
+   light and dark themes. With reduced motion the scene is still.
+
+   Review aid: add ?cards to the address to see the card faces flat.
+   ============================================================ */
+
+/* ---------------- tokens ---------------- */
+function hexToRgb(hex){
+  const h = hex.trim().replace("#", "");
+  const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+  return [0, 2, 4].map((i) => parseInt(full.slice(i, i + 2), 16));
+}
+function mix(a, b, t){
+  const A = hexToRgb(a), B = hexToRgb(b);
+  return "rgb(" + A.map((v, i) => Math.round(v + (B[i] - v) * t)).join(",") + ")";
+}
+function readTokens(){
+  const cs = getComputedStyle(document.documentElement);
+  const get = (name) => cs.getPropertyValue(name).trim();
+  return { surface: get("--surface"), ink: get("--ink"), ink2: get("--ink-2"), onInk: get("--on-ink"), bg: get("--bg") };
+}
+// 1 when the page ground is dark, 0 when it is light.
+function isDarkPage(){
+  const [r, g, b] = hexToRgb(readTokens().surface);
+  return (r + g + b) / 3 < 128 ? 1 : 0;
+}
+
+/* ---------------- the process: 6 stages, 3 rings ----------------
+   Each stage has a short definition (shown as a caption under the
+   sphere) and real tools or methods. Rule: never invent a tool. With
+   three rings every tool appears once; Fix has two entries so one
+   repeats, and Ship has none. Categories use the resume's wording
+   where it has one. */
 
 function roundRect(ctx, x, y, w, h, r){
   ctx.beginPath();
@@ -133,500 +430,1012 @@ function roundRect(ctx, x, y, w, h, r){
   ctx.closePath();
 }
 
-const STAGE_ICONS = {
-  problem(ctx, s){ // magnifying glass
-    ctx.beginPath();
-    ctx.arc(-s * 0.12, -s * 0.12, s * 0.42, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(s * 0.22, s * 0.22);
-    ctx.lineTo(s * 0.56, s * 0.56);
-    ctx.stroke();
-  },
-  flow(ctx, s){ // a bending path through three points
-    const pts = [[-s * 0.45, -s * 0.5], [s * 0.1, -s * 0.05], [-s * 0.1, s * 0.4], [s * 0.45, s * 0.5]];
-    ctx.beginPath();
-    pts.forEach(([x, y], i) => (i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)));
-    ctx.stroke();
-    pts.forEach(([x, y]) => {
-      ctx.beginPath();
-      ctx.arc(x, y, s * 0.075, 0, Math.PI * 2);
-      ctx.fill();
-    });
-  },
-  prototype(ctx, s){ // two layered screens
-    roundRect(ctx, -s * 0.55, -s * 0.45, s * 0.75, s * 0.95, s * 0.08);
-    ctx.fillStyle = "#fafafa";
-    ctx.fill();
-    ctx.stroke();
-    roundRect(ctx, -s * 0.2, -s * 0.1, s * 0.75, s * 0.95, s * 0.08);
-    ctx.fillStyle = "#fafafa";
-    ctx.fill();
-    ctx.stroke();
-  },
-  test(ctx, s){ // checkmark in a circle
-    ctx.beginPath();
-    ctx.arc(0, 0, s * 0.55, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(-s * 0.24, s * 0.02);
-    ctx.lineTo(-s * 0.05, s * 0.24);
-    ctx.lineTo(s * 0.3, -s * 0.22);
-    ctx.stroke();
-  },
-  fix(ctx, s){ // simplified wrench
-    ctx.beginPath();
-    ctx.moveTo(-s * 0.4, s * 0.4);
-    ctx.lineTo(s * 0.18, -s * 0.18);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(s * 0.38, -s * 0.38, s * 0.22, Math.PI * 0.15, Math.PI * 1.65);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(-s * 0.45, s * 0.45, s * 0.13, 0, Math.PI * 2);
-    ctx.fill();
-  },
-  ship(ctx, s){ // upward arrow
-    ctx.beginPath();
-    ctx.moveTo(0, -s * 0.58);
-    ctx.lineTo(s * 0.4, s * 0.1);
-    ctx.lineTo(s * 0.14, s * 0.1);
-    ctx.lineTo(s * 0.14, s * 0.55);
-    ctx.lineTo(-s * 0.14, s * 0.55);
-    ctx.lineTo(-s * 0.14, s * 0.1);
-    ctx.lineTo(-s * 0.4, s * 0.1);
-    ctx.closePath();
-    ctx.stroke();
-  },
-};
+const STAGES = [
+  { key: "problem",   name: "Problem",   says: "Find the right problem",
+    with: [["Claude", "AI tool"], ["ChatGPT", "AI tool"], ["Exa", "AI tool"]] },
+  { key: "flow",      name: "Flow",      says: "Map the workflow",
+    with: [["Notion", "Docs"], ["Figma", "Design tool"], ["llm-wiki", "Personal knowledge system"]] },
+  { key: "prototype", name: "Prototype", says: "Make it testable",
+    with: [["Magic Patterns", "AI-assisted prototyping"], ["Figma", "Design tool"], ["Lovable", "AI-assisted prototyping"]] },
+  { key: "test",      name: "Test",      says: "Validate with users",
+    with: [["Maze", "AI-moderated research"], ["User interviews", "Research method"], ["Hotjar", "Behavior analytics"]] },
+  { key: "fix",       name: "Fix",       says: "Synthesize and iterate",
+    with: [["Claude", "AI tool"], ["Iterative synthesis", "Research method"]] },
+  { key: "ship",      name: "Ship",      says: "Put it in production",
+    with: [] },
+];
+const STEPS = STAGES.length;
+const RING_COUNT = 3;
 
-const STAGE_LABELS = {
-  problem: "Problem",
-  flow: "Flow",
-  prototype: "Prototype",
-  test: "Test",
-  fix: "Fix",
-  ship: "Ship",
-};
-
-const STAGE_ORDER = ["problem", "flow", "prototype", "test", "fix", "ship"];
-
-/* Each stage's tools/methods, in the order they fill ring 1, then ring 2,
-   and so on. A stage with fewer than 4 entries just cycles — Fix only has
-   two, so its later rings repeat Claude rather than inventing a tool that
-   isn't real. Ship never had a tool, so every ring's Ship card is identical. */
-const STAGE_TOOLS = {
-  problem:   [{ tool: "Claude" }, { tool: "ChatGPT" }, { tool: "Exa" }],
-  flow:      [{ tool: "Figma" }, { tool: "Notion" }, { tool: "llm-wiki" }],
-  prototype: [{ tool: "Figma" }, { tool: "Magic Patterns" }, { tool: "Lovable" }],
-  test:      [{ tool: "Maze" }, { tool: "Hotjar" }, { method: "User interviews" }],
-  fix:       [{ tool: "Claude" }, { method: "Iterative synthesis" }],
-  ship:      [{}],
-};
-
-/* ---- four cycles: one full Problem->Ship loop per ring ---- */
-const RING_COUNT = 4;
 const CARDS = [];
 for (let ring = 0; ring < RING_COUNT; ring++) {
-  STAGE_ORDER.forEach((stage) => {
-    const variants = STAGE_TOOLS[stage];
-    const variant = variants[ring % variants.length];
-    CARDS.push({ stage, tool: variant.tool || null, method: variant.method });
+  STAGES.forEach((stage, stageIndex) => {
+    const pick = stage.with.length ? stage.with[ring % stage.with.length] : null;
+    CARDS.push({ stage, stageIndex, ring, tool: pick ? pick[0] : null, kind: pick ? pick[1] : null });
   });
 }
 
-/* ---------------- card: gradient layout, process icon in place of a plain
-   circle, tool name in place of a company name ---------------- */
+/* ---------------- icons ---------------- */
+/* Three icons per stage, one for each ring (top, centre, bottom), matched to
+   the tool or method on that card where there is a natural fit. The clearest
+   icon of each stage sits on the centre ring. Same line weight and grid throughout. */
+function ln(ctx, pts){ ctx.beginPath(); pts.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y))); ctx.stroke(); }
+function dot(ctx, x, y, r){ ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); }
+const STAGE_ICONS = {
+  problem: [
+    (ctx, s) => { // Claude: a compass, finding which way the real problem lies
+      ctx.beginPath(); ctx.arc(0, 0, s * 0.6, 0, Math.PI * 2); ctx.stroke();
+      ctx.save(); ctx.rotate(Math.PI / 4);
+      ctx.beginPath(); ctx.moveTo(0, -s * 0.42); ctx.lineTo(s * 0.13, 0); ctx.lineTo(-s * 0.13, 0); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(0, s * 0.42); ctx.lineTo(s * 0.13, 0); ctx.lineTo(-s * 0.13, 0); ctx.closePath(); ctx.stroke();
+      ctx.restore();
+      [0, 0.5, 1, 1.5].forEach((k) => { const a = k * Math.PI; ln(ctx, [[Math.cos(a) * s * 0.6, Math.sin(a) * s * 0.6], [Math.cos(a) * s * 0.5, Math.sin(a) * s * 0.5]]); });
+    },
+    (ctx, s) => { // ChatGPT: a target, narrowing in on it
+      ctx.beginPath(); ctx.arc(0, 0, s * 0.56, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, 0, s * 0.3, 0, Math.PI * 2); ctx.stroke();
+      dot(ctx, 0, 0, s * 0.08);
+      ln(ctx, [[0, -s * 0.72], [0, -s * 0.6]]); ln(ctx, [[0, s * 0.6], [0, s * 0.72]]);
+      ln(ctx, [[-s * 0.72, 0], [-s * 0.6, 0]]); ln(ctx, [[s * 0.6, 0], [s * 0.72, 0]]);
+    },
+    (ctx, s) => { // Exa: a question in a speech bubble, asking before answering
+      roundRect(ctx, -s * 0.62, -s * 0.52, s * 1.24, s * 0.9, s * 0.18); ctx.stroke();
+      ln(ctx, [[-s * 0.2, s * 0.38], [-s * 0.34, s * 0.62], [s * 0.02, s * 0.38]]);
+      ctx.beginPath(); ctx.arc(0, -s * 0.16, s * 0.16, Math.PI * 1.05, Math.PI * 2.25); ctx.stroke();
+      ln(ctx, [[s * 0.08, -s * 0.02], [0, s * 0.06], [0, s * 0.1]]);
+      dot(ctx, 0, s * 0.24, s * 0.045);
+    },
+  ],
+  flow: [
+    (ctx, s) => { // Notion: a document with a checklist
+      roundRect(ctx, -s * 0.48, -s * 0.62, s * 0.96, s * 1.24, s * 0.1); ctx.stroke();
+      [-0.3, 0, 0.3].forEach((y, i) => {
+        roundRect(ctx, -s * 0.3, s * (y - 0.08), s * 0.16, s * 0.16, s * 0.04); ctx.stroke();
+        ln(ctx, [[-s * 0.04, s * y], [s * (i === 1 ? 0.2 : 0.3), s * y]]);
+      });
+    },
+    (ctx, s) => { // Figma: three connected steps
+      const bw = s * 0.56, bh = s * 0.3;
+      ln(ctx, [[-s * 0.06, -s * 0.45], [s * 0.34, -s * 0.45], [s * 0.34, -s * 0.14]]);
+      ln(ctx, [[s * 0.34, s * 0.16], [s * 0.34, s * 0.47], [-s * 0.06, s * 0.47]]);
+      [[-0.62, -0.6], [0.06, -0.14], [-0.62, 0.32]].forEach(([x, y]) => { roundRect(ctx, x * s, y * s, bw, bh, s * 0.07); ctx.stroke(); });
+    },
+    (ctx, s) => { // llm-wiki: a small graph of linked notes
+      const n = [[-0.46, -0.4], [0.44, -0.5], [0.0, 0.0], [-0.42, 0.5], [0.5, 0.42]];
+      [[0, 2], [1, 2], [2, 3], [2, 4], [1, 4]].forEach(([a, b]) => ln(ctx, [[n[a][0] * s, n[a][1] * s], [n[b][0] * s, n[b][1] * s]]));
+      n.forEach(([x, y], i) => {
+        const r = s * (i === 2 ? 0.15 : 0.11);
+        ctx.save(); ctx.globalCompositeOperation = "destination-out"; dot(ctx, x * s, y * s, r); ctx.restore();   // clear the links under each note
+        ctx.beginPath(); ctx.arc(x * s, y * s, r, 0, Math.PI * 2); ctx.stroke();
+      });
+    },
+  ],
+  prototype: [
+    (ctx, s) => { // Magic Patterns: a layout made of blocks, with a spark for generation
+      roundRect(ctx, -s * 0.62, -s * 0.52, s * 1.0, s * 1.04, s * 0.09); ctx.stroke();
+      roundRect(ctx, -s * 0.48, -s * 0.38, s * 0.72, s * 0.22, s * 0.04); ctx.stroke();
+      roundRect(ctx, -s * 0.48, -s * 0.06, s * 0.32, s * 0.44, s * 0.04); ctx.stroke();
+      roundRect(ctx, -s * 0.06, -s * 0.06, s * 0.3, s * 0.44, s * 0.04); ctx.stroke();
+      const x = s * 0.5, y = -s * 0.5, r = s * 0.2;
+      ctx.beginPath(); ctx.moveTo(x, y - r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.quadraticCurveTo(x, y, x, y + r); ctx.quadraticCurveTo(x, y, x - r, y); ctx.quadraticCurveTo(x, y, x, y - r); ctx.fill();
+    },
+    (ctx, s) => { // Figma: a screen with a pointer on it
+      roundRect(ctx, -s * 0.6, -s * 0.5, s * 1.05, s * 0.86, s * 0.09); ctx.stroke();
+      ln(ctx, [[-s * 0.6, -s * 0.26], [s * 0.45, -s * 0.26]]);
+      ctx.beginPath(); ctx.moveTo(s * 0.12, s * 0.04); ctx.lineTo(s * 0.62, s * 0.3); ctx.lineTo(s * 0.38, s * 0.36); ctx.lineTo(s * 0.3, s * 0.62); ctx.closePath(); ctx.fill();
+    },
+    (ctx, s) => { // Lovable: a phone screen, built from a prompt
+      roundRect(ctx, -s * 0.34, -s * 0.64, s * 0.68, s * 1.28, s * 0.14); ctx.stroke();
+      ln(ctx, [[-s * 0.1, -s * 0.5], [s * 0.1, -s * 0.5]]);
+      roundRect(ctx, -s * 0.2, -s * 0.3, s * 0.4, s * 0.26, s * 0.04); ctx.stroke();
+      ln(ctx, [[-s * 0.2, s * 0.1], [s * 0.2, s * 0.1]]); ln(ctx, [[-s * 0.2, s * 0.26], [s * 0.08, s * 0.26]]);
+    },
+  ],
+  test: [
+    (ctx, s) => { // Maze: a test plan on a clipboard, checked off
+      roundRect(ctx, -s * 0.48, -s * 0.52, s * 0.96, s * 1.16, s * 0.1); ctx.stroke();
+      ctx.save(); ctx.globalCompositeOperation = "destination-out"; roundRect(ctx, -s * 0.22, -s * 0.68, s * 0.44, s * 0.26, s * 0.06); ctx.fill(); ctx.restore();
+      roundRect(ctx, -s * 0.2, -s * 0.66, s * 0.4, s * 0.22, s * 0.06); ctx.stroke();
+      ln(ctx, [[-s * 0.22, s * 0.06], [-s * 0.04, s * 0.26], [s * 0.26, -s * 0.12]]);
+    },
+    (ctx, s) => { // User interviews: two people in conversation
+      ctx.beginPath(); ctx.arc(-s * 0.3, -s * 0.24, s * 0.18, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(-s * 0.3, s * 0.52, s * 0.36, Math.PI * 1.08, Math.PI * 1.92); ctx.stroke();
+      ctx.beginPath(); ctx.arc(s * 0.34, -s * 0.24, s * 0.18, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(s * 0.34, s * 0.52, s * 0.36, Math.PI * 1.08, Math.PI * 1.92); ctx.stroke();
+      roundRect(ctx, -s * 0.16, -s * 0.72, s * 0.32, s * 0.2, s * 0.06); ctx.stroke();
+    },
+    (ctx, s) => { // Hotjar: a heat map of where people clicked
+      roundRect(ctx, -s * 0.62, -s * 0.5, s * 1.24, s * 1.0, s * 0.09); ctx.stroke();
+      ctx.save(); ctx.globalAlpha *= 0.25; dot(ctx, s * 0.12, -s * 0.02, s * 0.34); ctx.restore();
+      ctx.save(); ctx.globalAlpha *= 0.45; dot(ctx, s * 0.12, -s * 0.02, s * 0.2); ctx.restore();
+      dot(ctx, s * 0.12, -s * 0.02, s * 0.08);
+      ctx.save(); ctx.globalAlpha *= 0.3; dot(ctx, -s * 0.34, s * 0.26, s * 0.12); ctx.restore();
+    },
+  ],
+  fix: [
+    (ctx, s) => { // Claude: a pencil, revising the design
+      ctx.save(); ctx.rotate(-Math.PI / 4);
+      ctx.beginPath(); ctx.moveTo(-s * 0.66, 0); ctx.lineTo(-s * 0.38, -s * 0.15); ctx.lineTo(s * 0.56, -s * 0.15);
+      ctx.lineTo(s * 0.56, s * 0.15); ctx.lineTo(-s * 0.38, s * 0.15); ctx.closePath(); ctx.stroke();
+      ln(ctx, [[-s * 0.38, -s * 0.15], [-s * 0.38, s * 0.15]]);
+      ln(ctx, [[s * 0.36, -s * 0.15], [s * 0.36, s * 0.15]]);
+      ctx.restore();
+      ln(ctx, [[s * 0.02, s * 0.64], [s * 0.6, s * 0.64]]);
+    },
+    (ctx, s) => { // Iterative synthesis: a spiral, each round closer to the answer
+      ctx.beginPath();
+      for (let i = 0; i <= 120; i++) {
+        const t = i / 120, a = -Math.PI / 2 + t * Math.PI * 4.2, r = s * (0.62 - 0.5 * t);
+        const x = Math.cos(a) * r, y = Math.sin(a) * r;
+        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+      ctx.stroke();
+      dot(ctx, Math.cos(-Math.PI / 2 + Math.PI * 4.2) * s * 0.12, Math.sin(-Math.PI / 2 + Math.PI * 4.2) * s * 0.12, s * 0.08);
+    },
+    (ctx, s) => { // Claude again: sliders being tuned
+      [[-0.4, -0.18], [0, 0.26], [0.4, -0.3]].forEach(([x, k]) => {
+        ln(ctx, [[x * s, -s * 0.6], [x * s, s * 0.6]]);
+        ctx.save(); ctx.globalCompositeOperation = "destination-out"; dot(ctx, x * s, k * s, s * 0.14); ctx.restore();
+        ctx.beginPath(); ctx.arc(x * s, k * s, s * 0.12, 0, Math.PI * 2); ctx.stroke();
+      });
+    },
+  ],
+  ship: [
+    (ctx, s) => { // a paper plane: sent out into the world
+      ctx.beginPath(); ctx.moveTo(-s * 0.64, -s * 0.04); ctx.lineTo(s * 0.62, -s * 0.52); ctx.lineTo(s * 0.18, s * 0.58); ctx.lineTo(-s * 0.02, s * 0.12); ctx.closePath(); ctx.stroke();
+      ln(ctx, [[-s * 0.02, s * 0.12], [s * 0.62, -s * 0.52]]);
+    },
+    (ctx, s) => { // a rocket at lift-off: in production
+      ctx.beginPath(); ctx.moveTo(0, -s * 0.7);
+      ctx.bezierCurveTo(s * 0.32, -s * 0.48, s * 0.3, -s * 0.06, s * 0.22, s * 0.28); ctx.lineTo(-s * 0.22, s * 0.28);
+      ctx.bezierCurveTo(-s * 0.3, -s * 0.06, -s * 0.32, -s * 0.48, 0, -s * 0.7); ctx.closePath(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, -s * 0.22, s * 0.1, 0, Math.PI * 2); ctx.stroke();
+      ln(ctx, [[s * 0.26, -s * 0.02], [s * 0.46, s * 0.2], [s * 0.46, s * 0.42], [s * 0.22, s * 0.28]]);
+      ln(ctx, [[-s * 0.26, -s * 0.02], [-s * 0.46, s * 0.2], [-s * 0.46, s * 0.42], [-s * 0.22, s * 0.28]]);
+      ln(ctx, [[-s * 0.1, s * 0.4], [0, s * 0.66], [s * 0.1, s * 0.4]]);
+    },
+    (ctx, s) => { // a flag on its pole: released
+      ln(ctx, [[-s * 0.42, s * 0.64], [-s * 0.42, -s * 0.62]]);
+      ctx.beginPath(); ctx.moveTo(-s * 0.42, -s * 0.6); ctx.quadraticCurveTo(-s * 0.1, -s * 0.74, s * 0.12, -s * 0.56); ctx.quadraticCurveTo(s * 0.34, -s * 0.4, s * 0.56, -s * 0.52);
+      ctx.lineTo(s * 0.56, s * 0.02); ctx.quadraticCurveTo(s * 0.34, s * 0.12, s * 0.12, -s * 0.04); ctx.quadraticCurveTo(-s * 0.1, -s * 0.22, -s * 0.42, -s * 0.08); ctx.stroke();
+    },
+  ],
+};
 
-function makeCardTexture(card, tone){
-  const w = 340, h = 453; // 3:4 portrait
+/* ---------------- card face ----------------
+   The stage is the card's name. Top: its number and six progress dots.
+   Middle: the icon, then the stage name large in the display serif.
+   Below a hairline: the tool or method, with what kind of thing it is. */
+
+const FACE_W = 480, FACE_H = 640, PAD = 40;
+
+function smoothRectPath(ctx, w, h, r){
+  const e = r * 1.5;
+  ctx.beginPath();
+  ctx.moveTo(e, 0);
+  ctx.lineTo(w - e, 0); ctx.quadraticCurveTo(w, 0, w, e);
+  ctx.lineTo(w, h - e); ctx.quadraticCurveTo(w, h, w - e, h);
+  ctx.lineTo(e, h);     ctx.quadraticCurveTo(0, h, 0, h - e);
+  ctx.lineTo(0, e);     ctx.quadraticCurveTo(0, 0, e, 0);
+  ctx.closePath();
+}
+function fitFont(ctx, text, weight, size, min, family, maxWidth){
+  ctx.font = `${weight} ${size}px ${family}`;
+  while (ctx.measureText(text).width > maxWidth && size > min) { size -= 2; ctx.font = `${weight} ${size}px ${family}`; }
+}
+
+function drawCardFace(card, tone){
+  // visionOS-style glass: the face is just the content. The card shader frosts
+  // whatever is behind the card, tints it, and adds the lit edge and sheen.
+  const w = FACE_W, h = FACE_H;
   const c = document.createElement("canvas");
   c.width = w; c.height = h;
   const ctx = c.getContext("2d");
+  const ink = tone.ink;
 
-  // Rounded corners: clip everything to a rounded rect; the rest stays transparent.
-  const r = 30;
-  ctx.beginPath();
-  ctx.moveTo(r, 0);
-  ctx.arcTo(w, 0, w, h, r);
-  ctx.arcTo(w, h, 0, h, r);
-  ctx.arcTo(0, h, 0, 0, r);
-  ctx.arcTo(0, 0, w, 0, r);
-  ctx.closePath();
-  ctx.clip();
+  // Glass (lab): the face carries only text and the icon; the shader draws the glass.
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = ink;
+  ctx.strokeStyle = ink;
+  ctx.textBaseline = "alphabetic";
+  ctx.textAlign = "left";
 
-  const g = ctx.createLinearGradient(0, 0, w, h);
-  g.addColorStop(0, tone.a);
-  g.addColorStop(1, tone.b);
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, w, h);
+  // top: number and a six-step progress bar
+  ctx.font = '500 25px "Geist", Arial';
+  ctx.globalAlpha = 0.85;
+  ctx.fillText(String(card.stageIndex + 1).padStart(2, "0") + " / 06", PAD + 6, PAD + 26);
+  const segW = 20, segGap = 6, segX = w - PAD - 6 - STEPS * segW - (STEPS - 1) * segGap;
+  for (let i = 0; i < STEPS; i++) {
+    ctx.globalAlpha = i <= card.stageIndex ? 0.9 : 0.25;
+    ctx.fillRect(segX + i * (segW + segGap), PAD + 14, segW, 5);
+  }
+  ctx.globalAlpha = 1;
 
-  ctx.fillStyle = "rgba(255,255,255,.9)";
-  ctx.beginPath();
-  ctx.ellipse(w * 0.5, h * 0.38, w * 0.22, h * 0.16, 0, 0, Math.PI * 2);
-  ctx.fill();
-
+  // icon
   ctx.save();
-  ctx.translate(w * 0.5, h * 0.38);
-  ctx.strokeStyle = "#141414";
-  ctx.fillStyle = "#141414";
-  ctx.lineWidth = 5;
+  ctx.translate(w * 0.5, h * 0.37);
+  ctx.lineWidth = 6;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
-  STAGE_ICONS[card.stage](ctx, w * 0.16);
+  STAGE_ICONS[card.stage.key][card.ring](ctx, w * 0.19);
   ctx.restore();
 
-  const title = card.tool || card.method || STAGE_LABELS[card.stage];
-  const meta = card.tool || card.method ? STAGE_LABELS[card.stage] : "";
+  // the stage is the name
+  fitFont(ctx, card.stage.name, 400, 92, 60, '"Instrument Serif", Georgia, serif', w - PAD * 2 - 12);
+  ctx.fillText(card.stage.name, PAD + 4, h - 150);
 
-  ctx.fillStyle = tone.text;
-  ctx.textAlign = "left";
-  // Shrink-to-fit guards the longest name ("Magic Patterns") from clipping
-  // past the card's right edge.
-  let titleSize = 30;
-  const maxTitleWidth = w - 18 * 2;
-  ctx.font = `700 ${titleSize}px "Plus Jakarta Sans", Arial`;
-  while (ctx.measureText(title).width > maxTitleWidth && titleSize > 20) {
-    titleSize -= 1;
-    ctx.font = `700 ${titleSize}px "Plus Jakarta Sans", Arial`;
+  // hairline, then the tool or method and what kind of thing it is
+  ctx.globalAlpha = 0.35; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(PAD + 6, h - 122); ctx.lineTo(w - PAD - 6, h - 122); ctx.stroke();
+  ctx.globalAlpha = 1;
+  const line1 = card.tool || "In production";
+  fitFont(ctx, line1, 500, 32, 22, '"Geist", Arial', w - PAD * 2 - 12);
+  ctx.fillText(line1, PAD + 6, h - 74);
+  if (card.kind) {
+    ctx.globalAlpha = 0.7; ctx.letterSpacing = "1.5px";
+    fitFont(ctx, card.kind.toUpperCase(), 500, 18, 13, '"Geist", Arial', w - PAD * 2 - 12);
+    ctx.fillText(card.kind.toUpperCase(), PAD + 6, h - 44);
+    ctx.letterSpacing = "0px"; ctx.globalAlpha = 1;
   }
-  ctx.fillText(title, 18, h - 56);
-  if (meta) {
-    ctx.font = "500 13px 'Plus Jakarta Sans', Arial";
-    ctx.globalAlpha = .75;
-    ctx.fillText(meta.toUpperCase(), 18, h - 32);
-  }
-
-  const tex = new THREE.CanvasTexture(c);
-  tex.colorSpace = THREE.SRGBColorSpace;
-  return tex;
+  return c;
 }
 
-// One tone per stage, lightest to darkest: a card's shade tells you how far
-// along the process it is, and each stage forms a clean column across rings.
-const TONES = [
-  { a: "#f2f0ed", b: "#d7d3cd", text: "#141414" }, // problem
-  { a: "#d7d3cd", b: "#bdb8b0", text: "#141414" }, // flow
-  { a: "#bdb8b0", b: "#a9a49c", text: "#141414" }, // prototype
-  { a: "#6b6762", b: "#4a4846", text: "#fff" },    // test
-  { a: "#2c2b2a", b: "#3a3836", text: "#fff" },    // fix
-  { a: "#141414", b: "#2c2b2a", text: "#fff" },    // ship
-];
+// Every panel is the same glass; the stage in focus gets a solid fill from the shader.
+function makeFaces(){
+  const t = readTokens();
+  const [r, g, b] = hexToRgb(t.ink);
+  return CARDS.map((card) => drawCardFace(card, { ink: t.ink, glass: `rgba(${r},${g},${b},0.045)` }));
+}
 
-// Card text is drawn to canvas once, so wait for the webfont (capped) first.
 await Promise.race([
-  Promise.all([document.fonts.load('700 30px "Plus Jakarta Sans"'), document.fonts.load('500 13px "Plus Jakarta Sans"')]),
+  Promise.all([document.fonts.load('400 96px "Instrument Serif"'), document.fonts.load('500 34px "Geist"')]),
   new Promise((r) => setTimeout(r, 2000)),
 ]);
-const cardTextures = CARDS.map((card) => makeCardTexture(card, TONES[STAGE_ORDER.indexOf(card.stage)]));
 
-/* ---------------- centerpiece: cut the white ground out of the source PNG ----------------
-   human-particle.png is an opaque RGB image with a flat white background
-   and no alpha channel. Rendering it as-is would show a visible white
-   rectangle at the sphere's core, so the fragment shader below turns
-   near-white pixels transparent, keeping only the dark/gray marks — a
-   silhouette floating at the center.
-
-   Notes on how it's loaded, since both of these have bitten this file before:
-   - The cutout runs in the fragment shader, sampling the texture on the GPU,
-     rather than via a 2D canvas + getImageData() — that throws a
-     SecurityError ("tainted canvas") once the page is opened via file://
-     instead of http://.
-   - Loaded via a plain <img>, not THREE.TextureLoader: the loader sets
-     crossOrigin="anonymous" by default, which forces a CORS-mode fetch that
-     some browsers refuse for a local file:// image with no CORS handshake
-     to satisfy. A bare <img> has no such requirement.
-   - Mipmaps stay on (Three.js's default). This texture is a dense field of
-     tiny particle dots — disabling mipmaps makes bilinear-only minification
-     alias badly, statistically oversampling the dark dots vs. the white
-     gaps between them, and the figure reads far darker and noisier than the
-     source image. */
-function loadCutoutTexture(url) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => {
-      const tex = new THREE.Texture(img);
-      tex.colorSpace = THREE.SRGBColorSpace;
-      tex.needsUpdate = true;
-      resolve({ texture: tex, aspect: img.naturalWidth / img.naturalHeight });
-    };
-    img.onerror = reject;
-    img.src = url;
-  });
+/* ---------------- review aid: ?cards ---------------- */
+if (new URLSearchParams(location.search).has("cards")) {
+  const sheet = document.createElement("div");
+  sheet.setAttribute("style", "position:fixed;inset:0;z-index:100;overflow:auto;display:flex;flex-wrap:wrap;gap:24px;align-content:flex-start;padding:32px;background:var(--bg)");
+  makeFaces().forEach((face) => { face.style.cssText = "width:210px;height:280px;flex:none"; sheet.appendChild(face); });
+  document.body.appendChild(sheet);
 }
 
-function makeCutoutMaterial(texture) {
-  return new THREE.ShaderMaterial({
-    uniforms: { map: { value: texture } },
-    transparent: true,
-    depthWrite: false,
-    vertexShader: `
-      varying vec2 vUv;
-      void main() {
-        vUv = uv;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    `,
-    fragmentShader: `
-      uniform sampler2D map;
-      varying vec2 vUv;
-      void main() {
-        vec4 texel = texture2D(map, vUv);
-        float luma = (texel.r + texel.g + texel.b) / 3.0;
-        float alpha = clamp((1.0 - luma) * 3.0, 0.0, 1.0);
-
-        // The source is a sparse field of dark dots on white — mostly
-        // negative space. At the size this plane actually renders at, the
-        // torso's dot density is high enough that minification blends it
-        // into a near-solid dark mass regardless of the alpha curve above;
-        // no per-pixel threshold can recover spacing that's already been
-        // averaged away by the time the shader sees it. So compensate
-        // directly: never let it hit full opacity (some page always shows
-        // through, keeping the silhouette from reading as solid black) and
-        // lift the dot color itself toward the source's actual mid-gray
-        // rather than near-black.
-        alpha *= 0.8;
-        vec3 color = mix(texel.rgb, vec3(0.6), 0.4);
-        gl_FragColor = vec4(color, alpha);
-      }
-    `,
-  });
-}
-
-/* ---------------- geometry: four rings, one cycle per ring ----------------
-   Each ring sits at its own latitude and holds the six stages evenly spaced
-   around it in process order — so unlike a scattered Fibonacci sphere,
-   consecutive stages are already next to each other in space. Connecting
-   them in order traces a clean loop around the ring instead of a line
-   cutting through the sphere's middle. Points are generated ring-major,
-   stage-minor, matching the order CARDS was built in above. */
-const RING_LATITUDES = [0.84, 0.28, -0.28, -0.84]; // 4 rings, evenly spaced, as a fraction of R
-
-function ringPoints(radius) {
-  const pts = [];
-  const angleStep = (Math.PI * 2) / STAGE_ORDER.length;
-  RING_LATITUDES.forEach((yFrac) => {
-    const y = yFrac * radius;
-    const ringRadius = Math.sqrt(Math.max(radius * radius - y * y, 0));
-    for (let i = 0; i < STAGE_ORDER.length; i++) {
-      const theta = i * angleStep;
-      pts.push(new THREE.Vector3(Math.cos(theta) * ringRadius, y, Math.sin(theta) * ringRadius));
-    }
-  });
-  return pts;
-}
-
-const R = 1, COUNT = CARDS.length, CARD_W = 0.105 * 3.4, CARD_H = 0.14 * 3.4;
+/* ---------------- scene ---------------- */
+const R = 1;
+const CARD_W = 0.38, CARD_H = 0.507;
+const CENTER_H = R * 1.02;   // owner's choice: the figure stands about 0.95 R tall, leaving the cards room around it
+const RING_LATITUDES = [0.6, 0, -0.6];
+const TILT = new THREE.Quaternion().setFromEuler(new THREE.Euler(0.16, 0, -0.2));   // the orbit leans, like a planet's rings
+const LEAN = 0.22;                                                                   // how far a card turns toward the sphere's surface
 
 const canvas = document.getElementById("sphere-canvas");
-const stage = document.querySelector(".stage");
+const stageEl = canvas.closest(".stage");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const smallScreen = window.matchMedia("(max-width: 900px)").matches;
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(50, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
-camera.position.set(0, 0, 3.25 * R);
-
+const camera = new THREE.PerspectiveCamera(46, 1, 0.1, 100);
+let baseZ = 3.2;
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
 
-/* ---- the orbiting process cards ---- */
-const points = ringPoints(R);
-const cards = points.map((p, i) => {
-  const geo = new THREE.PlaneGeometry(CARD_W, CARD_H);
-  const mat = new THREE.MeshBasicMaterial({
-    map: cardTextures[i % cardTextures.length],
+function tokenVec(hex){ const [r, g, b] = hexToRgb(hex); return new THREE.Vector3(r / 255, g / 255, b / 255); }
+
+/* ---- cards: a small shader, so blur and dimming are continuous ----
+   Blur comes from sampling a smaller mip level of the card's texture. */
+function cardTexture(face){
+  const tex = new THREE.CanvasTexture(face);
+  tex.colorSpace = THREE.NoColorSpace;          // canvas pixels pass straight through
+  tex.generateMipmaps = true;
+  tex.minFilter = THREE.LinearMipmapLinearFilter;
+  tex.anisotropy = 4;
+  return tex;
+}
+// What the glass frosts: the scene without its cards, rendered at half size with
+// mipmaps, then sampled behind each pane with a large blur.
+const backTarget = new THREE.WebGLRenderTarget(2, 2, { generateMipmaps: true, minFilter: THREE.LinearMipmapLinearFilter, magFilter: THREE.LinearFilter, type: THREE.HalfFloatType });
+let faces = makeFaces();
+const cardGeometry = new THREE.PlaneGeometry(CARD_W, CARD_H);
+const basePoints = [];
+RING_LATITUDES.forEach((yFrac) => {
+  const y = yFrac * R, rr = Math.sqrt(Math.max(R * R - y * y, 0));
+  for (let i = 0; i < STEPS; i++) {
+    const a = -(i / STEPS) * Math.PI * 2;      // stages run clockwise seen from above, so the next stage waits on the right
+    basePoints.push(new THREE.Vector3(Math.cos(a) * rr, y, Math.sin(a) * rr));
+  }
+});
+const cards = basePoints.map((p, i) => {
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { map: { value: cardTexture(faces[i]) }, uOpacity: { value: 0 }, uBlur: { value: 0 }, uFill: { value: 0 }, uFillColor: { value: tokenVec(readTokens().surface) },
+                uBack: { value: backTarget.texture }, uRes: { value: new THREE.Vector2(1, 1) }, uBg: { value: tokenVec(readTokens().bg) }, uDark: { value: isDarkPage() } },
     transparent: true,
     depthWrite: false,
-    toneMapped: false,
+    depthTest: false,
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `
+      uniform sampler2D map, uBack; uniform float uOpacity, uBlur, uFill, uDark; uniform vec3 uFillColor, uBg; uniform vec2 uRes; varying vec2 vUv;
+      void main(){
+        // rounded-rectangle shape of the pane (card is 3:4)
+        vec2 p = (vUv - 0.5) * vec2(0.75, 1.0), hs = vec2(0.375, 0.5);   // ("half" is a reserved word in GLSL)
+        float r = 0.07, d = length(max(abs(p) - hs + r, 0.0)) - r;
+        float mask = 1.0 - smoothstep(-0.003, 0.003, d);   // (smoothstep needs its edges in rising order)
+        if (mask <= 0.0) discard;
+
+        // frost: what is behind the pane (rendered without the cards), heavily blurred
+        vec4 b = texture2D(uBack, gl_FragCoord.xy / uRes, 5.5);
+        vec3 back = b.rgb + uBg * (1.0 - b.a);
+
+        // tint: light glass on a light page, smoked glass on a dark one; the stage in focus is denser
+        vec3 tint = mix(vec3(0.985), vec3(0.42), uDark);
+        float density = mix(0.42, 0.62, uFill);
+        vec3 glass = mix(back, tint, density);
+        // soft vertical sheen, lighter at the top, like light from above
+        glass += vec3(1.0) * (0.06 + 0.05 * uDark) * smoothstep(0.35, 1.0, vUv.y);
+
+        // the lit edge: a thin bright rim, strongest along the top
+        float rim = smoothstep(-0.016, -0.002, d) * mask;
+        glass = mix(glass, vec3(1.0), rim * (0.25 + 0.35 * vUv.y) * (0.6 + 0.4 * uDark));
+        // on a light page white glass needs a definition line: a fine darker edge and a faint shade at the foot
+        float edge = smoothstep(-0.005, -0.001, d) * mask;
+        glass = mix(glass, vec3(0.0), (1.0 - uDark) * (edge * 0.16 + 0.05 * smoothstep(0.4, 0.0, vUv.y)));
+
+        // content on top
+        vec4 c = texture2D(map, vUv, uBlur);
+        vec3 rgb = mix(glass, c.rgb, c.a);
+        gl_FragColor = vec4(rgb, mask * uOpacity * (0.92 + 0.08 * uFill));
+      }`,
   });
-  const mesh = new THREE.Mesh(geo, mat);
-  mesh.position.copy(p);
-  mesh.userData.basePoint = p; // orbit is applied to this each frame, not to a parent transform
+  const mesh = new THREE.Mesh(cardGeometry, mat);
+  mesh.userData = { base: p, info: CARDS[i], focus: 1, lift: 0, depth: 0 };
   scene.add(mesh);
   return mesh;
 });
 
-/* ---- the thread — each ring traces its own Problem->Ship cycle ----
-   Each forward segment (Problem->Flow->...->Fix->Ship) gets progressively
-   more opaque, reading as building momentum toward Ship. The segment that
-   closes the loop (Ship back to Problem) is dashed and faint instead —
-   visually a reset, not more forward progress.
+/* ---- a line material that fades toward the back of the sphere ---- */
+function lineMaterial(opacity){
+  return new THREE.ShaderMaterial({
+    uniforms: { uColor: { value: tokenVec(readTokens().ink) }, uOpacity: { value: opacity } },
+    transparent: true, depthWrite: false, depthTest: false,
+    vertexShader: `varying float vZ; void main(){ vec4 w = modelMatrix * vec4(position, 1.0); vZ = w.z; gl_Position = projectionMatrix * viewMatrix * w; }`,
+    fragmentShader: `uniform vec3 uColor; uniform float uOpacity; varying float vZ;
+      void main(){ gl_FragColor = vec4(uColor, uOpacity * (0.08 + 0.92 * smoothstep(-0.9, 0.55, vZ))); }`,
+  });
+}
+const lineMats = [];
+function trackedLineMaterial(opacity){ const m = lineMaterial(opacity); lineMats.push(m); return m; }
 
-   Segments are drawn as an arc along the sphere's surface (spherical
-   interpolation between the two endpoints, sampled into a short polyline)
-   rather than a straight chord — a straight line between two points on a
-   sphere cuts through the interior, which both looks rigid and can slice
-   straight through the centerpiece figure. Hugging the surface instead
-   reads as a thread laid over a globe. */
-function slerpArc(a, b, radius, segments) {
-  const angle = a.angleTo(b);
-  const pts = [];
-  for (let i = 0; i <= segments; i++) {
-    const t = i / segments;
-    if (angle < 1e-6) { pts.push(a.clone()); continue; }
-    const w1 = Math.sin((1 - t) * angle) / Math.sin(angle);
-    const w2 = Math.sin(t * angle) / Math.sin(angle);
-    pts.push(
-      new THREE.Vector3().addScaledVector(a, w1).addScaledVector(b, w2).normalize().multiplyScalar(radius)
-    );
+/* ---- the instrument ----
+   A faint globe (outline, latitude lines, meridians) so the whole reads as a
+   sphere, and on it the three card rings, stronger, with a tick at every stage
+   and minor ticks between. In the opening each line draws itself on, after the
+   figure has formed and before the cards arrive. */
+const instrument = new THREE.Group();
+scene.add(instrument);
+const drawOn = [];      // { obj, count, at, dur } — lines that draw themselves on in the opening
+function circlePoints(y, rr, n){ const pts = []; for (let i = 0; i <= n; i++) { const a = -(i / n) * Math.PI * 2; pts.push(Math.cos(a) * rr, y, Math.sin(a) * rr); } return pts; }
+function lineFrom(pts, opacity, segments){
+  const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
+  const l = segments ? new THREE.LineSegments(g, trackedLineMaterial(opacity)) : new THREE.Line(g, trackedLineMaterial(opacity));
+  l.renderOrder = 1; l.frustumCulled = false; return l;
+}
+// globe: latitudes between and beyond the card rings, and six meridians
+[-0.88, -0.3, 0.3, 0.88].forEach((yFrac, k) => {
+  const y = yFrac * R, rr = Math.sqrt(Math.max(R * R - y * y, 0));
+  const l = lineFrom(circlePoints(y, rr, 120), 0.09); instrument.add(l);
+  drawOn.push({ obj: l, count: 121, at: 0.25 + k * 0.08, dur: 1.1 });
+});
+for (let m = 0; m < 6; m++) {
+  const lon = (m / 6) * Math.PI, pts = [];
+  for (let i = 0; i <= 120; i++) { const a = (i / 120) * Math.PI * 2; pts.push(Math.cos(a) * Math.cos(lon) * R, Math.sin(a) * R, Math.cos(a) * Math.sin(lon) * R); }
+  const l = lineFrom(pts, 0.07); instrument.add(l);
+  drawOn.push({ obj: l, count: 121, at: 0.45 + m * 0.06, dur: 1.2 });
+}
+// the card rings and their ticks
+RING_LATITUDES.forEach((yFrac, k) => {
+  const y = yFrac * R, rr = Math.sqrt(Math.max(R * R - y * y, 0));
+  const loop = lineFrom(circlePoints(y, rr, 160), 0.24); instrument.add(loop);
+  drawOn.push({ obj: loop, count: 161, at: 0.6 + k * 0.18, dur: 1.0 });
+  const ticks = [];
+  for (let i = 0; i < 72; i++) {
+    const a = -(i / 72) * Math.PI * 2, major = i % 12 === 0, len = major ? 0.07 : 0.025;
+    ticks.push(Math.cos(a) * rr, y, Math.sin(a) * rr, Math.cos(a) * (rr + len), y, Math.sin(a) * (rr + len));
   }
+  const seg = lineFrom(ticks, 0.32, true); instrument.add(seg);
+  drawOn.push({ obj: seg, count: 144, at: 0.75 + k * 0.18, dur: 1.0 });
+});
+// the outline: a circle always facing the viewer, which is what makes it read as a globe
+const outline = lineFrom(circlePoints(0, R * 1.005, 160).map((v, i) => v), 0.16);
+outline.rotation.x = Math.PI / 2;
+const outlineHolder = new THREE.Group(); outlineHolder.add(outline); scene.add(outlineHolder);
+drawOn.push({ obj: outline, count: 161, at: 0, dur: 1.3 });
+
+// a vertical meridian through the stage in focus, like a cursor on the instrument
+const meridianGeo = new THREE.BufferGeometry();
+meridianGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(41 * 3), 3));
+const meridian = new THREE.Line(meridianGeo, trackedLineMaterial(0.3));
+meridian.renderOrder = 1; meridian.frustumCulled = false;
+scene.add(meridian);
+
+/* ---- threads: each ring's Problem → Ship path, drawn along the sphere ---- */
+const ARC = 24;
+// Each forward step (Problem → Flow … Fix → Ship) is a stretch of the ring itself,
+// at the ring's own latitude, so the transition draws over the orbit line
+// instead of beside it. Built once; only the drawn length changes per frame.
+const threads = [];
+for (let ring = 0; ring < RING_COUNT; ring++) {
+  const y = RING_LATITUDES[ring] * R, rr = Math.sqrt(Math.max(R * R - y * y, 0));
+  for (let i = 0; i < STEPS - 1; i++) {
+    const pts = new Float32Array((ARC + 1) * 3);
+    for (let k = 0; k <= ARC; k++) {
+      const ang = -((i + k / ARC) / STEPS) * Math.PI * 2;     // same direction the stages are laid out in
+      pts[k * 3] = Math.cos(ang) * rr; pts[k * 3 + 1] = y; pts[k * 3 + 2] = Math.sin(ang) * rr;
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(pts, 3));
+    geo.setDrawRange(0, 0);
+    const line = new THREE.Line(geo, trackedLineMaterial(0.9));
+    line.frustumCulled = false;
+    line.renderOrder = 2;
+    instrument.add(line);
+    threads.push({ ring, step: i, drawn: line });
+  }
+}
+
+/* ---- a soft light behind the figure, so the rings read as behind it ---- */
+function glowTexture(){
+  const c = document.createElement("canvas"); c.width = c.height = 256;
+  const ctx = c.getContext("2d");
+  const g = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+  g.addColorStop(0, "rgba(255,255,255,1)"); g.addColorStop(0.45, "rgba(255,255,255,.55)"); g.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = g; ctx.fillRect(0, 0, 256, 256);
+  return new THREE.CanvasTexture(c);
+}
+const glow = new THREE.Mesh(
+  new THREE.PlaneGeometry(1.35, 1.7),
+  new THREE.MeshBasicMaterial({ map: glowTexture(), color: readTokens().surface, transparent: true, opacity: 0, depthWrite: false, depthTest: false, toneMapped: false })
+);
+glow.renderOrder = 2;
+scene.add(glow);
+
+/* ---- the figure image (owner's choice, 2026-11-17): the aura conductor,
+   mirrored so the raised hand cues the stage in focus on the right ---- */
+const FIGURE_SRC = "assets/human-conductor-aura.png";
+const MIRROR = -1;      // -1 flips the image left to right; 1 shows it as drawn
+
+/* ---- the downbeat: on each new stage a thin ring ripples out from the figure;
+   the stage's panel lights up as the wave reaches it ---- */
+const RIPPLE_SPEED = 1.5;        // world units per second
+const rippleGeo = new THREE.BufferGeometry();
+{ const pts = []; for (let i = 0; i <= 128; i++) { const a = (i / 128) * Math.PI * 2; pts.push(Math.cos(a), Math.sin(a), 0); } rippleGeo.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3)); }
+const ripples = [0, 1].map(() => {   // the wave and a fainter echo just behind it
+  const l = new THREE.Line(rippleGeo, new THREE.LineBasicMaterial({ color: readTokens().ink, transparent: true, opacity: 0, depthWrite: false, depthTest: false }));
+  l.renderOrder = 3; l.frustumCulled = false; scene.add(l); return l;
+});
+let beatAt = -10, beatStage = -1;
+
+/* ---- the figure: the original image, always in front, never orbiting ----
+   Opened straight from disk the browser won't give WebGL a local image, so
+   there the same image is an <img> behind the canvas (makeFallback). */
+function loadImage(url) {
+  return new Promise((resolve, reject) => { const img = new Image(); img.onload = () => resolve(img); img.onerror = reject; img.src = url; });
+}
+function makeFigure(img) {
+  const tex = new THREE.Texture(img);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.needsUpdate = true;
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { map: { value: tex }, uDark: { value: isDarkPage() }, uShown: { value: reduceMotion ? 1 : 0 }, uMirror: { value: MIRROR } },
+    transparent: true, depthWrite: false, depthTest: false,
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `
+      uniform sampler2D map; uniform float uDark, uShown, uMirror; varying vec2 vUv;
+      void main(){
+        vec4 t = texture2D(map, uMirror < 0.0 ? vec2(1.0 - vUv.x, vUv.y) : vUv);
+        float luma = (t.r + t.g + t.b) / 3.0;
+        float alpha = smoothstep(0.06, 0.4, 1.0 - luma) * 0.86;   // drops the near-white ground completely
+        vec3 color = mix(t.rgb, vec3(0.6), 0.36);
+        color = mix(color, vec3(1.0) - color * 0.55, uDark);
+        gl_FragColor = vec4(color, alpha * uShown);
+      }`,
+  });
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(CENTER_H * (img.naturalWidth / img.naturalHeight), CENTER_H), mat);
+  mesh.renderOrder = 4;
+  return mesh;
+}
+// Opening only: dots sampled from the image fly in from across the hero and land on the figure.
+function makeGathering(img) {
+  const stride = 1, w = Math.floor(img.naturalWidth / stride), h = Math.floor(img.naturalHeight / stride);
+  const c = document.createElement("canvas"); c.width = w; c.height = h;
+  const ctx = c.getContext("2d", { willReadFrequently: true });
+  ctx.drawImage(img, 0, 0, w, h);
+  const data = ctx.getImageData(0, 0, w, h).data;
+  let total = 0;
+  for (let i = 0; i < data.length; i += 4) { const d = 1 - (data[i] + data[i + 1] + data[i + 2]) / 765; if (d > 0.12) total += d; }
+  const keep = (smallScreen ? 60000 : 160000) / total;   // spread across the full screen, so it needs many more dots than a shell
+  const planeH = CENTER_H, planeW = CENTER_H * (img.naturalWidth / img.naturalHeight);
+  const pos = [], start = [], tone = [], seed = [];
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const i = (y * w + x) * 4, luma = (data[i] + data[i + 1] + data[i + 2]) / 765, d = 1 - luma;
+    if (d <= 0.12 || Math.random() > d * keep) continue;
+    pos.push(MIRROR * (x / w - 0.5) * planeW, (0.5 - y / h) * planeH, 0);
+    // a start point anywhere across the screen (scaled to the screen in the shader), at a little depth
+    start.push(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1);
+    tone.push(luma); seed.push(Math.random());
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  geo.setAttribute("aStart", new THREE.Float32BufferAttribute(start, 3));
+  geo.setAttribute("aTone", new THREE.Float32BufferAttribute(tone, 1));
+  geo.setAttribute("aSeed", new THREE.Float32BufferAttribute(seed, 1));
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { uProgress: { value: 0 }, uOpacity: { value: 1 }, uScale: { value: 1 }, uDark: { value: isDarkPage() }, uSpread: { value: new THREE.Vector3(2, 1.4, 1) }, uCenter: { value: new THREE.Vector3() } },
+    transparent: true, depthWrite: false, depthTest: false,
+    vertexShader: `
+      attribute vec3 aStart; attribute float aTone, aSeed; uniform float uProgress, uScale; uniform vec3 uSpread, uCenter; varying float vTone;
+      void main(){
+        float t = clamp(uProgress * 1.4 - aSeed * 0.4, 0.0, 1.0);
+        t = 1.0 - pow(1.0 - t, 4.0);
+        vec3 from = uCenter + aStart * uSpread;
+        vec4 mv = modelViewMatrix * vec4(mix(from, position, t), 1.0);
+        gl_Position = projectionMatrix * mv;
+        gl_PointSize = max(1.0, 0.0056 * uScale / -mv.z);
+        vTone = aTone;
+      }`,
+    fragmentShader: `
+      uniform float uDark, uOpacity; varying float vTone;
+      void main(){
+        vec2 d = gl_PointCoord - 0.5; if (dot(d, d) > 0.25) discard;
+        float g = mix(vTone, 0.6, 0.36); g = mix(g, 1.0 - g * 0.55, uDark);
+        gl_FragColor = vec4(vec3(g), 0.86 * uOpacity);
+      }`,
+  });
+  const pts = new THREE.Points(geo, mat);
+  pts.renderOrder = 4;
   return pts;
 }
+// Ambient dust: a few slow motes around the figure, so the still state keeps some life.
+function makeDust() {
+  const n = smallScreen ? 60 : 150;
+  const seed = new Float32Array(n * 4), pos = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) { seed[i * 4] = 0.28 + Math.random() * 0.62; seed[i * 4 + 1] = Math.random() * Math.PI * 2; seed[i * 4 + 2] = (Math.random() - 0.5) * 1.3; seed[i * 4 + 3] = 0.4 + Math.random(); }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute("aSeed", new THREE.BufferAttribute(seed, 4));
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { uTime: { value: 0 }, uScale: { value: 1 }, uColor: { value: tokenVec(readTokens().ink2) }, uShown: { value: 0 } },
+    transparent: true, depthWrite: false, depthTest: false,
+    vertexShader: `
+      attribute vec4 aSeed; uniform float uTime, uScale; varying float vA;
+      void main(){
+        float a = aSeed.y + uTime * 0.05 * aSeed.w;
+        vec3 p = vec3(cos(a) * aSeed.x, aSeed.z + sin(uTime * 0.2 * aSeed.w + aSeed.y) * 0.04, sin(a) * aSeed.x);
+        vec4 mv = modelViewMatrix * vec4(p, 1.0);
+        gl_Position = projectionMatrix * mv;
+        gl_PointSize = max(1.0, 0.007 * aSeed.w * uScale / -mv.z);
+        vA = 0.22 + 0.3 * smoothstep(-0.6, 0.6, p.z);
+      }`,
+    fragmentShader: `
+      uniform vec3 uColor; uniform float uShown; varying float vA;
+      void main(){ vec2 d = gl_PointCoord - 0.5; if (dot(d, d) > 0.25) discard; gl_FragColor = vec4(uColor, vA * uShown); }`,
+  });
+  const pts = new THREE.Points(geo, mat);
+  pts.frustumCulled = false;
+  pts.renderOrder = 3;
+  return pts;
+}
+const dust = makeDust();
+scene.add(dust);
 
-const ARC_SEGMENTS = 20;
-const STEPS = STAGE_ORDER.length;
-const threadSegments = [];
-for (let ring = 0; ring < RING_COUNT; ring++) {
-  for (let i = 0; i < STEPS; i++) {
-    const fromIdx = ring * STEPS + i;
-    const toIdx = ring * STEPS + ((i + 1) % STEPS);
-    const isClosing = i === STEPS - 1;
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute("position", new THREE.BufferAttribute(new Float32Array((ARC_SEGMENTS + 1) * 3), 3));
-    const mat = isClosing
-      ? new THREE.LineDashedMaterial({ color: 0x141414, transparent: true, opacity: 0.18, depthWrite: false, dashSize: 0.04, gapSize: 0.03 })
-      : new THREE.LineBasicMaterial({ color: 0x141414, transparent: true, opacity: THREE.MathUtils.lerp(0.15, 0.65, i / (STEPS - 2)), depthWrite: false });
-    const line = new THREE.Line(geo, mat);
-    scene.add(line);
-    threadSegments.push({ line, fromIdx, toIdx, isClosing });
-  }
+let fallbackEl = null;
+function makeFallback(img) {
+  img.className = "hero-figure-fallback"; img.alt = ""; img.setAttribute("aria-hidden", "true");
+  img.dataset.dark = isDarkPage() ? "true" : "false";
+  if (MIRROR === -1) img.style.transform = "translate(-50%, -50%) scaleX(-1)";   // in one transform, so the flip doesn't mirror the centring
+  canvas.parentNode.insertBefore(img, canvas);
+  return img;
+}
+function placeFallback() {
+  if (!fallbackEl) return;
+  const px = CENTER_H * canvas.clientHeight / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * baseZ);
+  const bandShift = shiftWorld / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * baseZ) * canvas.clientHeight;
+  fallbackEl.style.height = px + "px";
+  fallbackEl.style.left = canvas.offsetLeft + canvas.clientWidth / 2 + "px";
+  fallbackEl.style.top = canvas.offsetTop + canvas.clientHeight / 2 - bandShift + "px";
 }
 
-/* ---- the fixed centerpiece — sits at the sphere's core, does not orbit ----
-   Loaded asynchronously and added to the scene whenever it's ready, rather
-   than awaited before the render loop starts below: the orbiting cards have
-   nothing to do with this image, and one failed image load should never be
-   able to blank the entire sphere. */
-let centerFigure = null;
-const CENTER_H = R * 1.1;
-loadCutoutTexture("assets/human-particle.png")
-  .then(({ texture, aspect }) => {
-    centerFigure = new THREE.Mesh(
-      new THREE.PlaneGeometry(CENTER_H * aspect, CENTER_H),
-      makeCutoutMaterial(texture)
-    );
-    centerFigure.position.set(0, 0, 0);
-    scene.add(centerFigure);
+const clock = new THREE.Clock();
+/* Build every shader and upload every buffer and texture once, offscreen,
+   while the headline is on screen. Objects that are still hidden (rings,
+   threads, cards) are included; otherwise each one stalls the opening the
+   first time it appears. */
+function prewarm(){
+  try {
+    const hidden = [];
+    scene.traverse((o) => { if (!o.visible) { hidden.push(o); o.visible = true; } });
+    renderer.compile(scene, camera);
+    // the same two passes as a real frame, at the real size: the scene without
+    // the cards into the frosting target, then everything; then wipe it
+    const buf = renderer.getDrawingBufferSize(new THREE.Vector2());
+    backTarget.setSize(Math.ceil(buf.x / 2), Math.ceil(buf.y / 2));
+    cards.forEach((card) => { card.visible = false; });
+    renderer.setRenderTarget(backTarget);
+    renderer.render(scene, camera);
+    renderer.setRenderTarget(null);
+    cards.forEach((card) => { card.visible = true; });
+    renderer.render(scene, camera);
+    renderer.clear();
+    hidden.forEach((o) => { o.visible = false; });
+  } catch (err) { /* warming up is only an optimisation */ }
+}
+let figure = null, gathering = null, figureStart = 0;
+if (window.heroModuleIn) window.heroModuleIn();
+(window.heroFigure || Promise.resolve(FIGURE_SRC)).then(loadImage)
+  .then((img) => {
+    if (location.protocol === "file:") fallbackEl = makeFallback(img);
+    else {
+      figure = makeFigure(img); scene.add(figure);
+      figureStart = clock.elapsedTime;
+      if (!reduceMotion) { try { gathering = makeGathering(img); scene.add(gathering); } catch (err) { gathering = null; } }
+    }
+    onResize();
+    prewarm();
+    if (window.heroReady) window.heroReady();
   })
-  .catch((err) => console.warn("center figure failed to load, skipping it:", err));
+  .catch((err) => { console.warn("centre figure failed to load, skipping it:", err); if (window.heroReady) window.heroReady(); });
 
-/* Cards live directly in the scene (world space), not under a rotating
-   parent group. Billboarding sets each card's quaternion to the camera's
-   world quaternion — if the cards were children of a rotating group, that
-   group's rotation would compound with the billboard quaternion and tilt
-   every card. So "orbiting the sphere" instead rotates each card's base
-   point by an accumulated quaternion every frame, and billboarding stays
-   a simple, uncompounded copy. The centerpiece never moves (the sphere's
-   center is invariant under rotation about itself) — it only billboards. */
-const rot = { x: 0, y: 0 };
-const orbitQuat = new THREE.Quaternion();
-const euler = new THREE.Euler();
+/* ---------------- theme ---------------- */
+function applyTheme(){
+  faces = makeFaces();
+  cards.forEach((card, i) => { const t = card.material.uniforms.map.value; t.image = faces[i]; t.needsUpdate = true; });
+  const tk = readTokens();
+  lineMats.forEach((m) => m.uniforms.uColor.value.copy(tokenVec(tk.ink)));
+  cards.forEach((card) => { const u = card.material.uniforms; u.uFillColor.value.copy(tokenVec(tk.surface)); u.uBg.value.copy(tokenVec(tk.bg)); u.uDark.value = isDarkPage(); });
+  glow.material.color.set(tk.surface);
+  dust.material.uniforms.uColor.value.copy(tokenVec(tk.ink2));
+  ripples.forEach((r) => r.material.color.set(tk.ink));
+  if (figure) figure.material.uniforms.uDark.value = isDarkPage();
+  if (gathering) gathering.material.uniforms.uDark.value = isDarkPage();
+  if (fallbackEl) fallbackEl.dataset.dark = isDarkPage() ? "true" : "false";
+}
+new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyTheme);
 
-/* ---------------- interaction: drag orbit + inertia + idle drift ---------------- */
-const SENSITIVITY = 0.005;
-const DAMP = 0.92;
-const IDLE_SPEED = 0.0015;
+/* ---------------- process row and caption ---------------- */
+const stepItems = Array.from(document.querySelectorAll("#hero-steps li"));
+const caption = document.getElementById("hero-caption");
+let marked = -2, captionKey = "", typing = null;
+// The caption types itself out, like a read-out (instant with reduced motion).
+function typeCaption(text){
+  clearInterval(typing);
+  if (reduceMotion) { caption.textContent = text; return; }
+  let n = 0;
+  caption.innerHTML = '<span></span><span class="caret"></span>';
+  const out = caption.firstChild;
+  typing = setInterval(() => { n += 2; out.textContent = text.slice(0, n); if (n >= text.length) clearInterval(typing); }, 22);
+}
+function mark(stageIndex, card){
+  if (stageIndex !== marked) {
+    marked = stageIndex;
+    stepItems.forEach((li, i) => li.classList.toggle("is-current", i === stageIndex));
+  }
+  if (!caption) return;
+  const key = stageIndex + "|" + (card ? card.tool : "");
+  if (key === captionKey) return;
+  captionKey = key;
+  if (stageIndex < 0) { caption.textContent = ""; return; }
+  const st = STAGES[stageIndex];
+  const text = String(stageIndex + 1).padStart(2, "0") + " · " + (card && card.tool ? st.says + " · " + card.tool + ", " + card.kind.toLowerCase() : st.says);
+  typeCaption(text);
+}
 
-let dragging = false;
-let lastX = 0, lastY = 0;
-const velocity = { x: 0, y: 0 };
+/* ---------------- opening: headline and process join the gathering ----------------
+   (The headline has its own opening first, in the script after the hero.)
+   As the rings swing in, the six stages come in one by one under the sphere,
+   each lighting as it lands, and the caption names them. At START_AT the
+   process clock takes over. Without WebGL or with reduced motion none of
+   this runs and everything is simply there. */
+const stage = document.querySelector(".stage");
+const introRole = document.querySelector(".hero-role");
+const introLines = Array.from(document.querySelectorAll("#hero-line .hl-line"));
+const INTRO = { role: 0.25, line: 0.6, lineGap: 0.42, steps: 3.5, stepGap: 0.24, caption: 3.35 };
+let introOn = !reduceMotion, introCaption = false;
+if (introOn) stage.classList.add("is-intro");
+function introTick(t){
+  const show = (el, at) => { if (el && t >= at && !el.classList.contains("is-in")) el.classList.add("is-in"); };
+  let lit = -1;
+  stepItems.forEach((li, i) => { const at = INTRO.steps + i * INTRO.stepGap; show(li, at); if (t >= at) lit = i; });
+  // the latest stage to land is lit briefly, a scan across the process
+  const scanEnd = INTRO.steps + STEPS * INTRO.stepGap + 0.3;
+  stepItems.forEach((li, i) => li.classList.toggle("is-current", t < scanEnd && i === lit));
+  if (!introCaption && t >= INTRO.caption && caption) { introCaption = true; typeCaption("The design process"); }
+}
+function introEnd(){
+  introOn = false;
+  [introRole, ...introLines, ...stepItems].forEach((el) => el && el.classList.add("is-in"));
+}
+
+/* ---------------- interaction ---------------- */
+const SENSITIVITY = 0.005, DAMP = 0.92;
+// Dragging sideways scrubs the process: turning the sphere one step moves the
+// process one stage, so the panel in focus, the threads and the row below always
+// agree. On release it settles on the nearest stage and carries on from there.
+// Dragging up or down only tilts the view, and eases back.
+const rot = { x: 0 }, velocity = { x: 0 };
+let procT = 0;                                              // the process clock; it stops while a card is hovered or dragged
+let scrub = 0, settling = false, settleTo = 0;              // steps added by the viewer, on top of the clock
+let dragging = false, lastX = 0, lastY = 0, drift = 1;
+const raycaster = new THREE.Raycaster(), pointer = new THREE.Vector2(), look = new THREE.Vector2();
+let pointerInside = false, hovered = null;
 
 canvas.addEventListener("pointerdown", (e) => {
-  dragging = true;
-  canvas.classList.add("dragging");
-  canvas.setPointerCapture(e.pointerId);
-  lastX = e.clientX; lastY = e.clientY;
-  velocity.x = velocity.y = 0;
+  dragging = true; canvas.classList.add("dragging"); canvas.setPointerCapture(e.pointerId);
+  lastX = e.clientX; lastY = e.clientY; velocity.x = 0; settling = false;
 });
-
 canvas.addEventListener("pointermove", (e) => {
+  const r = canvas.getBoundingClientRect();
+  pointer.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  pointerInside = e.pointerType === "mouse";
   if (!dragging) return;
-  const dx = e.clientX - lastX;
-  const dy = e.clientY - lastY;
+  const dx = e.clientX - lastX, dy = e.clientY - lastY;
   lastX = e.clientX; lastY = e.clientY;
-
-  const dyRot = dx * SENSITIVITY;
-  const dxRot = dy * SENSITIVITY;
-  rot.y += dyRot;
-  rot.x = THREE.MathUtils.clamp(rot.x + dxRot, -Math.PI / 2, Math.PI / 2);
-
-  velocity.y = dyRot;
-  velocity.x = dxRot;
+  scrub -= (dx * SENSITIVITY) / STEP_ANGLE;
+  rot.x = THREE.MathUtils.clamp(rot.x + dy * SENSITIVITY, -0.6, 0.6);
 });
-
-function endDrag() {
-  if (!dragging) return;
-  dragging = false;
-  canvas.classList.remove("dragging");
-  if (reduceMotion) { velocity.x = velocity.y = 0; }
-}
+function endDrag(){ if (!dragging) return; dragging = false; canvas.classList.remove("dragging"); settling = true; settleTo = Math.round(scrub); }
 canvas.addEventListener("pointerup", endDrag);
 canvas.addEventListener("pointercancel", endDrag);
-canvas.addEventListener("pointerleave", (e) => { if (e.buttons === 0) endDrag(); });
+canvas.addEventListener("pointerleave", (e) => { pointerInside = false; if (e.buttons === 0) endDrag(); });
 
 /* ---------------- resize ---------------- */
+// The canvas fills the whole hero, but the sphere is framed in the area above
+// the caption, process row and nav dock: the view is shifted up by half of
+// that band and pulled back so the sphere keeps its size.
+const BOTTOM_BAND = 176;
+let shiftWorld = 0;
 function onResize() {
   const w = canvas.clientWidth, h = canvas.clientHeight;
+  if (!w || !h) return;
+  const band = window.matchMedia("(max-width: 900px)").matches ? 0 : Math.min(BOTTOM_BAND, h * 0.3);
+  const hv = h - band;                                        // the height the sphere is framed in
   camera.aspect = w / h;
+  baseZ = (w / hv < 1 ? 3.2 / Math.max(w / hv, 0.6) : 3.2) * R * (h / hv);
+  camera.setViewOffset(w, h, 0, band / 2, w, h);
+  shiftWorld = (band / 2) / h * 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * baseZ;
   camera.updateProjectionMatrix();
   renderer.setSize(w, h, false);
+  const drawH = renderer.getDrawingBufferSize(new THREE.Vector2()).y;
+  const scale = drawH / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
+  dust.material.uniforms.uScale.value = scale;
+  if (gathering) {
+    const g = gathering.material.uniforms, halfH = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * baseZ;
+    g.uScale.value = scale;
+    g.uSpread.value.set(halfH * camera.aspect * 1.08, halfH * 1.08, 1.1);   // the whole visible screen, edge to edge
+    g.uCenter.value.set(0, -shiftWorld, 0);
+  }
+  placeFallback();
 }
 window.addEventListener("resize", onResize);
 
-/* ---------------- render loop ---------------- */
-const viewDir = new THREE.Vector3();
-const worldPos = new THREE.Vector3();
-const clock = new THREE.Clock();
+/* ---------------- timing ----------------
+   Opening, in three beats:
+     0.0 – 2.6   dots gather into the figure (camera pushes in throughout)
+     2.3 – 4.4   the globe and its rings draw themselves on, line by line
+     3.7 – 5.6   the cards arrive, ring by ring
+     6.0         the process starts moving
+
+   Then the sphere is choreographed, not drifting. Each stage in turn sits
+   front-left of the figure, sharp, with the next stage waiting front-right.
+   The thread draws from one to the other across the front, then the sphere
+   turns one step to bring the next stage into focus. Six steps make a full
+   turn; the last one carries Ship round to Problem again. */
+const GATHER = 2.6, LINES_AT = 2.3, RINGS_AT = 3.7, RING_GAP = 0.45, START_AT = 6.0;   // figure, then lines, then cards
+const STEP_TIME = 3.0;                 // one stage: the thread draws, then the sphere turns
+const DRAW_PART = 0.42;                // share of a step spent drawing the thread
+const STEP_ANGLE = (Math.PI * 2) / STEPS;
+const REST = -(Math.PI * 2) / 3 + STEP_ANGLE;   // puts stage 0 front-right of the figure, the previous stage front-left
+const CYCLE = STEPS * STEP_TIME;
+
+const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const clamp01 = (t) => Math.min(1, Math.max(0, t));
+const smooth = THREE.MathUtils.smoothstep;
+
+const orbitQuat = new THREE.Quaternion(), euler = new THREE.Euler();
+const Z_AXIS = new THREE.Vector3(0, 0, 1), IDENTITY = new THREE.Quaternion(), leanQuat = new THREE.Quaternion();
+const normal = new THREE.Vector3(), p = new THREE.Vector3(), a = new THREE.Vector3(), b = new THREE.Vector3(), q = new THREE.Vector3();
+const ORIGIN = new THREE.Vector3();
+
 
 function tick() {
   requestAnimationFrame(tick);
-  const delta = Math.min(clock.getDelta(), 0.05);
+  const delta = Math.min(clock.getDelta(), 0.05), t = clock.elapsedTime;
   const damp = Math.pow(DAMP, delta * 60);
 
-  if (!dragging) {
-    velocity.x *= damp;
-    velocity.y *= damp;
-    if (Math.abs(velocity.x) < 1e-5) velocity.x = 0;
-    if (Math.abs(velocity.y) < 1e-5) velocity.y = 0;
-
-    rot.y += velocity.y;
-    rot.x += velocity.x;
-
-    if (!reduceMotion && velocity.x === 0 && velocity.y === 0) {
-      rot.y += IDLE_SPEED * delta * 60;
-    }
-    rot.x = THREE.MathUtils.clamp(rot.x, -Math.PI / 2, Math.PI / 2);
+  /* ---- hover first: it stops the drift ---- */
+  hovered = null;
+  if (pointerInside && !dragging) {
+    raycaster.setFromCamera(pointer, camera);
+    const hit = raycaster.intersectObjects(cards).find((h) => h.object.material.uniforms.uOpacity.value > 0.25);
+    if (hit) hovered = hit.object;
   }
 
-  euler.set(rot.x, rot.y, 0, "YXZ");
-  orbitQuat.setFromEuler(euler);
+  if (!dragging) {
+    rot.x += (0 - rot.x) * Math.min(1, delta * 2);           // the tilt eases back
+    if (settling) {                                           // glide to the nearest stage, then hand it to the clock
+      scrub += (settleTo - scrub) * Math.min(1, delta * 9);
+      if (Math.abs(settleTo - scrub) < 0.002) {
+        procT += settleTo * STEP_TIME;
+        scrub = 0; settling = false;
+      }
+    }
+  }
+  // the process clock runs unless a card is hovered or the sphere is being dragged
+  drift += ((hovered || dragging ? 0 : 1) - drift) * Math.min(1, delta * 4);
+  if (!reduceMotion && t > START_AT) procT += delta * drift;
 
-  camera.getWorldDirection(viewDir);
+  /* ---- where the process is: which stage is in focus, how far its thread has drawn, how far the sphere has turned ---- */
+  let active = 0, step = -1, stepT = 0, turned = 0, threadFade = 1;
+  const mod = (n, m) => ((n % m) + m) % m;
+  if (t > START_AT || scrub !== 0) {
+    const c = mod(procT, CYCLE), k = Math.floor(c / STEP_TIME), f = c / STEP_TIME - k;
+    const turn = reduceMotion ? 0 : easeInOut(clamp01((f - DRAW_PART) / (1 - DRAW_PART)));
+    turned = Math.floor(procT / CYCLE) * STEPS + k + turn;
+    if (scrub === 0) {
+      active = turn < 0.5 ? k : (k + 1) % STEPS;
+      // the thread arriving into stage k (from k-1) draws while k sits front-right
+      if (k >= 1) { step = k - 1; stepT = easeInOut(clamp01(f / DRAW_PART)); }
+      if (k === STEPS - 1) threadFade = 1 - turn;           // after Ship, the drawn path clears as the sphere turns back to Problem
+    } else {
+      // the viewer is turning it: whichever stage is nearest front-right is in focus,
+      // and the path is traced up to it
+      turned += scrub;
+      active = mod(Math.round(turned), STEPS);
+      if (active >= 1) { step = active - 1; stepT = 1; }
+    }
+    if (reduceMotion && scrub === 0) { active = k; if (k >= 1) { step = k - 1; stepT = 1; } }
+  } else if (!reduceMotion) active = -1;
+
+  const sweep = reduceMotion ? 0 : (1 - easeOut(clamp01((t - RINGS_AT) / 2.6))) * 1.1;   // the rings swing into place in the opening
+  euler.set(rot.x, REST - turned * STEP_ANGLE + sweep, 0, "YXZ");
+  orbitQuat.setFromEuler(euler).premultiply(TILT);
+
+  /* ---- camera: push in during the opening, shift a little with the pointer, pull back on scroll ---- */
+  const open = reduceMotion ? 1 : easeOut(clamp01(t / 5.6));
+  const exit = clamp01(window.scrollY / Math.max(1, stageEl.offsetHeight * 0.9));
+  if (!reduceMotion) { look.x += ((pointerInside ? pointer.x : 0) - look.x) * Math.min(1, delta * 2.5); look.y += ((pointerInside ? pointer.y : 0) - look.y) * Math.min(1, delta * 2.5); }
+  camera.position.set(look.x * 0.16, look.y * 0.1, baseZ * (1 + 0.22 * (1 - open)) + exit * 1.4);
+  camera.lookAt(ORIGIN);
+  canvas.style.opacity = String(1 - smooth(exit, 0.15, 0.95));
+
+  /* ---- cards ---- */
   cards.forEach((card) => {
-    worldPos.copy(card.userData.basePoint).applyQuaternion(orbitQuat);
-    card.position.copy(worldPos);
-    card.quaternion.copy(camera.quaternion); // billboard — uncompounded, cards are scene children
-    const t = THREE.MathUtils.clamp((-worldPos.dot(viewDir) / R + 1) / 2, 0, 1);
-    card.material.opacity = THREE.MathUtils.lerp(0.05, 1, THREE.MathUtils.smoothstep(t, 0.4, 0.85));
+    const d = card.userData, info = d.info, u = card.material.uniforms;
+    p.copy(d.base).applyQuaternion(orbitQuat);
+    // opening: each ring arrives from a little further out
+    const arrive = reduceMotion ? 1 : easeOut(clamp01((t - (RINGS_AT + info.ring * RING_GAP + info.stageIndex * 0.07)) / 0.9));
+    card.position.copy(p).multiplyScalar(1 + 0.28 * (1 - arrive));
+
+    normal.copy(p).normalize(); if (normal.z < 0) normal.z = -normal.z;
+    leanQuat.setFromUnitVectors(Z_AXIS, normal);
+    card.quaternion.copy(IDENTITY).slerp(leanQuat, LEAN);
+
+    const depth = clamp01((p.z / R + 1) / 2);            // 0 far side, 1 nearest
+    d.depth = depth;
+    // focus pull: when a stage is active, the other stages step back
+    const wantFocus = active < 0 || info.stageIndex === active || card === hovered ? 1 : 0.7;
+    d.focus += (wantFocus - d.focus) * Math.min(1, delta * 3);
+    d.lift += ((card === hovered ? 1 : 0) - d.lift) * Math.min(1, delta * 10);
+
+    const fog = smooth(depth, 0.1, 0.62);                 // the far side dissolves into the page
+    u.uOpacity.value = arrive * THREE.MathUtils.lerp(fog * d.focus, 1, d.lift);
+    u.uBlur.value = (1 - smooth(depth, 0.45, 0.86)) * 3.6 * (1 - d.lift);
+    card.scale.setScalar(THREE.MathUtils.lerp(0.8, 1, arrive) * (1 + 0.05 * (info.stageIndex === active ? d.focus : 0) + 0.12 * d.lift));
+    card.renderOrder = d.lift > 0.05 ? 5 : (p.z < 0 ? 0 : 3);   // far cards, glow, near cards, figure, hovered card
   });
 
-  if (centerFigure) centerFigure.quaternion.copy(camera.quaternion); // billboard only — position never changes
+  /* ---- instrument arcs and the cursor meridian follow the orbit ---- */
+  instrument.quaternion.copy(orbitQuat);
+  outlineHolder.quaternion.copy(camera.quaternion);
+  drawOn.forEach((d) => {
+    const k = reduceMotion ? 1 : easeInOut(clamp01((t - LINES_AT - d.at) / d.dur));
+    d.obj.geometry.setDrawRange(0, k >= 1 ? d.count : Math.floor(k * d.count));
+  });
+  const ia = reduceMotion ? 1 : clamp01((t - LINES_AT) / 2);
 
-  threadSegments.forEach(({ line, fromIdx, toIdx, isClosing }) => {
-    const arc = slerpArc(cards[fromIdx].position, cards[toIdx].position, R, ARC_SEGMENTS);
-    const pos = line.geometry.attributes.position.array;
-    arc.forEach((v, i) => { pos[i * 3] = v.x; pos[i * 3 + 1] = v.y; pos[i * 3 + 2] = v.z; });
-    line.geometry.attributes.position.needsUpdate = true;
-    line.geometry.computeBoundingSphere();
-    if (isClosing) line.computeLineDistances(); // required for dashed segments, every update
+  /* ---- the downbeat: a new stage sends a ripple; its panels light as the wave reaches them ---- */
+  if (active >= 0 && active !== beatStage) { beatStage = active; beatAt = t; }
+  const age = t - beatAt, waveR = 0.16 + age * RIPPLE_SPEED;
+  ripples.forEach((r, i) => {
+    const rr = Math.max(0.01, waveR - i * 0.09);
+    r.scale.setScalar(rr);
+    r.quaternion.copy(camera.quaternion);
+    r.material.opacity = reduceMotion ? 0 : (i ? 0.22 : 0.55) * (1 - smooth(rr, 0.2, 1.7)) * smooth(age, 0, 0.08);
   });
 
+  /* ---- the stage in focus: solid fill, a little forward, lit when the wave reaches it ---- */
+  let held = null;
+  cards.forEach((card) => {
+    const d = card.userData, info = d.info, u = card.material.uniforms;
+    const isActive = active >= 0 && info.stageIndex === active;
+    const reached = reduceMotion || Math.hypot(card.position.x, card.position.y) <= waveR;
+    if (isActive && reached && !d.hit) { d.hit = true; d.pulse = 1; }
+    if (!isActive) d.hit = false;
+    d.pulse = Math.max(0, (d.pulse || 0) - delta * 2.2);
+    d.hold = (d.hold || 0) + ((isActive && reached ? 1 : 0) - (d.hold || 0)) * Math.min(1, delta * 6);
+    card.scale.multiplyScalar(1 + 0.06 * d.pulse);
+    u.uFill.value = Math.max(d.hold, d.lift);
+    card.position.multiplyScalar(1 + 0.1 * d.hold);
+    if (info.ring === 1 && isActive) held = card;
+  });
+
+  // meridian through the held panel
+  if (held) {
+    const mp = meridian.geometry.attributes.position.array;
+    a.copy(held.userData.base).applyQuaternion(orbitQuat);
+    const lon = Math.atan2(a.z, a.x);
+    for (let i = 0; i <= 40; i++) {
+      const lat = -Math.PI / 2 + (i / 40) * Math.PI;
+      q.set(Math.cos(lat) * Math.cos(lon), Math.sin(lat), Math.cos(lat) * Math.sin(lon)).multiplyScalar(R * 1.06);
+      mp[i * 3] = q.x; mp[i * 3 + 1] = q.y; mp[i * 3 + 2] = q.z;
+    }
+    meridian.geometry.attributes.position.needsUpdate = true;
+  }
+  meridian.material.uniforms.uOpacity.value = held ? 0.3 * ia : 0;
+
+  /* ---- threads: how much of each ring stretch has been traced this cycle ---- */
+  threads.forEach((th) => {
+    let done = 0;
+    if (step >= 0) done = th.step < step ? 1 : th.step === step ? stepT : 0;
+    th.drawn.geometry.setDrawRange(0, done > 0 ? Math.round(done * ARC) + 1 : 0);
+    th.drawn.material.uniforms.uOpacity.value = 0.9 * threadFade;
+  });
+
+  /* ---- process row: hover wins, then the stage in focus, then (still mode) the nearest card ---- */
+  if (introOn) { if (t < START_AT) introTick(t); else introEnd(); }
+  if (introOn) { /* the opening owns the row and caption */ }
+  else if (hovered) mark(hovered.userData.info.stageIndex, hovered.userData.info);
+  else mark(active, null);
+
+  /* ---- figure, its light, the dust ---- */
+  glow.quaternion.copy(camera.quaternion);
+  glow.material.opacity = (isDark ? 0 : 0.9) * (reduceMotion ? 1 : clamp01((t - 1.2) / 1.6));
+  dust.material.uniforms.uTime.value = reduceMotion ? 0 : t;
+  dust.material.uniforms.uShown.value = reduceMotion ? 1 : clamp01((t - GATHER) / 1.5);
+  if (figure) {
+    figure.quaternion.copy(camera.quaternion);
+    if (!reduceMotion) {
+      const g = (t - figureStart) / GATHER;
+      let shown;
+      if (gathering) {
+        shown = clamp01((g - 0.86) / 0.26);
+        const u = gathering.material.uniforms;
+        u.uProgress.value = clamp01(g); u.uOpacity.value = 1 - shown;
+        // stays upright: its start points are laid out in screen space
+        if (g > 1.2) { scene.remove(gathering); gathering.geometry.dispose(); gathering.material.dispose(); gathering = null; }
+      } else shown = figure.material.uniforms.uShown.value >= 1 ? 1 : clamp01(g / 0.4);
+      figure.material.uniforms.uShown.value = shown;
+    }
+  }
+
+  const buf = renderer.getDrawingBufferSize(new THREE.Vector2());
+  if (backTarget.width !== Math.ceil(buf.x / 2) || backTarget.height !== Math.ceil(buf.y / 2)) backTarget.setSize(Math.ceil(buf.x / 2), Math.ceil(buf.y / 2));
+  cards.forEach((card) => { card.visible = false; });
+  renderer.setRenderTarget(backTarget);
+  renderer.setClearColor(0x000000, 0);
+  renderer.clear();
+  renderer.render(scene, camera);
+  renderer.setRenderTarget(null);
+  cards.forEach((card) => { card.visible = true; card.material.uniforms.uRes.value.copy(buf); });
   renderer.render(scene, camera);
 }
 
+let isDark = isDarkPage() === 1;
+new MutationObserver(() => { isDark = isDarkPage() === 1; }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { isDark = isDarkPage() === 1; });
+
 onResize();
-tick();
+(window.heroGo || Promise.resolve()).then(tick);   // the sphere starts once the headline has been read
 </script>
 </body>
 </html>

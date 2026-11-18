@@ -5,22 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pinnacle AI — nothingdesign</title>
   <meta name="description" content="Designing a scheduling agent in iMessage for a 10-location coffee chain: weekly scheduling work went from about 2–3 hours to 5–10 minutes per store.">
+  <!-- link previews (LinkedIn, Slack, email). TODO(owner): add og:image and og:url once the site has its address -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="nothingdesign">
+  <meta property="og:title" content="Pinnacle AI — nothingdesign">
+  <meta property="og:description" content="Designing a scheduling agent in iMessage for a 10-location coffee chain: weekly scheduling work went from about 2–3 hours to 5–10 minutes per store.">
+  <meta name="twitter:card" content="summary">
 
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
 
-  <link rel="stylesheet" href="../shared.css">
+  <link rel="stylesheet" href="../../design-system/tokens.css">
+  <link rel="stylesheet" href="../../site.css">
+  <script src="../../site.js"></script>
   <link rel="stylesheet" href="../article.css">
+  <link rel="stylesheet" href="pinnacle.css">
+  <script src="pinnacle.js" defer></script>
 </head>
 <body>
 
   <header class="site-header">
-    <a class="brand" href="../../index.html" aria-label="nothingdesign, home">nothingdesign<span class="dot"></span></a>
-    <nav class="site-nav" aria-label="Primary">
-      <a href="../../index.html#work">Work</a>
+    <a class="wordmark" href="../../index.html" aria-label="nothingdesign, home"><span class="wordmark__n">nothing</span>design</a>
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
+      <a class="site-nav__link site-nav__work" href="../../index.html#work" aria-current="true">Work <span class="site-nav__count" aria-hidden="true">3</span></a>
+      <a class="site-nav__link" href="../../about/index.html">About</a>
+      <a class="button button--quiet" href="../../book/index.html">Book<span class="site-header__long">&nbsp;a call</span></a>
     </nav>
   </header>
+  <button class="theme-toggle theme-switch" type="button" aria-label="Switch theme">
+    <svg class="theme-switch__moon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+    <svg class="theme-switch__sun" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>
+  </button>
 
   <main>
     <div class="case-hero">
@@ -29,19 +46,24 @@
         <span class="case-hero__status">Case study</span>
       </p>
       <h1>Pinnacle AI: automating the repetitive work of running 10 coffee shops</h1>
+      <p class="case-hero__dek">A scheduling agent in iMessage that keeps a 10-store coffee chain's staff schedule working as plans change.</p>
       <p class="case-hero__meta">Product Designer · January 2026 – present</p>
 
       <dl class="case-facts">
         <div><dt>Role</dt><dd>Product Designer: discovery, problem framing, AI workflow &amp; conversation design, prototyping</dd></div>
         <div><dt>Team</dt><dd>Me + one software developer (model integration, messaging connection, backend)</dd></div>
         <div><dt>Client</dt><dd>A 10-location coffee-shop chain (client of Pinnacle AI)</dd></div>
-        <div><dt>Built with</dt><dd>iMessage, Figma, prompt design</dd></div>
+        <div><dt>Surface</dt><dd>iMessage</dd></div>
+        <div><dt>Tools</dt><dd>Figma, prompt design and iteration</dd></div>
       </dl>
 
       <p class="case-hero__tldr"><strong>In short:</strong> Store managers spent 2–3 hours a week per store keeping staff schedules workable. I designed an iMessage agent that talks to employees, builds the schedule and asks the manager only when something is new. That work dropped to about 5–10 minutes, and we track month by month how often the manager still has to correct it.</p>
     </div>
 
     <article class="case-body">
+
+      <!-- Opening: ~10 messages to 3, played as a thread (pinnacle.js) -->
+      <div id="pa-intro" hidden></div>
 
       <div class="stat-grid">
         <div class="stat"><span class="stat__value">10 stores</span><span class="stat__label">live, used daily</span></div>
@@ -50,12 +72,35 @@
         <div class="stat"><span class="stat__value">2 agents</span><span class="stat__label">live: scheduling and inventory management; waste management next</span></div>
       </div>
 
-      <!-- ========================================================= -->
-      <h2>The problem</h2>
-      <p>Pinnacle AI, where I work, builds automation for businesses. Our client runs 10 coffee shops. Each store manager handles staff schedules, ordering, inventory and food waste on top of running the store, so the goal was to take repetitive work off their plate.</p>
-      <p>Schedules were the hardest to keep up. Managers tried to reuse a familiar weekly roster, but people's availability kept changing. Each change meant collecting updates, reassigning shifts and contacting replacements, and each unanswered message left something unresolved.</p>
+      <figure class="case-figure case-figure--wide">
+        <ol class="timeline" aria-label="Project timeline, January 2026 to now">
+          <li><span class="timeline__n">01 · Jan 2026</span><b>Discovery</b><span>Surveyed 10 managers, interviewed 4, shadowed 1</span></li>
+          <li><span class="timeline__n">02</span><b>Scheduling first</b><span>The task managers most wanted to hand off</span></li>
+          <li><span class="timeline__n">03</span><b>First flow</b><span>About 10 messages per employee</span></li>
+          <li class="is-turn"><span class="timeline__n">04</span><b>Redesigned</b><span>Propose, then confirm: 3 messages</span></li>
+          <li><span class="timeline__n">05</span><b>Live in 10 stores</b><span>Accuracy tracked every month</span></li>
+          <li><span class="timeline__n">06 · Now</span><b>Expanding</b><span>Inventory live with approval; waste next</span></li>
+        </ol>
+      </figure>
 
-      <figure class="case-figure">
+      <nav class="case-index" aria-label="Sections">
+        <div class="case-index__scroll">
+          <a href="#problem">Problem</a>
+          <a href="#research">Role and research</a>
+          <a href="#decisions">Decisions</a>
+          <a href="#ai">Why AI</a>
+          <a href="#results">Results</a>
+          <a href="#next">What's next</a>
+          <a href="#learned">What I learned</a>
+        </div>
+      </nav>
+
+      <!-- ========================================================= -->
+      <h2 id="problem">The problem</h2>
+      <p>Pinnacle AI, where I work, builds automation for businesses. Our client runs 10 coffee shops. Each store manager handles staff schedules, ordering, inventory and food waste on top of running the store.</p>
+      <p>Schedules were the hardest to keep up. Managers reused a familiar weekly roster, but availability kept changing, and each change meant collecting updates, reassigning shifts and contacting replacements.</p>
+
+      <figure class="case-figure" data-play>
         <div class="case-diagram">
           <svg viewBox="0 0 760 170" role="img" aria-labelledby="loop-t loop-d">
             <title id="loop-t">The scheduling coordination loop</title>
@@ -87,14 +132,21 @@
         <figcaption>Before the agent, every change in availability set off another round of messages for the manager.</figcaption>
       </figure>
 
-      <p><strong>How might we cut the back-and-forth of keeping a schedule working, while keeping managers in charge of the decisions that need them?</strong></p>
+      <blockquote><p>How might we cut the back-and-forth of keeping a schedule working, while keeping managers in charge of the decisions that need them?</p></blockquote>
 
       <!-- ========================================================= -->
-      <h2>What I found</h2>
-      <p>I started with the work itself rather than the request. We surveyed all 10 managers, I interviewed four, and I shadowed one through a working day to see how they actually ran their team.</p>
-      <p>Four repetitive tasks came up, each taking about 2 hours a week per store. At a loaded manager cost of $23/hr, that adds up to about $95.7K a year across 10 stores: a projection, used to decide what was worth automating.</p>
+      <h2 id="research">My role and research</h2>
 
-      <figure class="case-figure">
+      <div class="team-strip">
+        <div class="team-strip__who is-me"><span>Me</span><b>Product design</b><p>Discovery, problem framing, AI workflow and conversation design, prototyping</p></div>
+        <div class="team-strip__who"><span>Developer</span><b>Engineering</b><p>Model integration, messaging connection, backend</p></div>
+        <div class="team-strip__who"><span>Client</span><b>Store managers</b><p>Corrected the agent by message; their corrections became its rules</p></div>
+      </div>
+
+      <p>I started with the work itself rather than the request. We surveyed all 10 managers, I interviewed four, and I shadowed one through a working day.</p>
+      <p>Four repetitive tasks came up, each about 2 hours a week per store. At a loaded manager cost of $23/hr that is about $95.7K a year across 10 stores: a projection, used to decide what was worth automating.</p>
+
+      <figure class="case-figure" data-play>
         <div class="case-diagram">
           <svg viewBox="0 0 760 150" role="img" aria-labelledby="task-t task-d">
             <title id="task-t">Four repetitive tasks per store</title>
@@ -123,11 +175,10 @@
         <figcaption>Four repetitive tasks took about 8 hours a week per store. Scheduling became the first agent.</figcaption>
       </figure>
 
-      <p>Scheduling had a pattern the others didn't. Generating a roster was only part of it; most of the work was the coordination that kept the roster workable. So the product had to take on the conversations, not just the schedule.</p>
+      <p>Scheduling had a pattern the others didn't: most of the work was the coordination that kept the roster workable. So the product had to take on the conversations, not just the schedule.</p>
 
       <!-- ========================================================= -->
-      <h2>Five design decisions</h2>
-      <p>Each decision traded something away. Here's what we chose, and why.</p>
+      <h2 id="decisions">Five design decisions</h2>
 
       <section class="decision">
         <span class="decision__label">Decision 1</span>
@@ -136,7 +187,7 @@
           <li><b>Ordering and inventory first</b>Easier to automate: data-based and already on a computer. Not what managers most wanted help with.</li>
           <li class="is-chosen"><b>Scheduling first</b>Harder: people, changing availability, exceptions. But managers wanted to hand it off and trust an agent with it.</li>
         </ul>
-        <p>My prioritization weighed technical feasibility against willingness to adopt the result. We accepted more interaction complexity for a workflow managers wanted help with sooner, and it gave a clear test of value: how much scheduling work stays with the manager once the agent is involved?</p>
+        <p>We accepted more interaction complexity for a workflow managers wanted to hand off. It also gave a clear test of value: how much scheduling work stays with the manager once the agent is involved?</p>
       </section>
 
       <section class="decision">
@@ -146,10 +197,10 @@
           <li><b>Standalone app</b>A dense roster is easier to inspect, but needs installs, accounts and learning first.</li>
           <li class="is-chosen"><b>iMessage</b>Everyone already has it open. The conversation design has to carry all the clarity.</li>
         </ul>
-        <p>Each employee has a private conversation with the agent, and the manager has a separate thread for updates, approvals and corrections. A manager can change the schedule just by messaging the agent. Each part is built so it can later merge into one platform.</p>
+        <p>Each employee has a private thread with the agent. The manager has a separate one for updates, approvals and corrections, and can change the schedule just by messaging. Each part is built so it can later merge into one platform.</p>
       </section>
 
-      <figure class="case-figure">
+      <figure class="case-figure" data-play>
         <div class="case-diagram">
           <svg viewBox="0 0 760 262" role="img" aria-labelledby="how-t how-d">
             <title id="how-t">How the scheduling agent works</title>
@@ -190,7 +241,7 @@
             <text class="d-label d-label--ink" x="473" y="252" text-anchor="middle">RULE</text>
           </svg>
         </div>
-        <figcaption>Employees and the manager each talk to the agent in their own thread. Routine changes update the schedule; new situations go to the manager, and their corrections become saved rules.</figcaption>
+        <figcaption>Routine changes update the schedule; new situations go to the manager, and their corrections become saved rules.</figcaption>
       </figure>
 
       <section class="decision">
@@ -200,13 +251,48 @@
           <li><b>Ask one question at a time</b>~10 messages per person, and employees kept getting pulled back in.</li>
           <li class="is-chosen"><b>Propose, then confirm</b>3 messages: the agent proposes, the employee responds, the agent confirms. The cost is a denser first message.</li>
         </ul>
-        <p>The first flow asked employees when they could work, built a schedule, then kept coming back whenever something didn't fit: could they adjust their availability, work more hours, or fewer? I redesigned the exchange around a recommendation, so the employee responds to something concrete. No model change: the win was the question flow. Unusual situations can still need clarification.</p>
+        <p>I redesigned the exchange around a recommendation, so the employee responds to something concrete. No model change: the win was the question flow. Unusual situations can still need clarification.</p>
       </section>
 
       <figure class="case-figure">
-        <!-- MOCKUP: AI-generated placeholder with invented names. Replace with a real, anonymized screenshot after client sign-off. -->
-        <img src="../../assets/pinnacle/checkin-proposal.jpg" width="1536" height="1024" loading="lazy" alt="Mockup comparing two iMessage threads. Before: ten messages, the agent asking one question at a time about days, times and hours. After: three messages. The agent proposes a week of shifts, the employee asks to swap Thursday for Friday, and the agent confirms.">
-        <figcaption>Same answer, a third of the messages. The win was the question flow, not the model. Illustrative mockup.</figcaption>
+        <!-- PLACEHOLDER WIREFRAME: replace the whole .case-diagram with the redrawn, anonymized mockup; keep the callouts. -->
+        <div class="case-diagram is-placeholder">
+          <svg viewBox="0 0 760 330" role="img" aria-labelledby="w1-t w1-d">
+            <title id="w1-t">The check-in, before and after (placeholder wireframe)</title>
+            <desc id="w1-d">Two message threads side by side. Before: about ten short messages going back and forth. After: three messages, where the agent proposes a whole schedule, the employee responds and the agent confirms.</desc>
+            <rect class="d-card" x="1" y="1" width="366" height="328"/>
+            <rect class="d-card" x="393" y="1" width="366" height="328"/>
+            <text class="d-label" x="20" y="30">BEFORE · ABOUT 10 MESSAGES</text>
+            <text class="d-label" x="412" y="30">AFTER · 3 MESSAGES</text>
+            <rect class="d-soft" x="20" y="46" width="150" height="20"/>
+            <rect class="d-ink" x="246" y="73" width="100" height="20"/>
+            <rect class="d-soft" x="20" y="100" width="120" height="20"/>
+            <rect class="d-ink" x="216" y="127" width="130" height="20"/>
+            <rect class="d-soft" x="20" y="154" width="170" height="20"/>
+            <rect class="d-ink" x="266" y="181" width="80" height="20"/>
+            <rect class="d-soft" x="20" y="208" width="110" height="20"/>
+            <rect class="d-ink" x="236" y="235" width="110" height="20"/>
+            <rect class="d-soft" x="20" y="262" width="160" height="20"/>
+            <rect class="d-ink" x="256" y="289" width="90" height="20"/>
+            <rect class="d-soft" x="412" y="46" width="230" height="86"/>
+            <rect class="d-muted" x="424" y="58" width="190" height="7"/>
+            <rect class="d-muted" x="424" y="72" width="170" height="7"/>
+            <rect class="d-muted" x="424" y="86" width="200" height="7"/>
+            <rect class="d-muted" x="424" y="100" width="120" height="7"/>
+            <text class="d-label" x="424" y="150">PROPOSES A WHOLE SCHEDULE</text>
+            <rect class="d-ink" x="560" y="166" width="180" height="34"/>
+            <rect x="572" y="178" width="120" height="7" style="fill:var(--paper);opacity:.55"/>
+            <text class="d-label" x="740" y="218" text-anchor="end">RESPONDS</text>
+            <rect class="d-soft" x="412" y="232" width="200" height="34"/>
+            <rect class="d-muted" x="424" y="244" width="150" height="7"/>
+            <text class="d-label" x="424" y="284">CONFIRMS</text>
+            <circle class="d-ink" cx="350" cy="24" r="11"/><text class="d-label d-label--paper" x="350" y="28" text-anchor="middle" style="font-size:12px;letter-spacing:0">1</text>
+            <circle class="d-ink" cx="656" cy="60" r="11"/><text class="d-label d-label--paper" x="656" y="64" text-anchor="middle" style="font-size:12px;letter-spacing:0">2</text>
+            <circle class="d-ink" cx="628" cy="249" r="11"/><text class="d-label d-label--paper" x="628" y="253" text-anchor="middle" style="font-size:12px;letter-spacing:0">3</text>
+
+          </svg>
+        </div>
+        <ol class="callouts"><li>Before: one question at a time, about 10 messages.</li><li>After: the agent proposes a whole schedule.</li><li>The employee responds and the agent confirms: 3 messages.</li></ol>
       </figure>
 
       <section class="decision">
@@ -217,14 +303,44 @@
           <li><b>Never ask</b>Fastest, but new situations get decided without anyone's judgment.</li>
           <li class="is-chosen"><b>Ask only when it's new</b>Routine work runs itself; the manager is interrupted only when their judgment matters.</li>
         </ul>
-        <p>A delayed flight put this to the test. An employee would miss two morning shifts, and nobody at their store could cover. The agent looked to a nearby store, moved past an unavailable first candidate, found someone who could help, and asked the manager to approve before updating the schedule. The manager made the decision; the agent did the search, the messages and the update.</p>
-        <p>Silence is handled the same way: if an employee doesn't answer a check-in, the agent follows up after 6 hours, then asks the manager. One case doesn't prove every exception works, though. Call-outs and cross-store changes are still harder than routine scheduling.</p>
+        <p>A delayed flight tested this. An employee would miss two morning shifts and nobody at their store could cover. The agent looked to a nearby store, moved past an unavailable first candidate, found someone, and asked the manager to approve before updating the schedule. Silence works the same way: no reply to a check-in gets a follow-up after 6 hours, then goes to the manager.</p>
+        <p>One case doesn't prove every exception works. Call-outs and cross-store changes are still harder than routine scheduling.</p>
       </section>
 
       <figure class="case-figure">
-        <!-- MOCKUP: AI-generated placeholder with invented names. Replace with a real, anonymized screenshot after client sign-off. -->
-        <img src="../../assets/pinnacle/flight-swap.jpg" width="1536" height="1024" loading="lazy" alt="Mockup of the delayed-flight swap. A diagram shows Store A with two mornings uncovered and Store B, where Alex is unavailable and Jordan is available. In the manager's iMessage thread, the agent explains the gap, says Jordan can cover and asks for approval; the manager approves and the agent confirms the update.">
-        <figcaption>The agent handles the search; the manager makes the call. Illustrative mockup.</figcaption>
+        <!-- PLACEHOLDER WIREFRAME: replace the whole .case-diagram with the redrawn, anonymized mockup; keep the callouts. -->
+        <div class="case-diagram is-placeholder">
+          <svg viewBox="0 0 760 300" role="img" aria-labelledby="w2-t w2-d">
+            <title id="w2-t">The delayed-flight swap (placeholder wireframe)</title>
+            <desc id="w2-d">On the left, the manager thread: the agent reports a coverage gap of two morning shifts and asks for approval, the manager approves, the agent confirms the schedule is updated. On the right, what the agent did first: its own store had nobody, a nearby store first candidate was unavailable, a second candidate was available.</desc>
+            <rect class="d-card" x="1" y="1" width="420" height="298"/>
+            <text class="d-label" x="20" y="30">MANAGER THREAD</text>
+            <rect class="d-soft" x="20" y="46" width="300" height="104"/>
+            <rect class="d-muted" x="32" y="58" width="240" height="7"/>
+            <rect class="d-muted" x="32" y="72" width="220" height="7"/>
+            <rect class="d-muted" x="32" y="86" width="180" height="7"/>
+            <text class="d-label" x="32" y="112">COVERAGE GAP · 2 MORNING SHIFTS</text>
+            <rect x="32" y="122" width="96" height="20" style="fill:none;stroke:var(--ink);stroke-dasharray:4 3"/><text class="d-label d-label--ink" x="80" y="136" text-anchor="middle">APPROVE?</text>
+            <rect class="d-ink" x="280" y="166" width="120" height="34"/>
+            <text class="d-title" x="340" y="188" text-anchor="middle" style="font-size:13px;fill:var(--paper)">Approve</text>
+            <rect class="d-soft" x="20" y="216" width="220" height="34"/>
+            <text class="d-body" x="32" y="238" style="fill:var(--ink)">Schedule updated</text>
+            <text class="d-label" x="450" y="30">WHAT THE AGENT DID FIRST</text>
+            <rect class="d-card" x="450" y="46" width="308" height="66"/>
+            <text class="d-title" x="466" y="74" style="font-size:15px">Own store</text><text class="d-body" x="466" y="94">Nobody could cover</text>
+            <line class="d-outline" x1="604" y1="112" x2="604" y2="128"/>
+            <rect class="d-card" x="450" y="128" width="308" height="66"/>
+            <text class="d-title" x="466" y="156" style="font-size:15px">Nearby store</text><text class="d-body" x="466" y="176">First candidate unavailable</text>
+            <line class="d-outline" x1="604" y1="194" x2="604" y2="210"/>
+            <rect class="d-ink" x="450" y="210" width="308" height="66"/>
+            <text class="d-title" x="466" y="238" style="font-size:15px;fill:var(--paper)">Nearby store</text><text class="d-body" x="466" y="258" style="fill:var(--paper)">Second candidate available</text>
+            <circle class="d-ink" cx="744" cy="24" r="11"/><text class="d-label d-label--paper" x="744" y="28" text-anchor="middle" style="font-size:12px;letter-spacing:0">1</text>
+            <circle class="d-ink" cx="150" cy="132" r="11"/><text class="d-label d-label--paper" x="150" y="136" text-anchor="middle" style="font-size:12px;letter-spacing:0">2</text>
+            <circle class="d-ink" cx="256" cy="233" r="11"/><text class="d-label d-label--paper" x="256" y="237" text-anchor="middle" style="font-size:12px;letter-spacing:0">3</text>
+
+          </svg>
+        </div>
+        <ol class="callouts"><li>The agent searches a nearby store and skips an unavailable first candidate.</li><li>The manager gets one request to approve.</li><li>The agent sends the messages and updates the schedule.</li></ol>
       </figure>
 
       <section class="decision">
@@ -234,33 +350,70 @@
           <li><b>Fix it each time</b>Simple, but the manager fixes the same mistake every week.</li>
           <li class="is-chosen"><b>Save it as a rule</b>The manager corrects it once by message, and the agent can use it again.</li>
         </ul>
-        <p>A busy morning needed four experienced people, but the schedule had three plus a new hire. The headcount was right; the mix was wrong. The same mix would have been fine on a quiet day.</p>
-        <p>The manager set the rule by message: on busy days (Fridays, good weather, festivals, nearby school events), mornings need people with six months or more. A strict rule every day would cut flexibility for no reason; ignoring it on busy days leaves a store underprepared. The agent saves corrections like this as rules. Whether it applies them consistently is still being evaluated.</p>
+        <p>A busy morning needed four experienced people, but the schedule had three plus a new hire. The manager set the rule by message: on busy days (Fridays, good weather, festivals, nearby school events), mornings need people with six months or more. The agent saves corrections like this as rules. Whether it applies them consistently is still being evaluated.</p>
       </section>
 
       <figure class="case-figure">
-        <!-- MOCKUP: AI-generated placeholder with invented names. Replace with a real, anonymized screenshot after client sign-off. -->
-        <img src="../../assets/pinnacle/busy-day-rule.jpg" width="1536" height="1024" loading="lazy" alt="Mockup of the manager's iMessage thread. The agent proposes three experienced employees and one new one for Saturday morning. The manager replies that on busy days mornings should be staffed with people who've been there six months or more. The agent saves it as a rule and swaps the new employee out.">
-        <figcaption>A correction becomes a rule the agent can use again. Illustrative mockup.</figcaption>
+        <!-- PLACEHOLDER WIREFRAME: replace the whole .case-diagram with the redrawn, anonymized mockup; keep the callouts. -->
+        <div class="case-diagram is-placeholder">
+          <svg viewBox="0 0 760 290" role="img" aria-labelledby="w3-t w3-d">
+            <title id="w3-t">The busy-day rule (placeholder wireframe)</title>
+            <desc id="w3-d">The manager thread. The agent proposes a morning team of three experienced people and one new hire. The manager replies that busy days need people with six months or more in the morning. The agent confirms it is saved as a rule.</desc>
+            <rect class="d-card" x="1" y="1" width="758" height="288"/>
+            <text class="d-label" x="20" y="30">MANAGER THREAD</text>
+            <rect class="d-soft" x="20" y="46" width="430" height="84"/>
+            <rect class="d-muted" x="32" y="58" width="200" height="7"/>
+            <text class="d-label" x="32" y="82">PROPOSED MORNING TEAM</text>
+            <rect class="d-ink" x="32" y="94" width="92" height="22"/><text class="d-label d-label--paper" x="78" y="109" text-anchor="middle">EXPERIENCED</text>
+            <rect class="d-ink" x="134" y="94" width="92" height="22"/><text class="d-label d-label--paper" x="180" y="109" text-anchor="middle">EXPERIENCED</text>
+            <rect class="d-ink" x="236" y="94" width="92" height="22"/><text class="d-label d-label--paper" x="282" y="109" text-anchor="middle">EXPERIENCED</text>
+            <rect x="338" y="94" width="92" height="22" style="fill:none;stroke:var(--ink);stroke-dasharray:4 3"/><text class="d-label d-label--ink" x="384" y="109" text-anchor="middle">NEW HIRE</text>
+            <rect class="d-ink" x="330" y="146" width="410" height="54"/>
+            <rect x="342" y="158" width="330" height="7" style="fill:var(--paper);opacity:.55"/>
+            <rect x="342" y="172" width="250" height="7" style="fill:var(--paper);opacity:.55"/>
+            <text class="d-label" x="740" y="218" text-anchor="end">BUSY DAYS: MORNINGS NEED 6+ MONTHS</text>
+            <rect class="d-soft" x="20" y="232" width="300" height="40"/>
+            <rect class="d-ink" x="32" y="241" width="108" height="22"/><text class="d-label d-label--paper" x="86" y="256" text-anchor="middle">SAVED AS RULE</text>
+            <rect class="d-muted" x="152" y="249" width="150" height="7"/>
+            <circle class="d-ink" cx="468" cy="60" r="11"/><text class="d-label d-label--paper" x="468" y="64" text-anchor="middle" style="font-size:12px;letter-spacing:0">1</text>
+            <circle class="d-ink" cx="312" cy="172" r="11"/><text class="d-label d-label--paper" x="312" y="176" text-anchor="middle" style="font-size:12px;letter-spacing:0">2</text>
+            <circle class="d-ink" cx="338" cy="252" r="11"/><text class="d-label d-label--paper" x="338" y="256" text-anchor="middle" style="font-size:12px;letter-spacing:0">3</text>
+
+          </svg>
+        </div>
+        <ol class="callouts"><li>The agent proposes a morning team.</li><li>The manager corrects it in their own words.</li><li>The correction is saved as a rule the agent reuses.</li></ol>
       </figure>
 
-      <!-- ========================================================= -->
-      <h2>Why it needs AI</h2>
-      <p>A roster alone doesn't need AI: fixed scheduling rules work in ordinary software. What needs AI is the conversation around it. People describe availability in their own words, decline, and change plans, so the next useful step depends on what was just said.</p>
-      <p>Today, AI reads replies, extracts availability, builds schedules and decides whom to contact. My part was designing how people take part: what employees are asked, what managers need to know, and where a person decides. The developer built the model integration, messaging and backend.</p>
+      <!-- Try it: who decides? Decisions 4 and 5 as an interactive week (pinnacle.js) -->
+      <div id="pa-try" hidden></div>
 
       <!-- ========================================================= -->
-      <h2>Results</h2>
-      <div class="stat-grid">
-        <div class="stat"><span class="stat__value">~2–3 hours</span><span class="stat__label">weekly scheduling work per manager per store before (managers' estimates)</span></div>
-        <div class="stat"><span class="stat__value">~5–10 minutes</span><span class="stat__label">after (totaled afterward, averaged over a month)</span></div>
+      <h2 id="ai">Why it needs AI</h2>
+      <p>A roster alone doesn't need AI: fixed rules work in ordinary software. What needs AI is the conversation around it, because people describe availability in their own words, decline, and change plans. AI reads replies, extracts availability, builds schedules and decides whom to contact. I designed how people take part: what employees are asked, what managers need to know, and where a person decides.</p>
+
+      <!-- ========================================================= -->
+      <h2 id="results">Results</h2>
+      <div class="result-grid">
+        <div class="result">
+          <b class="result__value">2–3 hrs → 5–10 min</b>
+          <p class="result__label">weekly scheduling work per manager per store, across all 10 stores</p>
+          <p class="result__caveat"><span>Limit</span>Both figures rely on recall. An operational comparison, not a controlled study.</p>
+        </div>
+        <div class="result">
+          <b class="result__value">~10 → 3</b>
+          <p class="result__label">messages to settle an employee's availability</p>
+          <p class="result__caveat"><span>Limit</span>Unusual situations can still need clarification.</p>
+        </div>
+        <div class="result">
+          <b class="result__value">20–30% and rising</b>
+          <p class="result__label">accuracy, up about 5 points a month: how rarely the manager has to correct or rebuild the schedule</p>
+          <p class="result__caveat"><span>Limit</span>It dropped about 20 points during three months of frequent call-outs, then recovered.</p>
+        </div>
       </div>
-      <p>The comparison covers all 10 stores, including routine scheduling, call-outs and cross-store changes. What's left is mostly approving new situations and improving the rules by message. Both figures rely on recall, so this is an operational comparison, not a controlled study.</p>
 
       <h3>Evaluating the agent: accuracy over time</h3>
-      <p>Accuracy means how rarely the manager has to correct or rebuild the schedule. It started at <strong>20–30%</strong>, rose about <strong>5 points a month</strong>, dropped about <strong>20 points</strong> during three months of frequent call-outs, then recovered.</p>
 
-      <figure class="case-figure">
+      <figure class="case-figure" data-play>
         <!-- APPROXIMATE: real reported trend; individual points are approximate. Swap in exact monthly values when available. -->
         <div class="case-diagram">
           <svg viewBox="0 0 760 380" role="img" aria-labelledby="acc-t acc-d">
@@ -269,6 +422,7 @@
 
             <rect class="d-soft" x="330.7" y="30" width="208" height="270"/>
             <text class="d-label" x="434.7" y="50" text-anchor="middle">CALL-OUT VOLATILITY</text>
+            <text class="d-label" x="434.7" y="64" text-anchor="middle">≈3 MONTHS</text>
 
             <line class="d-grid" x1="64" y1="30" x2="736" y2="30"/>
             <line class="d-grid" x1="64" y1="120" x2="736" y2="120"/>
@@ -307,10 +461,10 @@
       <p>Trust followed that curve. At first the manager was skeptical and frustrated: it felt like training the system while still doing the job. Now they no longer build schedules by hand.</p>
 
       <!-- ========================================================= -->
-      <h2>What's next</h2>
+      <h2 id="next">What's next</h2>
       <p>Inventory management is live too, with managers approving its output until it's accurate enough to run on its own. Waste management is next. Each agent moves up the same ladder as manager intervention drops.</p>
 
-      <figure class="case-figure">
+      <figure class="case-figure" data-play>
         <div class="case-diagram">
           <svg viewBox="0 0 760 412" role="img" aria-labelledby="lad-t lad-d">
             <title id="lad-t">The autonomy ladder</title>
@@ -342,8 +496,8 @@
             <text class="d-label d-label--paper" x="40" y="244" text-anchor="middle">2</text>
             <text class="d-title" x="72" y="236">Manager approves</text>
             <text class="d-body" x="72" y="258">Agent proposes; nothing ships until the manager approves</text>
-            <rect class="d-ink" x="528" y="228" width="200" height="24" rx="12"/>
-            <text class="d-label d-label--paper" x="628" y="244" text-anchor="middle">INVENTORY MANAGEMENT</text>
+            <rect class="d-ink" x="452" y="228" width="276" height="24" rx="12"/>
+            <text class="d-label d-label--paper" x="590" y="244" text-anchor="middle">INVENTORY MANAGEMENT (INCL. ORDERING)</text>
 
             <!-- 1 · Manual -->
             <rect class="d-card" x="16" y="292" width="728" height="80"/>
@@ -354,25 +508,33 @@
             <rect class="d-soft" x="528" y="320" width="200" height="24" rx="12"/>
             <text class="d-label" x="628" y="336" text-anchor="middle">WASTE MANAGEMENT · NEXT</text>
 
-            <text class="d-label" x="16" y="398">FILLED = LIVE IN 10 STORES · DASHED = TARGET · GREY = NOT STARTED</text>
+            <text class="d-label" x="16" y="398">FILLED = LIVE IN PRODUCTION ACROSS 10 STORES · DASHED = TARGET · GREY = NOT STARTED</text>
           </svg>
         </div>
         <figcaption>Every agent climbs the same ladder. It moves up only when the manager stops needing to step in.</figcaption>
       </figure>
 
-      <p>We're also testing points or recognition for unpopular shifts, so they get picked up without the manager chasing people. And next time I'd measure more finely, separating wrong outputs from fair approval requests and from changes caused by new availability, since each needs a different fix.</p>
+      <p>We're also testing points or recognition for unpopular shifts. And next time I'd measure more finely, separating wrong outputs from fair approval requests and from changes caused by new availability, since each needs a different fix.</p>
 
       <!-- PROTOTYPE RECORDING: user to add a live/recorded prototype here -->
 
+
       <!-- ========================================================= -->
-      <h2>What I learned</h2>
-      <p>My most useful decisions came from looking closely at the work people were doing:</p>
+      <h2 id="learned">What I learned</h2>
       <ul>
         <li><strong>Look at the work, not the request.</strong> Shadowing showed that coordination, not roster-building, was the real job.</li>
         <li><strong>Fix the conversation before the model.</strong> Going from 10 messages to 3 needed no model change.</li>
         <li><strong>Design the hand-off.</strong> The agent should finish what it can and bring people only the decisions that need them.</li>
       </ul>
       <p>That's what I want to keep designing toward: managers contributing their judgment without having to hold every conversation needed to act on it.</p>
+
+      <h2 id="shows">What this project shows</h2>
+      <dl class="shows">
+        <div><dt>Research-led framing</dt><dd>Shadowing showed the real job was coordination, so the agent took on the conversations, not just the roster.</dd></div>
+        <div><dt>Conversation design</dt><dd>Ten messages became three by redesigning the question flow, with no model change.</dd></div>
+        <div><dt>Autonomy and trust</dt><dd>The agent asks only when something is new, and a manager's correction becomes a rule.</dd></div>
+        <div><dt>Evaluating an agent in production</dt><dd>Accuracy is tracked every month and reported with its dip, not just its trend.</dd></div>
+      </dl>
 
 </article>
 
@@ -382,8 +544,15 @@
   </main>
 
   <footer class="site-footer">
-    <span>&copy; nothingdesign</span>
-    <a href="../../index.html">Back to home</a>
+    <p class="foot-chip">
+      <span>2026 nothingdesign</span>
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M10.2 6.2a2.6 2.6 0 1 0 0 3.6"/></svg>
+    </p>
+    <!-- TODO(owner): add the LinkedIn profile URL -->
+    <a class="foot-chip foot-chip--link" href="#" rel="me">
+      <span>LinkedIn</span>
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 12L12 4M5.5 4H12v6.5"/></svg>
+    </a>
   </footer>
 
 </body>
