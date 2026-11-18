@@ -3,24 +3,41 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Aithraa — abcd</title>
+  <title>Aithraa — nothingdesign</title>
   <meta name="description" content="Building a 3-sided marketplace until IP rights made it unbuildable.">
+  <!-- link previews (LinkedIn, Slack, email). TODO(owner): add og:image and og:url once the site has its address -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="nothingdesign">
+  <meta property="og:title" content="Aithraa — nothingdesign">
+  <meta property="og:description" content="Building a 3-sided marketplace until IP rights made it unbuildable.">
+  <meta name="twitter:card" content="summary">
 
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,900&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
 
-  <link rel="stylesheet" href="../shared.css">
+  <link rel="stylesheet" href="../../design-system/tokens.css">
+  <link rel="stylesheet" href="../../site.css">
+  <script src="../../site.js"></script>
   <link rel="stylesheet" href="../article.css">
+  <link rel="stylesheet" href="aithraa.css">
+  <script src="aithraa.js" defer></script>
 </head>
 <body>
 
   <header class="site-header">
-    <a class="brand" href="../../index.html" aria-label="abcd, home">abcd<span class="dot"></span></a>
-    <nav class="site-nav" aria-label="Primary">
-      <a href="../../index.html#work">Work</a>
+    <a class="wordmark" href="../../index.html" aria-label="nothingdesign, home"><span class="wordmark__n">nothing</span>design</a>
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
+      <a class="site-nav__link site-nav__work" href="../../index.html#work" aria-current="true">Work <span class="site-nav__count" aria-hidden="true">3</span></a>
+      <a class="site-nav__link" href="../../about/index.html">About</a>
+      <a class="button button--quiet" href="../../book/index.html">Book<span class="site-header__long">&nbsp;a call</span></a>
     </nav>
   </header>
+  <button class="theme-toggle theme-switch" type="button" aria-label="Switch theme">
+    <svg class="theme-switch__moon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+    <svg class="theme-switch__sun" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>
+  </button>
 
   <main>
     <div class="case-hero">
@@ -28,72 +45,180 @@
         <span>Aithraa — Phase 1</span>
         <span class="case-hero__status">Case study</span>
       </p>
-      <h1>Aithraa Phase 1: building a 3-sided marketplace until IP rights made it unbuildable</h1>
+      <h1>Aithraa Phase 1: building a 3&#8209;sided marketplace until IP rights made it unbuildable</h1>
+      <p class="case-hero__dek">A marketplace matching startups, students and professors on fit, validated on all three sides and stopped by an IP-rights conflict before launch.</p>
       <p class="case-hero__meta">Product Designer &amp; Founder · February 2025 – June 2025</p>
-      <p class="case-hero__tldr">In my last semester of a master's in HCI, I noticed a pattern: every university runs capstone courses where outside clients bring real projects for students to build — but matching the right client to the right course was ad hoc, dependent on whichever professor happened to have a connection in their own network, not on actual fit with student talent. I designed a 3-sided marketplace — <strong>Where Startups Meet Student Builders</strong> — connecting startups, students, and professors directly, on fit instead of convenience. Starting as a 4-person, all-product-designer capstone team and then continuing solo for ~6 months, I validated the idea through 25+ interviews and a working Figma prototype. I lined up collaboration agreements with 3 universities (CMU, IU, Purdue) set to start the following January semester, and onboarded 3 startup founders as clients. The matching product never launched: once real collaboration was underway, a non-negotiable IP-rights conflict surfaced — universities claim ownership of student work, startups paying for it need clean IP — and no workaround landed. I pivoted to Phase 2 (demolition cost estimating — see the <a href="../estbuild/index.html">Estbuild case study</a>) only after shutting this down.</p>
+
+      <dl class="case-facts">
+        <div><dt>Role</dt><dd>Problem discovery, research, UI/UX, matching logic, onboarding flow, university and founder outreach</dd></div>
+        <div><dt>Team</dt><dd>Started in a 4-person capstone team of product designers; then solo</dd></div>
+        <div><dt>Sides</dt><dd>Startups, students, professors</dd></div>
+        <div><dt>Tools</dt><dd>Figma</dd></div>
+      </dl>
+
+      <p class="case-hero__tldr"><strong>In short:</strong> University capstone courses match outside clients to student teams through whichever professor has a connection. I designed a 3-sided marketplace, <strong>Where Startups Meet Student Builders</strong>, to match on fit instead. I validated it with 25+ interviews, lined up 3 universities and 3 startup founders, and shut it down before launch when a non-negotiable IP-rights conflict surfaced.</p>
     </div>
 
     <article class="case-body">
 
-      <h2>How it started</h2>
-      <p>I'd been circling pieces of this problem across earlier work, and they clicked together in my last semester of HCI grad school: universities already run capstone courses where startups and other outside clients bring in real projects for students to build. The matching, though, happened informally — through whichever professor had the right connection, not through anything designed for the job. The idea: <strong>Where Startups Meet Student Builders</strong> — a platform that does that matching directly, instead of leaving it to chance.</p>
-      <p>I partly explored this with a professor as a potential partner, but that didn't work out over differences — so I kept building it on my own.</p>
-
-      <h2>The three sides, and what each one actually wanted</h2>
-      <ul>
-        <li><strong>Startups</strong> wanted to test an idea's feasibility with a cheap MVP — not necessarily production-grade work, but enough to validate direction.</li>
-        <li><strong>Students</strong> wanted a real-world project and industry experience — not a dummy exercise, something with actual impact on their portfolio and skills.</li>
-        <li><strong>Professors</strong> wanted projects that matched their curriculum and gave students genuine industry exposure, while filling the gatekeeper/matchmaker role capstone courses already needed someone to play.</li>
-      </ul>
-      <p><strong>The actual misalignment:</strong> professors sourced capstone clients from their own existing network by default — not matched for fit with the students' actual talent or skills. That default optimized for professor convenience, not for startup or student outcomes, and it's why student work often didn't actually help the startup client: the match itself was frequently wrong before any work even started. Aithraa's core pitch was replacing that network-of-convenience matching with matching on goals, skills, and timeline.</p>
-
-      <h2>Team and my role</h2>
-      <p>I started this inside a 4-person team — all product designers — during a capstone course. After that course ended, I continued alone for about 6 months, operating as a solo founder before pivoting to Estbuild.</p>
-      <p>What I owned: I identified the problem and then built the platform itself — UI/UX, the matching logic, and the onboarding flow — personally, in Figma.</p>
-
-      <h2>Designing the solution</h2>
-      <p>The onboarding flow, as designed:</p>
-      <ol>
-        <li><strong>Submit details</strong> — tell us about your startup or course, a few questions to get started.</li>
-        <li><strong>Get matched</strong> — paired with the right course based on goals, skills, and timeline.</li>
-        <li><strong>Discuss your vision</strong> — talk with the professor and shape the collaboration roadmap together.</li>
-        <li><strong>Collaboration &amp; build</strong> — turn the concept into reality through hands-on work with student builders.</li>
-      </ol>
-      <p>The original plan was to run the matching itself through a conversational agent over message and email, then move users into a dashboard platform once matched — chat first, structured UI second, a pattern I'd return to deliberately on the <a href="../pinnacle-ai/index.html">Pinnacle AI scheduling agent</a>.</p>
-      <p>I validated the concept through 25+ user interviews using contextual immersion and formal research, built a unified platform experience in Figma, and iterated functional prototypes against continuous user feedback — a build-test-learn loop adapted for AI-era development speed. The matched flow itself never went live on real projects — see Traction, below.</p>
-
-      <div class="tbd">Figma screens — the onboarding flow, the matching logic, the professor/startup dashboard concept — to add</div>
-
-      <h2>Landing 3 university partnerships</h2>
-      <p>I landed CMU, Indiana University, and Purdue through direct outreach — visiting Pittsburgh, attending events, working personal connections — eventually connecting with a CMU HCI course client manager who was already doing the same kind of matching work manually. That relationship was the door-opener into CMU specifically. All 3 partnerships were collaboration agreements set to begin the following January semester — CMU specifically came in as a university course/professor relationship, not as a startup-side client.</p>
-
-      <h2>Traction before the pivot</h2>
+      <!-- Opening: matching by convenience, then on fit (aithraa.js) -->
+      <div id="ai-intro" hidden></div>
 
       <div class="stat-grid">
         <div class="stat"><span class="stat__value">25+</span><span class="stat__label">user interviews, contextual immersion and formal research</span></div>
-        <div class="stat"><span class="stat__value">3</span><span class="stat__label">university partnerships lined up — CMU, IU, Purdue</span></div>
+        <div class="stat"><span class="stat__value">3</span><span class="stat__label">university partnerships lined up: CMU, IU, Purdue</span></div>
         <div class="stat"><span class="stat__value">3</span><span class="stat__label">startup founders onboarded as clients</span></div>
-        <div class="stat"><span class="stat__value">0</span><span class="stat__label">matches ever launched — the IP wall hit first</span></div>
+        <div class="stat"><span class="stat__value">0</span><span class="stat__label">matches ever launched: the IP wall hit first</span></div>
       </div>
 
-      <p>Lined up collaboration agreements with all 3 target universities, set to start the January semester. On the startup side, onboarded 3 startup founders as clients. The matching product itself was never launched live — no real student-startup matches or completed projects happened before the IP-rights conflict (below) forced the pivot. The traction here is partnership and client commitments, not usage data.</p>
+      <figure class="case-figure case-figure--wide">
+        <ol class="timeline" aria-label="Project timeline, February to June 2025">
+          <li><span class="timeline__n">01 · Feb 2025</span><b>The pattern</b><span>Capstone matching runs on professors' networks</span></li>
+          <li><span class="timeline__n">02</span><b>Capstone team</b><span>Four product designers</span></li>
+          <li><span class="timeline__n">03</span><b>Solo</b><span>25+ interviews and a Figma prototype</span></li>
+          <li><span class="timeline__n">04</span><b>Partnerships</b><span>CMU, IU and Purdue; 3 founders onboarded</span></li>
+          <li class="is-turn"><span class="timeline__n">05</span><b>The IP wall</b><span>Universities own student work; startups need clean IP</span></li>
+          <li><span class="timeline__n">06 · Jun 2025</span><b>Shut down</b><span>Then pivoted to Estbuild</span></li>
+        </ol>
+      </figure>
 
-      <h2>Why it died: the IP-rights wall</h2>
-      <p>The constraint: university policy claims ownership of student work; startups — who are paying for the work — need clean IP to use it. Both positions were non-negotiable, on both sides.</p>
-      <p>This didn't show up as a day-one dealbreaker. It surfaced only once real collaboration with the universities was underway — partnerships committed, startup clients onboarded — not during early exploratory conversations, and not only after a full cohort had run a project to completion. It hit before the matching product itself ever launched.</p>
-      <p>I tried to find a workaround — specifically, a path for students to transfer IP to the startup — but that needed buy-in from a key stakeholder that never materialized. Being constrained on that core piece of the vision (clean IP transfer, non-negotiable for founders) is what forced the pivot.</p>
-      <p>The Phase 2 idea (AI-assisted demolition cost estimating, a technical co-founder, the "Estbuild" angle) wasn't already in motion as a backup plan — it only surfaced after Phase 1 was shut down.</p>
+      <nav class="case-index" aria-label="Sections">
+        <div class="case-index__scroll">
+          <a href="#problem">Problem</a>
+          <a href="#sides">Three sides</a>
+          <a href="#role">My role</a>
+          <a href="#design">Design</a>
+          <a href="#traction">Traction</a>
+          <a href="#stopped">Why it stopped</a>
+          <a href="#learned">What I learned</a>
+        </div>
+      </nav>
 
-      <h2>What I'd carry forward</h2>
+      <!-- ========================================================= -->
+      <h2 id="problem">The problem</h2>
+      <p>In my last semester of a master's in HCI, I noticed a pattern: universities run capstone courses where outside clients bring real projects for students to build, but the matching happened informally, through whichever professor had the right connection.</p>
+      <p>Professors sourced clients from their own network by default, not for fit with the students' skills. That is why student work often didn't help the startup: the match was wrong before any work started. Aithraa's pitch was to replace matching by convenience with matching on goals, skills and timeline.</p>
+
+      <!-- ========================================================= -->
+      <h2 id="sides">Three sides, and what each wanted</h2>
+      <div class="team-strip">
+        <div class="team-strip__who"><span>Side 1</span><b>Startups</b><p>Test an idea's feasibility with a cheap MVP, enough to validate direction</p></div>
+        <div class="team-strip__who"><span>Side 2</span><b>Students</b><p>A real project and industry experience, not a dummy exercise</p></div>
+        <div class="team-strip__who"><span>Side 3</span><b>Professors</b><p>Projects that fit the curriculum and give students real industry exposure</p></div>
+      </div>
+
+      <!-- ========================================================= -->
+      <h2 id="role">My role</h2>
+      <p>I started this inside a 4-person team of product designers during a capstone course, then continued alone as a solo founder. I identified the problem and built the platform in Figma myself: UI/UX, the matching logic and the onboarding flow. I partly explored it with a professor as a potential partner; that didn't work out, so I kept building on my own.</p>
+
+      <!-- ========================================================= -->
+      <h2 id="design">The design</h2>
+
+      <figure class="case-figure case-figure--wide">
+        <ol class="timeline timeline--4" aria-label="The onboarding flow">
+          <li><span class="timeline__n">01</span><b>Submit details</b><span>A few questions about your startup or course</span></li>
+          <li><span class="timeline__n">02</span><b>Get matched</b><span>Paired on goals, skills and timeline</span></li>
+          <li><span class="timeline__n">03</span><b>Discuss your vision</b><span>Shape the roadmap with the professor</span></li>
+          <li><span class="timeline__n">04</span><b>Collaborate and build</b><span>With student builders</span></li>
+        </ol>
+        <figcaption>The onboarding flow, as designed.</figcaption>
+      </figure>
+
+      <p>The plan was to run the matching through a conversational agent over message and email, then move people into a dashboard once matched: chat first, structured UI second. I returned to that pattern deliberately on the <a href="../pinnacle-ai/index.html">Pinnacle AI scheduling agent</a>.</p>
+
+      <figure class="case-figure">
+        <!-- PLACEHOLDER WIREFRAME: replace the whole .case-diagram with the real Figma screen; keep the callouts. -->
+        <div class="case-diagram is-placeholder">
+          <svg viewBox="0 0 760 260" role="img" aria-labelledby="m-t m-d">
+            <title id="m-t">Submitting a brief and getting matched (placeholder wireframe)</title>
+            <desc id="m-d">On the left, a startup brief form with a submit button. An arrow leads to a matched course card on the right, showing it was matched on goals, skills and timeline, with a prompt to talk with the professor.</desc>
+            <defs><marker id="m-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--ink)"/></marker></defs>
+            <rect class="d-card" x="1" y="1" width="300" height="258"/>
+            <text class="d-label" x="20" y="30">STARTUP BRIEF</text>
+            <rect class="d-muted" x="20" y="52" width="220" height="7"/>
+            <rect class="d-muted" x="20" y="72" width="190" height="7"/>
+            <rect class="d-muted" x="20" y="92" width="240" height="7"/>
+            <rect class="d-muted" x="20" y="112" width="160" height="7"/>
+            <rect class="d-soft" x="20" y="150" width="260" height="60"/>
+            <rect class="d-muted" x="32" y="166" width="200" height="7"/>
+            <rect class="d-muted" x="32" y="186" width="150" height="7"/>
+            <rect class="d-ink" x="20" y="222" width="110" height="26"/><text class="d-title" x="75" y="240" text-anchor="middle" style="font-size:13px;fill:var(--paper)">Submit</text>
+            <line class="d-outline" x1="306" y1="130" x2="352" y2="130" marker-end="url(#m-a)"/>
+            <rect class="d-card" x="358" y="1" width="401" height="258"/>
+            <text class="d-label" x="378" y="30">MATCHED COURSE</text>
+            <rect class="d-muted" x="378" y="52" width="230" height="7"/>
+            <rect class="d-muted" x="378" y="72" width="170" height="7"/>
+            <rect class="d-ink" x="378" y="100" width="106" height="24"/><text class="d-label d-label--paper" x="431" y="116" text-anchor="middle">GOALS</text>
+            <rect class="d-ink" x="496" y="100" width="106" height="24"/><text class="d-label d-label--paper" x="549" y="116" text-anchor="middle">SKILLS</text>
+            <rect class="d-ink" x="614" y="100" width="106" height="24"/><text class="d-label d-label--paper" x="667" y="116" text-anchor="middle">TIMELINE</text>
+            <text class="d-label" x="378" y="146">MATCHED ON</text>
+            <rect x="378" y="172" width="361" height="64" style="fill:none;stroke:var(--ink-3);stroke-dasharray:4 3"/>
+            <text class="d-title" x="394" y="200" style="font-size:15px">Talk with the professor</text><text class="d-body" x="394" y="220">Shape the roadmap together</text>
+            <circle class="d-ink" cx="286" cy="24" r="11"/><text class="d-label d-label--paper" x="286" y="28" text-anchor="middle" style="font-size:12px;letter-spacing:0">1</text>
+            <circle class="d-ink" cx="744" cy="112" r="11"/><text class="d-label d-label--paper" x="744" y="116" text-anchor="middle" style="font-size:12px;letter-spacing:0">2</text>
+            <circle class="d-ink" cx="744" cy="188" r="11"/><text class="d-label d-label--paper" x="744" y="192" text-anchor="middle" style="font-size:12px;letter-spacing:0">3</text>
+          </svg>
+        </div>
+        <ol class="callouts"><li>A startup submits its brief.</li><li>It is matched to a course on goals, skills and timeline.</li><li>The founder and professor talk before anything is built.</li></ol>
+      </figure>
+
+      <p>I validated the concept through 25+ interviews, using contextual immersion and formal research, and iterated the Figma prototype against user feedback. The matched flow never went live on real projects.</p>
+
+      <!-- ========================================================= -->
+      <h2 id="traction">Traction</h2>
+      <p>I landed CMU, Indiana University and Purdue through direct outreach: visiting Pittsburgh, attending events, working personal connections. A CMU HCI course client manager, who was already doing this matching by hand, opened the door there. All three were collaboration agreements set to begin the following January semester, and three startup founders were onboarded as clients.</p>
+      <p>The traction was commitments, not usage. No match ever ran.</p>
+
+      <!-- Try it: match on fit, then start the project and meet the IP wall (aithraa.js) -->
+      <div id="ai-try" hidden></div>
+
+      <!-- ========================================================= -->
+      <h2 id="stopped">Why it stopped: the IP-rights wall</h2>
+
+      <figure class="case-figure" data-play>
+        <div class="case-diagram">
+          <svg viewBox="0 0 760 150" role="img" aria-labelledby="ip-t ip-d">
+            <title id="ip-t">The IP-rights conflict</title>
+            <desc id="ip-d">Two fixed positions facing each other. Universities: policy claims ownership of student work. Startups: paying for the work, they need clean IP to use it. Between them, a blocked line labelled non-negotiable on both sides, no workaround.</desc>
+            <rect class="d-card" x="1" y="20" width="270" height="92"/>
+            <text class="d-label" x="18" y="46">UNIVERSITIES</text>
+            <text class="d-title" x="18" y="74">Own student work</text>
+            <text class="d-body" x="18" y="96">By university policy</text>
+            <rect class="d-card" x="489" y="20" width="270" height="92"/>
+            <text class="d-label" x="506" y="46">STARTUPS</text>
+            <text class="d-title" x="506" y="74">Need clean IP</text>
+            <text class="d-body" x="506" y="96">They are paying for the work</text>
+            <line class="d-dashed" x1="275" y1="66" x2="364" y2="66"/>
+            <line class="d-dashed" x1="396" y1="66" x2="485" y2="66"/>
+            <line class="d-line" x1="370" y1="54" x2="390" y2="78"/>
+            <line class="d-line" x1="390" y1="54" x2="370" y2="78"/>
+            <text class="d-label d-label--ink" x="380" y="138" text-anchor="middle">NON-NEGOTIABLE ON BOTH SIDES · NO WORKAROUND</text>
+          </svg>
+        </div>
+        <figcaption>Both positions were fixed, and only one side could have waived its claim.</figcaption>
+      </figure>
+
+      <p>It didn't show up on day one. It surfaced once real collaboration was underway, with partnerships committed and founders onboarded, and before the product launched. I looked for a workaround, a path for students to transfer IP to the startup, but it needed buy-in from a key stakeholder that never came.</p>
+      <p>So I shut it down. <a href="../estbuild/index.html">Estbuild</a>, the second phase, was not a backup plan already in motion; it came afterwards.</p>
+
+      <!-- ========================================================= -->
+      <h2 id="learned">What I learned</h2>
       <ul>
-        <li><strong>Treat IP/ownership terms as a go/no-go gate before onboarding a multi-party pilot into real operation</strong> — not after the product is already working and users are already in it.</li>
-        <li><strong>A validated 3-sided match doesn't protect you from a structural legal constraint that only one side can waive.</strong> Demand and legal feasibility are separate gates, and both have to clear.</li>
-        <li><strong>Chat/conversational matching before a structured dashboard was the right early instinct for onboarding</strong> — a pattern worth carrying forward deliberately rather than rediscovering each time.</li>
+        <li><strong>Treat IP and ownership terms as a go/no-go gate</strong> before bringing a multi-party pilot into real operation.</li>
+        <li><strong>Demand and legal feasibility are separate gates.</strong> A validated three-sided match doesn't protect you from a constraint only one side can waive.</li>
+        <li><strong>Chat before dashboard was the right instinct</strong> for onboarding, and worth carrying forward on purpose.</li>
       </ul>
 
-      <h2>Artifacts</h2>
-      <p>Figma files, platform screenshots, pitch deck, and user research notes exist and will be added here before this goes further into the published portfolio.</p>
-      <div class="tbd">Platform screenshots, pitch deck excerpt, and research notes once available — to add</div>
+      <h2 id="shows">What this project shows</h2>
+      <dl class="shows">
+        <div><dt>Systems thinking</dt><dd>I mapped what three sides each wanted and found the failure in how they were matched, not in any one of them.</dd></div>
+        <div><dt>Founder initiative</dt><dd>I landed three universities and three founders through direct outreach.</dd></div>
+        <div><dt>Knowing when to stop</dt><dd>I shut it down before launch when the IP conflict had no workaround, and I say so plainly.</dd></div>
+        <div><dt>An early agent instinct</dt><dd>Chat-first matching before a dashboard is the pattern I later built on at Pinnacle AI.</dd></div>
+      </dl>
+
+      <!-- TODO(owner): add Figma files, platform screenshots, a pitch deck excerpt and research notes (the page is already linked from the home page) -->
+      <div class="tbd">More artifacts to add: platform screenshots, pitch deck excerpt, research notes</div>
 
     </article>
 
@@ -103,8 +228,15 @@
   </main>
 
   <footer class="site-footer">
-    <span>&copy; abcd</span>
-    <a href="../../index.html">Back to home</a>
+    <p class="foot-chip">
+      <span>2026 nothingdesign</span>
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M10.2 6.2a2.6 2.6 0 1 0 0 3.6"/></svg>
+    </p>
+    <!-- TODO(owner): add the LinkedIn profile URL -->
+    <a class="foot-chip foot-chip--link" href="#" rel="me">
+      <span>LinkedIn</span>
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 12L12 4M5.5 4H12v6.5"/></svg>
+    </a>
   </footer>
 
 </body>

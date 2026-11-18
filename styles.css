@@ -1,289 +1,414 @@
 /* ============================================================
-   abcd — hero lattice
-   A 4x4 ring of tiles (inner 2x2 empty) rotating 90deg clockwise
-   per loop, behind a difference-blended wordmark.
-   See README.md for the mechanic, the measured geometry and the timeline.
+   nothingdesign — home page (v1)
+   Tokens: design-system/tokens.css. Base and chrome: site.css.
+   This file holds only what is specific to the home page: the hero
+   and the Work section.
    ============================================================ */
 
-:root{
-  color-scheme: light;
-
-  --ground:#e7e7e7;
-  --paper:#ffffff;
-  --ink:#141414;
-  --stone-0:#f2f0ed;
-  --stone-1:#d7d3cd;
-  --stone-2:#a9a49c;
-  --stone-3:#6b6762;
-  --stone-4:#2c2b2a;
-  --hair:rgba(20,20,20,.14);
-
-  --ease:cubic-bezier(.22,.61,.24,1);          /* UI micro-interactions */
-  --pad:clamp(18px, 2.8vw, 40px);
-}
-
-*{box-sizing:border-box}
 html{scroll-behavior:smooth}
 img{max-width:100%;display:block}
 [hidden]{display:none !important}
 
-body{
-  margin:0;
-  background:var(--ground);
-  color:var(--ink);
-  font-family:"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing:antialiased;
-}
-
-/* ---------------- stage ---------------- */
+/* ---------------- hero ----------------
+   All attention belongs here. Reading order, top to bottom:
+     headline, alone at the top left
+     the sphere: the figure conducting the process, on a faint globe
+     the caption: what the stage in focus means, typed out
+     the process row, marking the stage in focus
+     the nav dock (site.css), fixed at the bottom centre
+   The canvas fills the whole hero (so the opening's dots can come from
+   anywhere on screen); the script frames the sphere above the bottom band. */
 
 .stage{
   position:relative;
   isolation:isolate;
-  background:var(--paper);
   height:min(100svh, 1000px);
   min-height:640px;
   overflow:hidden;
-  display:grid;
-  place-items:center;
+  background:var(--bg);
 }
 
+/* the sphere stops short of the process row and the dock */
 #sphere-canvas{
   display:block;
+  position:absolute;
+  top:0;left:0;
   width:100%;
   height:100%;
   touch-action:none;
+  will-change:opacity;
   cursor:grab;
 }
 #sphere-canvas.dragging{cursor:grabbing}
 
-/* ---------------- top bar ---------------- */
-
-.topbar{
+/* The centre figure as a plain image, used only when the page is opened
+   straight from disk, where WebGL can't use a local image (index.html
+   sizes and places it). Blending drops the image's white ground. */
+.hero-figure-fallback{
   position:absolute;
-  inset:var(--pad) var(--pad) auto var(--pad);
-  z-index:6;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
+  z-index:0;
+  width:auto;
+  max-width:none;
+  transform:translate(-50%, -50%);
+  mix-blend-mode:multiply;
+  opacity:.8;
+  pointer-events:none;
+}
+.hero-figure-fallback[data-dark="true"]{filter:invert(1) contrast(1.15);mix-blend-mode:screen}
+@media (prefers-reduced-motion:no-preference){
+  .hero-figure-fallback{animation:hero-figure-in 2.2s var(--ease) both}
+  @keyframes hero-figure-in{from{opacity:0}to{opacity:.8}}
 }
 
-.brand{
-  display:inline-flex;
-  align-items:baseline;
-  gap:.18em;
-  font-family:"Archivo","Arial Black",Arial,sans-serif;
-  font-weight:900;
-  font-size:15px;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  color:var(--ink);
-  text-decoration:none;
+.hero-copy{
+  position:absolute;
+  z-index:5;
+  left:var(--pad);
+  top:var(--space-6);
+  width:min(30%, 460px);
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:var(--space-4);
+  pointer-events:none;
 }
-.brand .dot{
-  width:5px;height:5px;
-  background:var(--ink);
-  border-radius:1px;
+.hero-copy > *{pointer-events:auto}
+.hero-role,
+.hero-steps{
+  font:400 var(--text-label)/1.4 var(--font-text);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-2);
+}
+.hero-role{margin:0}
+.hero-copy h1{
+  margin:0;
+  font:400 clamp(26px, 2.6vw, 38px)/1.1 var(--font-display);
+  letter-spacing:-.01em;
+  text-wrap:balance;
+}
+.hero-copy h1 em{font-style:italic}
+/* a headline set in deliberate lines on wider screens (one span per line); phones wrap naturally */
+@media (min-width:901px){
+  .hero-copy h1 .hl-line{display:block;white-space:nowrap}
+  .hero-copy h1{font-size:clamp(24px, 2.2vw, 32px)}
+}
+
+/* opening, part 1: headline first, while the page loads (script after the
+   hero in index.html). The headline stands alone, centred, its lines rising
+   in; a small loading read-out sits under it; nav and theme switch wait.
+   Then the read-out fades and the headline glides to its corner.
+   transform-origin stays fixed for the whole move, so it never jumps. */
+.hero-copy{transform-origin:0 0}
+.hl-moving .hero-copy{transition:transform 1.2s cubic-bezier(.65,0,.2,1)}
+.hl-first .hero-copy{will-change:transform}
+.hl-first .hero-role,
+.hl-first .hero-copy h1 .hl-line{
+  opacity:0;
+  transform:translateY(12px);
+  transition:opacity .8s var(--ease), transform .8s var(--ease);
+}
+.hl-first .hero-role.is-in,
+.hl-first .hero-copy h1 .hl-line.is-in{opacity:1;transform:none}
+.site-header{transition:opacity .8s var(--ease)}
+.theme-switch{transition:opacity .8s var(--ease), color var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease)}
+.hl-first:not(.hl-nav-in) .site-header:not(:focus-within),
+.hl-first:not(.hl-nav-in) .theme-switch:not(:focus-visible){opacity:0}
+
+/* loading: a quiet hairline at the bottom centre, away from the headline.
+   It appears only if loading takes more than a moment, and moves only when
+   something has actually loaded. No numbers. */
+.hero-loader{
+  position:fixed;
+  z-index:6;
+  left:50%;
+  bottom:var(--space-7);
+  width:120px;
+  margin-left:-60px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:var(--space-2);
+  opacity:0;
+  transition:opacity 1s var(--ease);
+  pointer-events:none;
+}
+.hero-loader.is-on{opacity:1}
+.hero-loader.is-done{opacity:0;transition-duration:.3s}
+.hero-loader__label{
+  font:400 11px/1 var(--font-text);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-2);
+}
+.hero-loader__track{width:100%;height:1px;background:var(--line);overflow:hidden}
+.hero-loader__bar{height:100%;background:var(--ink-2);transform:scaleX(0);transform-origin:0 50%;transition:transform .4s linear}
+html:not(.hl-first) .hero-loader:not(.is-done){display:none}
+
+/* opening, part 2: the six stages land one by one as the rings swing in
+   (timing in the hero script). Only applied when that script runs it. */
+.stage.is-intro .hero-steps li{
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity .8s var(--ease), transform .8s var(--ease), color var(--dur-2) var(--ease);
+}
+.stage.is-intro .hero-steps li.is-in{opacity:1;transform:none}
+
+/* caption: the stage in focus, in a sentence, above the process row */
+.hero-caption{
+  position:absolute;
+  z-index:5;
+  left:50%;
+  bottom:calc(var(--space-4) + 112px);
+  transform:translateX(-50%);
+  margin:0;
+  min-height:1.3em;
+  font:400 var(--text-h3)/1.3 var(--font-display);
+  color:var(--ink);
+  white-space:nowrap;
+  pointer-events:none;
+}
+.hero-caption .caret{
   display:inline-block;
-  transform:translateY(-1px);
+  width:.5ch;
+  margin-left:2px;
+  border-bottom:1px solid currentColor;
+  animation:caret 1s steps(1) infinite;
 }
+@keyframes caret{50%{opacity:0}}
 
-.site-nav{
-  display:flex;
-  align-items:center;
-  gap:24px;
-  font-family:"DM Mono",ui-monospace,monospace;
-  font-size:12px;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-}
-.site-nav a{
-  color:var(--ink);
-  text-decoration:none;
-  padding-bottom:2px;
-  border-bottom:1px solid transparent;
-  transition:border-color .3s var(--ease);
-}
-.site-nav a:hover{border-color:var(--ink)}
-.site-nav a:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
-
-/* ---------------- bottom bar ---------------- */
-
-.bottombar{
+/* process row: one line, centred, just above the dock */
+.hero-steps{
   position:absolute;
-  inset:auto var(--pad) var(--pad) var(--pad);
-  z-index:6;
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  align-items:end;
-  gap:16px;
+  z-index:5;
+  left:50%;
+  bottom:calc(var(--space-4) + 76px);
+  transform:translateX(-50%);
+  display:flex;
+  gap:var(--space-5);
+  margin:0;
+  padding:0;
+  list-style:none;
+  white-space:nowrap;
+  color:var(--ink-2);
+  pointer-events:none;
 }
-.corner{display:flex;gap:8px}
-.corner.right{justify-content:flex-end}
-
-.chip{
-  width:40px;height:40px;
-  display:grid;place-items:center;
-  border:1px solid var(--hair);
-  border-radius:999px;
-  font-family:"DM Mono",ui-monospace,monospace;
-  font-size:11px;letter-spacing:.06em;
-  color:var(--ink);text-decoration:none;
-  background:transparent;
-  transition:background-color .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease);
-}
-.chip:hover{background:var(--ink);color:var(--ground);border-color:var(--ink)}
-.chip:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-
-.cta{
-  position:relative;
-  display:grid;
-  grid-template-columns:32px minmax(144px,auto) 32px;
+.hero-steps li{
+  display:inline-flex;
   align-items:center;
-  height:52px;
-  padding:0 10px;
-  border:1px solid var(--ink);
-  border-radius:999px;
-  background:transparent;
-  color:var(--ink);
-  text-decoration:none;
-  overflow:hidden;
-  isolation:isolate;
+  gap:var(--space-2);
+  transition:color var(--dur-2) var(--ease);
 }
-.cta::before{
+.hero-steps li::before{
   content:"";
-  position:absolute;inset:0;z-index:-1;
-  background:var(--ink);
-  transform:translateY(101%);
-  transition:transform .5s var(--ease);
+  width:6px;height:6px;
+  border-radius:50%;
+  corner-shape:round;
+  border:1px solid currentColor;
+  transition:background-color var(--dur-2) var(--ease);
 }
-.cta:hover::before{transform:translateY(0)}
-.cta:hover{color:var(--ground)}
-.cta:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
-.cta .arrow{font-size:15px;line-height:1;text-align:center;transition:transform .5s var(--ease)}
-.cta:hover .arrow{transform:translate(3px,-3px)}
-.cta .roll{
-  position:relative;height:1em;overflow:hidden;
-  font-family:"DM Mono",ui-monospace,monospace;
-  font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-align:center;
-}
-.cta .roll span{display:block;transition:transform .5s var(--ease)}
-.cta:hover .roll span{transform:translateY(-100%)}
+.hero-steps li.is-current{color:var(--ink);font-weight:500}
+.hero-steps li.is-current::before{background:var(--ink)}
 
+@media (min-width:901px) and (max-width:1280px){
+  .hero-copy{width:min(40%, 460px)}
+}
+
+/* phones: headline, process row, then the sphere; room for the dock */
 @media (max-width:900px){
-  .bottombar{grid-template-columns:1fr auto;row-gap:14px}
-  .corner.right{grid-column:2}
-  .cta{grid-column:1 / -1;justify-self:center}
+  .stage{height:auto;min-height:100svh;display:flex;flex-direction:column;padding-bottom:88px}
+  .hero-copy{
+    position:relative;
+    left:auto;top:auto;
+    width:auto;
+    padding:var(--space-7) var(--pad) 0;
+  }
+  .hero-copy h1{font-size:clamp(32px, 8.4vw, 44px);line-height:1.06}
+  .hero-steps{
+    position:relative;
+    left:auto;bottom:auto;
+    transform:none;
+    flex-wrap:wrap;
+    gap:var(--space-1) var(--space-4);
+    white-space:normal;
+    padding:var(--space-5) var(--pad) 0;
+  }
+  .hero-caption{position:relative;left:auto;bottom:auto;transform:none;padding:var(--space-3) var(--pad) 0;white-space:normal;font-size:20px}
+  #sphere-canvas{position:relative;height:auto;flex:1 1 0;min-height:360px}
 }
 
-/* The sphere's own idle drift and drag inertia already check this in JS
-   (see index.html) — this just keeps the cursor from suggesting a drag
-   interaction that won't animate. */
+/* The sphere's own idle drift and drag inertia check this in JS
+   (see index.html); here it only stops the cursor and the legend
+   from suggesting motion. */
 @media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
   #sphere-canvas{cursor:default}
+  .hero-steps li,.hero-steps li::before{transition:none}
+  .hero-caption .caret{display:none}
 }
 
-/* ---------------- work section ----------------
-   Sits below the hero in normal document flow. On paper (not ground) so it
-   reads as a distinct section once you scroll past the animated stage. */
+/* ---------------- work section (v1) ----------------
+   Wide cards: one full-width card per written-up project, text on the
+   left and a screen on the right. Projects not written up yet sit below
+   as two smaller cards without a screen. */
 
 .work-section{
-  scroll-margin-top:24px;
-  background:var(--paper);
-  border-top:1px solid var(--hair);
+  scroll-margin-top:var(--space-5);
+  background:var(--bg);
+  padding:var(--space-9) var(--pad) var(--space-10);
 }
-
-.work-intro{
-  max-width:640px;
-  padding:calc(var(--pad) * 1.6) var(--pad) var(--pad);
-}
+.work-intro,
+.work-grid{max-width:1280px;margin:0 auto}
+.work-intro{padding-bottom:var(--space-7)}
 .work-intro h2{
-  margin:0 0 .4em;
-  font-family:"Archivo","Arial Black",Arial,sans-serif;
-  font-weight:900;
-  text-transform:uppercase;
-  font-size:clamp(28px, 4vw, 40px);
-  letter-spacing:.01em;
+  margin:0 0 var(--space-3);
+  font:400 var(--text-h1)/1.04 var(--font-display);
+  letter-spacing:-.012em;
 }
 .work-intro p{
   margin:0;
-  color:var(--stone-3);
-  font-size:15px;
-  line-height:1.6;
+  font-size:var(--text-lead);
+  line-height:1.4;
+  color:var(--ink-2);
 }
 
 .work-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
-  gap:1px;
-  background:var(--hair);
-  border-top:1px solid var(--hair);
-  border-bottom:1px solid var(--hair);
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:var(--space-4);
 }
-
 .work-card{
-  background:var(--paper);
-  padding:28px;
+  grid-column:1 / -1;
+  display:grid;
+  grid-template-columns:5fr 7fr;
+  overflow:hidden;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  text-decoration:none;
+  color:var(--ink);
+}
+.work-card__text{
   display:flex;
   flex-direction:column;
-  gap:14px;
-  min-height:220px;
-  text-decoration:none;
-  color:inherit;
+  align-items:flex-start;
+  gap:var(--space-5);
+  padding:var(--space-6);
 }
-a.work-card{transition:background-color .3s var(--ease)}
-a.work-card:hover{background:var(--stone-0)}
-.work-card.is-disabled{color:var(--stone-3)}
-
-.work-card__meta{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  font-family:"DM Mono",ui-monospace,monospace;
-  font-size:11px;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  color:var(--stone-3);
+.work-card__shot{
+  position:relative;
+  display:grid;
+  place-items:center;
+  min-height:340px;
+  padding:var(--space-7) var(--space-6) var(--space-6);
+  background:var(--sunk);
+  border-left:1px solid var(--line);
+  --paper:var(--on-ink);
 }
-
-.work-card__status{
-  padding:3px 9px;
-  border:1px solid var(--hair);
-  border-radius:999px;
-}
-.work-card__status[data-status="featured"]{border-color:var(--ink);color:var(--ink)}
-
-.work-card__title{
-  margin:0;
-  font-family:"Archivo","Arial Black",Arial,sans-serif;
-  font-weight:900;
-  text-transform:uppercase;
-  font-size:20px;
-  letter-spacing:.01em;
-}
-
-.work-card__role{
-  margin:-8px 0 0;
-  font-size:13px;
-  color:var(--stone-3);
-}
-
-.work-card__summary{
-  margin:0;
-  font-size:14px;
-  line-height:1.55;
-  flex:1;
-}
-
-.work-card__cta{
-  margin-top:auto;
-  font-family:"DM Mono",ui-monospace,monospace;
-  font-size:11px;
+.work-card__shot svg{display:block;width:100%;max-width:620px;height:auto}
+.work-card__shot-img{display:block;width:100%;height:100%;object-fit:cover}
+.work-card__shot-note{
+  position:absolute;
+  top:var(--space-4);
+  left:var(--space-6);
+  font:400 10px/1 var(--font-text);
   letter-spacing:.08em;
   text-transform:uppercase;
+  color:var(--ink-2);
 }
-a .work-card__cta{color:var(--ink)}
-.work-card.is-disabled .work-card__cta{color:var(--stone-2)}
-a.work-card:hover .work-card__cta{text-decoration:underline}
+/* the wireframe's drawing classes (same vocabulary as the case-study diagrams) */
+.work-card__shot rect{rx:6px}
+.work-card__shot text{font-family:var(--font-text);fill:var(--ink)}
+.work-card__shot .d-title{font-weight:500;font-size:16px}
+.work-card__shot .d-body{font-size:13px;fill:var(--ink-2)}
+.work-card__shot .d-label{font-size:10.5px;letter-spacing:.08em;fill:var(--ink-2)}
+.work-card__shot .d-label--ink{fill:var(--ink)}
+.work-card__shot .d-label--paper{fill:var(--on-ink)}
+.work-card__shot .d-card{fill:var(--surface);stroke:var(--line)}
+.work-card__shot .d-ink{fill:var(--ink)}
+.work-card__shot .d-muted{fill:color-mix(in srgb, var(--ink) 16%, var(--surface))}
+.work-card__shot .d-soft{fill:var(--sunk)}
+.work-card__shot .d-grid{stroke:var(--line);stroke-width:1}
+.work-card__shot .d-axis{stroke:var(--ink-3);stroke-width:1}
+.work-card__shot .d-outline{fill:none;stroke:var(--ink);stroke-width:1}
+.work-card__meta{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:var(--space-2) var(--space-3);
+  font:400 var(--text-label)/1.4 var(--font-text);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-2);
+}
+.work-card__status{
+  padding:6px 8px;
+  border:1px solid var(--line);
+  border-radius:var(--radius-nested);
+}
+.work-card__status[data-status="featured"]{color:var(--ink)}
+.work-card__title{
+  margin:0 0 var(--space-2);
+  font:400 clamp(34px, 4.4vw, 56px)/1.02 var(--font-display);
+  letter-spacing:-.012em;
+}
+.work-card__role{
+  margin:0;
+  font-size:var(--text-ui);
+  line-height:1.45;
+  color:var(--ink-2);
+}
+.work-card__body{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  align-self:stretch;
+  flex:1;
+  justify-content:space-between;
+  gap:var(--space-6);
+}
+.work-card__cta{
+  font:500 var(--text-ui)/1 var(--font-text);
+  color:var(--ink);
+}
+/* the one result shown per project */
+.work-card__stat{
+  display:flex;
+  flex-direction:column;
+  gap:var(--space-1);
+  align-self:stretch;
+  margin:0;
+  padding-top:var(--space-4);
+  border-top:1px solid var(--line);
+}
+.work-card__stat b{font:400 clamp(26px, 2.8vw, 34px)/1.05 var(--font-display)}
+.work-card__stat span{font-size:var(--text-small);color:var(--ink-2)}
+
+/* Linked cards: the whole card is the link. The arrow moves, nothing else. */
+a.work-card .work-card__cta{
+  display:inline-block;
+  transition:transform var(--dur-2) var(--ease);
+}
+a.work-card:hover .work-card__cta{transform:translateX(6px)}
+
+/* Not written up yet: no screen, stepped back. */
+.work-card.is-disabled{
+  grid-column:1 / -1;
+  grid-template-columns:1fr;
+  background:transparent;
+}
+.work-card.is-disabled .work-card__text{padding:var(--space-5);gap:var(--space-4)}
+.work-card.is-disabled .work-card__title{color:var(--ink-3);font-size:clamp(26px, 3vw, 36px)}
+
+@media (max-width:900px){
+  .work-section{padding-top:var(--space-8);padding-bottom:var(--space-9)}
+  .work-grid{grid-template-columns:1fr}
+  .work-card{grid-template-columns:1fr}
+  .work-card__text{padding:var(--space-5)}
+  .work-card__shot{min-height:0;padding:var(--space-7) var(--space-4) var(--space-4);border-left:0;border-top:1px solid var(--line)}
+  .work-card__shot-note{left:var(--space-4)}
+}
+@media (prefers-reduced-motion:reduce){
+  a.work-card .work-card__cta{transition:none}
+  a.work-card:hover .work-card__cta{transform:none}
+}

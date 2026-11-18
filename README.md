@@ -1,4 +1,4 @@
-# abcd — portfolio
+# nothingdesign — portfolio
 
 A personal product design portfolio. Home page, a Work section with case
 studies, and an interactive 3D hero.

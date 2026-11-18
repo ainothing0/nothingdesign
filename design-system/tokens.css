@@ -1,0 +1,123 @@
+/* ============================================================
+   nothingdesign design tokens — v1 (draft, 2026-11-16)
+
+   Status of each group is marked DECIDED or PROPOSED.
+   Rationale and open questions: README.md in this folder.
+   Linked by every page, before site.css.
+   ============================================================ */
+
+:root,
+[data-theme="light"]{
+  color-scheme: light;
+
+  /* ---- color · APPROVED 2026-11-16 (accent hue is a placeholder) ----
+     Pure neutral black and white (no warm or cool tint). Six steps from ground to ink.
+     Text pairs meet WCAG AA on every ground; --ink-3 is for large
+     text, icons and control borders only (3:1). */
+  --bg:#f7f7f7;            /* page ground */
+  --surface:#ffffff;       /* cards, panels */
+  --sunk:#eeeeee;          /* quiet fills, diagram bands */
+  --ink:#111111;           /* text, primary buttons */
+  --ink-2:#5c5c5c;         /* secondary text, captions, labels */
+  --ink-3:#858585;         /* placeholder, icons, control borders */
+  --line:rgba(17,17,17,.14); /* hairlines, card borders */
+  --on-ink:#ffffff;        /* text on an ink fill */
+
+  /* One accent. Blue is a placeholder hue "for now" (owner, 2026-11-16).
+     Used for links, focus and one highlighted action per view. */
+  --accent:#2347d6;
+  --on-accent:#ffffff;
+
+  /* Status: only inside agent-interface components. */
+  --working:#7a5200;  --working-bg:#f6ecd6;
+  --done:#256238;     --done-bg:#e2efe4;
+  --review:#5a3ea6;   --review-bg:#ece7f8;
+  --failed:#a03325;   --failed-bg:#f7e3df;
+}
+
+[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#0f0f0f;
+  --surface:#181818;
+  --sunk:#212121;
+  --ink:#f2f2f2;
+  --ink-2:#a6a6a6;
+  --ink-3:#7a7a7a;
+  --line:rgba(242,242,242,.16);
+  --on-ink:#0f0f0f;
+  --accent:#8fa8ff;
+  --on-accent:#0f0f0f;
+  --working:#e3b65c;  --working-bg:#2e2610;
+  --done:#82c493;     --done-bg:#15281a;
+  --review:#bba6f0;   --review-bg:#211a35;
+  --failed:#f08f80;   --failed-bg:#321814;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#0f0f0f;
+    --surface:#181818;
+    --sunk:#212121;
+    --ink:#f2f2f2;
+    --ink-2:#a6a6a6;
+    --ink-3:#7a7a7a;
+    --line:rgba(242,242,242,.16);
+    --on-ink:#0f0f0f;
+    --accent:#8fa8ff;
+    --on-accent:#0f0f0f;
+    --working:#e3b65c;  --working-bg:#2e2610;
+    --done:#82c493;     --done-bg:#15281a;
+    --review:#bba6f0;   --review-bg:#211a35;
+    --failed:#f08f80;   --failed-bg:#321814;
+  }
+}
+
+:root{
+  /* ---- type · DECIDED (families); sizes PROPOSED ----
+     Two families. Paragraphs are Geist for now; --font-prose is
+     its own token so a serif can replace it in one line. */
+  --font-display:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --font-text:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-prose:var(--font-text);
+
+  --text-label:12px;                       /* uppercase, .08em tracking */
+  --text-small:14px;
+  --text-ui:15px;
+  --text-body:17.5px;
+  --text-lead:clamp(19px,2vw,22px);
+  --text-h3:clamp(22px,2.2vw,26px);
+  --text-h2:clamp(28px,3.2vw,38px);
+  --text-h1:clamp(38px,5.6vw,72px);
+  --measure:68ch;
+
+  /* ---- space · APPROVED IN PRINCIPLE ---- 4px base */
+  --space-1:4px;  --space-2:8px;  --space-3:12px; --space-4:16px; --space-5:24px;
+  --space-6:32px; --space-7:48px; --space-8:64px; --space-9:96px; --space-10:128px;
+  --pad:clamp(16px,4vw,48px);              /* page-edge inset */
+
+  /* ---- shape · DECIDED ----
+     Containers and buttons share one radius; anything nested
+     inside a container uses the smaller one. No pills, no shadows.
+     Corners are smoothed (Figma corner smoothing 60%) where the browser
+     supports corner-shape; see the @supports block at the end. */
+  --radius:12px;
+  --radius-nested:6px;
+  --corner:round;
+
+  /* ---- motion · APPROVED IN PRINCIPLE ---- */
+  --dur-1:120ms; --dur-2:240ms; --dur-3:480ms;
+  --ease:cubic-bezier(.22,.61,.24,1);
+}
+
+/* Smoothed corners. Figma's 60% corner smoothing has no exact CSS
+   equivalent; corner-shape:squircle is the closest. A squircle reads
+   tighter than a round corner of the same radius, so the radii step up
+   to keep the same visual size. Browsers without corner-shape keep the
+   plain 12px / 6px round corners above. */
+@supports (corner-shape: squircle){
+  :root{
+    --corner:squircle;
+    --radius:16px;
+    --radius-nested:8px;
+  }
+}
